@@ -1,0 +1,40 @@
+body {
+    background: url(../images/crop_field.jpg) no-repeat fixed center center;
+    background-size: cover;
+    font-family: Montserrat;
+}
+
+.mail-block {
+    padding: 1%;
+    background: #fff;
+    border-radius: 5px;
+    border-top: 5px solid #2e5d75;
+    margin-top: 2%;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  padding: 1%;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.mail_data tr:nth-child(odd):hover td, tbody tr.odd:hover td {background-color:#999999;}
+.mail_data tr:nth-child(even){
+    display:none;
+}
+
+.content{
+    margin-right: 15%;
+    margin-left: 15%;
+    margin-bottom: 15%;
+}
+
+.newmail{
+    background-color:#999999;
+    font-weight: bold;
+}

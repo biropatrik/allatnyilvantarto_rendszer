@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Regisztráció</title>
+    </h:head>
+    <h:body>
+        <link type="text/css" rel="stylesheet" href="../resources/css/register.css" />
+        
+        <h:form id="register">
+        <div class="logo"></div>
+        <div class="login-block">
+            <h:message for="last_name" style="color:red" />
+            <h:inputText id="last_name" label="Vezetéknév" required="false" a:placeholder="Vezetéknév" value="#{registerController.last_name}"/>
+           
+            <h:message for="first_name" style="color:red" />
+            <h:inputText id="first_name" label="Keresztnév" requiredMessage="A mező kitöltése kötelező!" required="false" a:placeholder="Keresztnév" value="#{registerController.first_name}"/>
+            
+            <h:message for="phonenumber" style="color:red" />
+            <h:inputText id="phonenumber" label="Telefonszám" requiredMessage="A mező kitöltése kötelező!" required="false" a:placeholder="Telefonszám" value="#{registerController.phoneNumber}"/>
+            
+            <h:message for="email" style="color:red" />
+            <h:inputText id="email" label="Email" requiredMessage="A mező kitöltése kötelező!" required="false" a:placeholder="Email" value="#{registerController.email}" styleClass="email"/>
+            
+            <h:message for="password" style="color:red" />
+            <h:inputText id="password" label="Jelszó" requiredMessage="A mező kitöltése kötelező!" required="false" a:type="password" a:placeholder="Jelszó" value="#{registerController.password}" styleClass="password"/>
+            
+            <h:selectOneMenu styleClass="selectonemenu" value="#{registerController.countryIso2}">
+                <f:selectItems value="#{registerController.countries}" var="co"
+                               itemLabel="#{co.name}" itemValue="#{co.iso2}" />
+            </h:selectOneMenu>
+            <br></br>
+            
+            <h:selectOneMenu styleClass="selectonemenu" value="#{registerController.countyId}">
+                <f:selectItems value="#{registerController.counties}" var="cn"
+                               itemLabel="#{cn.name}" itemValue="#{cn.id}" />
+            </h:selectOneMenu>
+            <br></br>
+            
+            <h:message for="postal_code" style="color:red" />
+            <h:inputText id="postal_code" label="Irányítószám" requiredMessage="A mező kitöltése kötelező!" a:placeholder="Irányítószám" required="false" value="#{registerController.postal_code}" onchange="submit()"/>
+            
+            <h:selectOneMenu styleClass="selectonemenu" value="#{registerController.cityId}">
+                <f:selectItems value="#{registerController.cities}" var="ci"
+                               itemLabel="#{ci.name}" itemValue="#{ci.id}" />
+            </h:selectOneMenu>
+            <br></br>
+            
+            <h:message for="street" style="color:red" />
+            <h:inputText id="street" label="Utca, házszám" requiredMessage="A mező kitöltése kötelező!" a:placeholder="Utca házszám" required="false" value="#{registerController.street}"/>
+            
+            <div class="button">
+                <h:commandButton value="Regisztráció" type="submit" action="#{registerController.register()}" styleClass="login"/>
+            </div>
+        </div>
+        </h:form>
+    </h:body>
+</html>
+

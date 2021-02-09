@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Üzenetek #{(userHasMailController.newMailCount &gt; 0) &amp;&amp; (userHasMailController.newMailCount &lt; 100) ? '[+'.concat((userHasMailController.newMailCount)).concat(']') : ''} 
+                        #{userHasMailController.newMailCount &gt; 99 ? '[+99]' : ''}</title>
+    </h:head>
+    <h:body>
+        <div class="content">
+            <link type="text/css" rel="stylesheet" href="../resources/css/index.css" />
+            <link type="text/css" rel="stylesheet" href="../resources/css/navigationBar.css" />
+
+            <f:metadata>
+                <f:viewAction action="#{loginController.checkLogin('index.xhtml',3)}" />
+            </f:metadata>
+
+            <div class="navigation">
+                <h:form id="navigation">
+                <h:commandLink  class="active" action="#{navigationController.index}" value="Üzenetek"></h:commandLink>
+                <h:commandLink  value="Új üzenet" action="#{navigationController.newMail}"></h:commandLink>
+                <h:commandLink  value="Saját állatok"></h:commandLink>
+                <h:commandLink  value="Állatkereső"></h:commandLink>
+                <h:commandLink  class="logout" action="#{loginController.logout}" value="Kilépés"></h:commandLink>
+                <h:commandLink  style="float: right" value="Fiók" action="#{navigationController.account}"></h:commandLink>
+                </h:form>
+            </div>
+
+            <h:form id="checkMail">
+            <div class="mail-block">
+            <table>
+                <tbody class="mail_data">
+                    <c:forEach items="#{userHasMailController.allMailsWithReceiverId}" var="mail">
+                        <tr class="mail_#{mail.id}" style="#{mail.isNew ? 'background-color:#DCDCDC; font-weight:bold' : 'background-color:#F9F9F9;'}">
+                            <td>#{userHasMailController.getUserName(mail.senderUserId)}</td>
+                            <td>#{mail.subject}</td>
+                            <td style="text-align: right;">#{userHasMailController.getDateFormat(mail.whendate)}</td>
+                            <td><h:commandButton id="isNew_l_#{mail.id}" actionListener="#{userHasMailController.deleteMail(mail.id)}" value="X"/></td>
+                        </tr>
+                        <tr id="details_#{mail.id}" class="#{mail.id}" style="#{userHasMailController.openedId == mail.id ? 'display: table-row' : 'display: none'}">
+                            <td colspan="4"><div style="white-space: pre-wrap;">#{mail.mailText}</div></td>
+                            <h:commandButton id="isNew_#{mail.id}" actionListener="#{userHasMailController.theMailHasBeenRead(mail.id)}" style="display: none;" />
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+            </div>
+            </h:form>
+        </div>
+        
+        <script src="jquery-3.5.1.js"></script>
+        <ui:repeat value="#{userHasMailController.allMailsWithReceiverId}" var="mail">
+            <script>
+                $('body').on('click', '.mail_#{mail.id}', function(){
+                    $('.#{mail.id}').toggle();
+                    if(#{mail.isNew} === true){
+                        document.getElementById('checkMail:isNew_#{mail.id}').click();
+                    }
+                    if(#{mail.id} === #{userHasMailController.openedId}){
+                        #{userHasMailController.openedId = '-1'}
+                    }
+                });
+            </script>
+        </ui:repeat>
+    </h:body>
+</html>
+

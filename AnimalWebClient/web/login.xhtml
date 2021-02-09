@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+    <h:head>
+        <title>Bejelentkezés</title>
+    </h:head>
+    <h:body>
+        <link type="text/css" rel="stylesheet" href="resources/css/login.css" />
+        
+        <h:form id="login">
+        <div class="logo"></div>
+        <div class="login-block">
+            <h:message for="email" style="color:red" />
+            <h:inputText id="email" label="Email" a:placeholder="Email" value="#{loginController.email}" styleClass="email"/>
+            <h:message for="password" style="color:red" />
+            <h:inputText id="password" label="Jelszó" a:type="password" a:placeholder="Jelszó" value="#{loginController.password}" styleClass="password"/>
+
+            <div class="button">
+                <h:commandButton value="Bejelentkezés" type="submit" action="#{loginController.login()}" styleClass="login"/>
+                <h:commandButton value="Regisztráció" type="submit" action="#{loginController.displayRegisterPage()}" styleClass="login"/>
+            </div>
+        </div>
+        
+        </h:form>
+    </h:body>
+</html>
+

@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+    <h:head>
+        <title>Felhasználó módosítás</title>
+    </h:head>
+    <h:body>
+        <div class="content">
+            <link type="text/css" rel="stylesheet" href="../resources/css/account.css?v=${applicationInfoBean.projectVersion}" />
+            <link type="text/css" rel="stylesheet" href="../resources/css/navigationBar.css" />
+
+            <f:metadata>
+                <f:viewAction action="#{loginController.checkLogin('/faces/private/accountEdit.xhtml',3)}" />
+            </f:metadata>
+
+            <div class="navigation">
+                <h:form id="navigation">
+                <h:commandLink  value="Üzenetek" action="#{navigationController.index}"></h:commandLink>
+                <h:commandLink  value="Új üzenet" action="#{navigationController.newMail}"></h:commandLink>
+                <h:commandLink  value="Saját állatok"></h:commandLink>
+                <h:commandLink  value="Állatkereső"></h:commandLink>
+                <h:commandLink  class="logout" action="#{loginController.logout}" value="Kilépés"></h:commandLink>
+                <h:commandLink  style="float: right" class="active" value="Fiók" action="#{navigationController.account}"></h:commandLink>
+                </h:form>
+            </div>
+            
+            <div class="account-block">
+            <h:form id="modification">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Teljes név:</td>
+                        <td>
+                            <h:message for="last_name" style="color:red" /><br></br>
+                            <h:inputText id="last_name" label="Vezetéknév" required="false" a:placeholder="Vezetéknév" value="#{accountController.user.lastName}"/>
+                        <br></br>
+                            <h:message for="first_name" style="color:red" /><br></br>
+                            <h:inputText id="first_name" label="Keresztnév" required="false" a:placeholder="Keresztnév" value="#{accountController.user.firstName}"/></td>
+                    </tr>
+                    <tr>
+                        <td>E-mail:</td>
+                        <td colspan="2">
+                            <h:message for="email" style="color:red" /><br></br>
+                            <h:inputText id="email" label="E-mail" required="false" a:placeholder="E-mail" value="#{accountController.user.email}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Telefonszám:</td>
+                        <td colspan="2">
+                            <h:message for="phone_number" style="color:red" /><br></br>
+                            <h:inputText id="phone_number" label="Telefonszám" required="false" a:placeholder="Telefonszám" value="#{accountController.user.phoneNumber}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Ország:</td>
+                        <td colspan="2">
+                            <h:selectOneMenu styleClass="selectonemenu" value="#{accountController.user.countryIso2}">
+                                <f:selectItems value="#{accountController.countries}" var="co"
+                                               itemLabel="#{co.name}" itemValue="#{co.iso2}" />
+                            </h:selectOneMenu>
+                            <br></br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Megye:</td>
+                        <td colspan="2">
+                            <h:selectOneMenu styleClass="selectonemenu" value="#{accountController.user.countyId}">
+                                <f:selectItems value="#{accountController.counties}" var="cn"
+                                               itemLabel="#{cn.name}" itemValue="#{cn.id}" />
+                            </h:selectOneMenu>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Város:</td>
+                        <td><h:message for="postal_code" style="color:red" /><br></br>
+                            <h:inputText id="postal_code" label="Irányítószám" a:placeholder="Irányítószám" required="false" value="#{accountController.cityPostalCode}" onchange="submit()"/>
+                        <br></br>
+                        <br></br>
+                            <h:selectOneMenu styleClass="selectonemenu" value="#{accountController.user.cityId}">
+                                <f:selectItems value="#{accountController.cities}" var="ci"
+                                               itemLabel="#{ci.name}" itemValue="#{ci.id}" />
+                            </h:selectOneMenu>
+                            <br></br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Utca:</td>
+                        <td><h:inputText id="street" label="Utca" a:placeholder="Utca" required="false" value="#{accountController.user.street}"/></td>
+                    </tr>
+                    <tr>
+                        <td>Szerepkör:</td>
+                        <td colspan="2">#{accountController.getRoleName()}</td>
+                    </tr>
+                    <tr>
+                        <td>Jelszó:</td>
+                        <td>
+                            <h:message for="password_new" style="color:red" /><br></br>
+                            <h:inputSecret id="password_new" label="Jelszó" required="false" a:placeholder="Jelszó" value="#{accountController.newPassword}"/>
+                            <br></br>
+                            <br></br>
+                            <h:inputSecret id="password_again" label="Jelszó újra" required="false" a:placeholder="Jelszó újra" value="#{accountController.newPasswordAgain}"/>
+                            </td>
+                    </tr>
+                </tbody>
+            </table>
+                    <div class="button">
+                        <h:commandButton value="Mentés" type="submit" action="#{accountController.saveAccountModification()}" styleClass="edit"/>
+                    </div>
+                </h:form>
+            </div>
+        </div>
+    </h:body>
+</html>
+
