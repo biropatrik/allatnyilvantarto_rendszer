@@ -1,0 +1,14 @@
+- állatorvosok megyei bontásban kapják meg a felhasználókat, és a hozzájuk kapcsolódó feladatokat (felvinni új tartási helyet)
+- nem feltétlen kell a anya-gyerek kapcsoló tábla, mivel ha megvan adva a szülő azonosítója, akkor onnan következtehető hogy kik a gyerek.
+
+- egy személynek több tenyészete is lehet, de adott tartási helyen csak 1 lehet!
+- egy tenyészet csak egy féle lehet!
+- egy tartási helyen lehet többféle típusú tenyészet? 
+	a.) minden tartónak hasonló típusú tenyészete lehet csak!
+	b.) vannak kivételek: állattartó + keltető
+						  piac + rakodóhely
+						  etető/itató hely + pihentető
+						  
+	-> Holding_place tábla: Breeding_type mezővel bővül, kezdetben (null).
+		-> Ha még nincs tenyészet egy adott tartásihelyhez rendelve, akkor a legelső tenyészet típusát fogja megkapni (kódból 	 megvalósítva)
+		-> Ezt követően minden hozzárendelni kívánt tenyészet típusát összevetjük a tartásihely típusával, és ha megegyezik, esetleg megfelelő (állattartó - keltető), akkor megvalósítjuk a felvitelt a kapcsolótáblába.
