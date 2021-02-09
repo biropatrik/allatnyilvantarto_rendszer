@@ -1,1 +1,1 @@
-# allatnyilvantarto
+# Állatnyilvántartó rendszer
