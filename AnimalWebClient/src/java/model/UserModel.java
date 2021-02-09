@@ -22,12 +22,13 @@ public class UserModel {
     private String street;
     private int roleId;
     private boolean isActive;
+    private boolean isAccepted;
     
     public UserModel(){}
 
     public UserModel(Integer id, String firstName, String lastName, String email, 
             String password, String phoneNumber, String countryIso2, int countyId, 
-            int cityId, String street, int roleId, boolean isActive) {
+            int cityId, String street, int roleId, boolean isActive, boolean isAccepted) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -40,6 +41,7 @@ public class UserModel {
         this.street = street;
         this.roleId = roleId;
         this.isActive = isActive;
+        this.isAccepted = isAccepted;
     }
 
     public Integer getId() {
@@ -137,6 +139,13 @@ public class UserModel {
     public void setIsActive(boolean isActive) {
         this.isActive = isActive;
     }
-    
+
+    public boolean isIsAccepted() {
+        return isAccepted;
+    }
+
+    public void setIsAccepted(boolean isAccepted) {
+        this.isAccepted = isAccepted;
+    }
     
 }

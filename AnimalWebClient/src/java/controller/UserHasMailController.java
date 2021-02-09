@@ -94,9 +94,9 @@ public class UserHasMailController {
             mailClient.create_JSON(mailModel);
             mailClient.close();
             cleanData();
-            return "/faces/index.xhtml?faces-redirect=true"; 
+            return "index.xhtml?faces-redirect=true"; 
         }else{
-            return "/private/newMail.xhtml";
+            return "newMail.xhtml";
         }
     }
     

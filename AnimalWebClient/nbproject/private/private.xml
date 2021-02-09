@@ -4,10 +4,10 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Patrik/Documents/NetBeansProjects/AnimalWebClient/src/java/controller/AccountController.java</file>
+            <file>file:/C:/Users/Patrik/Documents/NetBeansProjects/AnimalWebClient/web/private/index.xhtml</file>
             <file>file:/C:/Users/Patrik/Documents/NetBeansProjects/AnimalWebClient/web/private/accountEdit.xhtml</file>
-            <file>file:/C:/Users/Patrik/Documents/NetBeansProjects/AnimalWebClient/src/java/controller/RegisterController.java</file>
-            <file>file:/C:/Users/Patrik/Documents/NetBeansProjects/AnimalWebClient/web/resources/css/account.css</file>
             <file>file:/C:/Users/Patrik/Documents/NetBeansProjects/AnimalWebClient/web/private/account.xhtml</file>
+            <file>file:/C:/Users/Patrik/Documents/NetBeansProjects/AnimalWebClient/src/java/controller/UserHasMailController.java</file>
         </group>
     </open-files>
 </project-private>

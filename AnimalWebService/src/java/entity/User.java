@@ -39,7 +39,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "User.findByCityId", query = "SELECT u FROM User u WHERE u.cityId = :cityId"),
     @NamedQuery(name = "User.findByStreet", query = "SELECT u FROM User u WHERE u.street = :street"),
     @NamedQuery(name = "User.findByRoleId", query = "SELECT u FROM User u WHERE u.roleId = :roleId"),
-    @NamedQuery(name = "User.findByIsActive", query = "SELECT u FROM User u WHERE u.isActive = :isActive")})
+    @NamedQuery(name = "User.findByIsActive", query = "SELECT u FROM User u WHERE u.isActive = :isActive"),
+    @NamedQuery(name = "User.findByIsAccepted", query = "SELECT u FROM User u WHERE u.isAccepted = :isAccepted")})
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -98,6 +99,8 @@ public class User implements Serializable {
     @NotNull
     @Column(name = "isActive")
     private boolean isActive;
+    @Column(name = "isAccepted")
+    private Short isAccepted;
 
     public User() {
     }
@@ -214,6 +217,14 @@ public class User implements Serializable {
 
     public void setIsActive(boolean isActive) {
         this.isActive = isActive;
+    }
+
+    public Short getIsAccepted() {
+        return isAccepted;
+    }
+
+    public void setIsAccepted(Short isAccepted) {
+        this.isAccepted = isAccepted;
     }
 
     @Override

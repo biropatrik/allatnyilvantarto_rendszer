@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "HoldingPlace.findByStreet", query = "SELECT h FROM HoldingPlace h WHERE h.street = :street"),
     @NamedQuery(name = "HoldingPlace.findByCapacityType", query = "SELECT h FROM HoldingPlace h WHERE h.capacityType = :capacityType"),
     @NamedQuery(name = "HoldingPlace.findByCapacity", query = "SELECT h FROM HoldingPlace h WHERE h.capacity = :capacity"),
+    @NamedQuery(name = "HoldingPlace.findByBreedingType", query = "SELECT h FROM HoldingPlace h WHERE h.breedingType = :breedingType"),
     @NamedQuery(name = "HoldingPlace.findByIsActive", query = "SELECT h FROM HoldingPlace h WHERE h.isActive = :isActive")})
 public class HoldingPlace implements Serializable {
 
@@ -70,6 +71,8 @@ public class HoldingPlace implements Serializable {
     @NotNull
     @Column(name = "capacity")
     private int capacity;
+    @Column(name = "breeding_type")
+    private Integer breedingType;
     @Basic(optional = false)
     @NotNull
     @Column(name = "isActive")
@@ -147,6 +150,14 @@ public class HoldingPlace implements Serializable {
 
     public void setCapacity(int capacity) {
         this.capacity = capacity;
+    }
+
+    public Integer getBreedingType() {
+        return breedingType;
+    }
+
+    public void setBreedingType(Integer breedingType) {
+        this.breedingType = breedingType;
     }
 
     public boolean getIsActive() {
