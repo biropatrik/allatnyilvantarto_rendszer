@@ -3764,11 +3764,13 @@ CREATE TABLE IF NOT EXISTS `holding_place` (
   `capacity_type` int(11) NOT NULL,
   `capacity` int(11) NOT NULL,
   `isActive` tinyint(1) NOT NULL,
+  `breeding_type` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_holding_place_country_iso2` (`country_iso2`),
   KEY `FK_holding_place_county_id` (`county_id`),
   KEY `FK_holding_place_city_id` (`city_id`),
-  KEY `FK_holding_place_capacity_type_id` (`capacity_type`)
+  KEY `FK_holding_place_capacity_type_id` (`capacity_type`),
+  KEY `FK_holding_place_breeding_type_id` (`breeding_type`)
 );
 
 
@@ -3836,6 +3838,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `street` varchar(250) NOT NULL,
   `role_id` int(11) NOT NULL,
   `isActive` tinyint(1) NOT NULL,
+  `isAccepted` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_user_country_iso2` (`country_iso2`),
   KEY `FK_user_county_id` (`county_id`),
