@@ -1,8 +1,13 @@
 - állatorvosok megyei bontásban kapják meg a felhasználókat, és a hozzájuk kapcsolódó feladatokat (felvinni új tartási helyet)
+	-> User tábla county_id -val lesz összehasonlítva minden alap felhasználó az orvosokkal
+	
 - nem feltétlen kell a anya-gyerek kapcsoló tábla, mivel ha megvan adva a szülő azonosítója, akkor onnan következtehető hogy kik a gyerek.
 
 - egy személynek több tenyészete is lehet, de adott tartási helyen csak 1 lehet!
+	-> SELECT * FROM user_has_breeding INNER JOIN holding_place_has_breeding ON user_has_breeding.breeding_id = holding_place_has_breeding.breeding_id WHERE user_has_breeding.user_id = ?;
+	
 - egy tenyészet csak egy féle lehet!
+- egy címen csak egy tartásihely lehet!
 - egy tartási helyen lehet többféle típusú tenyészet? 
 	a.) minden tartónak hasonló típusú tenyészete lehet csak!
 	b.) vannak kivételek: állattartó + keltető
