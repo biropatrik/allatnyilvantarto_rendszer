@@ -45,8 +45,9 @@ public class AnimalHasDiseases implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 12)
     @Column(name = "animal_ear_tag")
-    private int animalEarTag;
+    private String animalEarTag;
     @Basic(optional = false)
     @NotNull
     @Column(name = "animal_diseases_id")
@@ -68,7 +69,7 @@ public class AnimalHasDiseases implements Serializable {
         this.id = id;
     }
 
-    public AnimalHasDiseases(Integer id, int animalEarTag, int animalDiseasesId, long startDate) {
+    public AnimalHasDiseases(Integer id, String animalEarTag, int animalDiseasesId, long startDate) {
         this.id = id;
         this.animalEarTag = animalEarTag;
         this.animalDiseasesId = animalDiseasesId;
@@ -83,11 +84,11 @@ public class AnimalHasDiseases implements Serializable {
         this.id = id;
     }
 
-    public int getAnimalEarTag() {
+    public String getAnimalEarTag() {
         return animalEarTag;
     }
 
-    public void setAnimalEarTag(int animalEarTag) {
+    public void setAnimalEarTag(String animalEarTag) {
         this.animalEarTag = animalEarTag;
     }
 

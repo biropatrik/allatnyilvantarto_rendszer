@@ -121,7 +121,7 @@ public class RegisterController {
             userClient.create_JSON(userModel);
             userClient.close();
             cleanData();
-            return "/faces/login.xhtml?faces-redirect=true"; 
+            return "/login.xhtml?faces-redirect=true"; 
         }else{
             return "/private/register.xhtml";
         }

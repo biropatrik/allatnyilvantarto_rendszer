@@ -17,6 +17,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -47,8 +48,9 @@ public class BreedingHasAnimal implements Serializable {
     private int breedingId;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 12)
     @Column(name = "animal_ear_tag")
-    private int animalEarTag;
+    private String animalEarTag;
     @Basic(optional = false)
     @NotNull
     @Column(name = "start_date")
@@ -63,7 +65,7 @@ public class BreedingHasAnimal implements Serializable {
         this.id = id;
     }
 
-    public BreedingHasAnimal(Integer id, int breedingId, int animalEarTag, long startDate) {
+    public BreedingHasAnimal(Integer id, int breedingId, String animalEarTag, long startDate) {
         this.id = id;
         this.breedingId = breedingId;
         this.animalEarTag = animalEarTag;
@@ -86,11 +88,11 @@ public class BreedingHasAnimal implements Serializable {
         this.breedingId = breedingId;
     }
 
-    public int getAnimalEarTag() {
+    public String getAnimalEarTag() {
         return animalEarTag;
     }
 
-    public void setAnimalEarTag(int animalEarTag) {
+    public void setAnimalEarTag(String animalEarTag) {
         this.animalEarTag = animalEarTag;
     }
 

@@ -44,10 +44,12 @@ public class Animal implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 12)
     @Column(name = "ear_tag")
-    private Integer earTag;
+    private String earTag;
+    @Size(max = 12)
     @Column(name = "mother_id")
-    private Integer motherId;
+    private String motherId;
     @Size(max = 250)
     @Column(name = "name")
     private String name;
@@ -83,11 +85,11 @@ public class Animal implements Serializable {
     public Animal() {
     }
 
-    public Animal(Integer earTag) {
+    public Animal(String earTag) {
         this.earTag = earTag;
     }
 
-    public Animal(Integer earTag, boolean sex, long birthdate, int speciesId, int breedId, int colorId, boolean isAccepted) {
+    public Animal(String earTag, boolean sex, long birthdate, int speciesId, int breedId, int colorId, boolean isAccepted) {
         this.earTag = earTag;
         this.sex = sex;
         this.birthdate = birthdate;
@@ -97,19 +99,19 @@ public class Animal implements Serializable {
         this.isAccepted = isAccepted;
     }
 
-    public Integer getEarTag() {
+    public String getEarTag() {
         return earTag;
     }
 
-    public void setEarTag(Integer earTag) {
+    public void setEarTag(String earTag) {
         this.earTag = earTag;
     }
 
-    public Integer getMotherId() {
+    public String getMotherId() {
         return motherId;
     }
 
-    public void setMotherId(Integer motherId) {
+    public void setMotherId(String motherId) {
         this.motherId = motherId;
     }
 

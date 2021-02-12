@@ -12,14 +12,14 @@ package model;
 public class BreedingHasAnimalModel {
     private Integer id;
     private int breedingId;
-    private int animalEarTag;
+    private String animalEarTag;
     private long startDate;
     private long endDate;
 
     public BreedingHasAnimalModel() {
     }
 
-    public BreedingHasAnimalModel(Integer id, int breedingId, int animalEarTag, long startDate, long endDate) {
+    public BreedingHasAnimalModel(Integer id, int breedingId, String animalEarTag, long startDate, long endDate) {
         this.id = id;
         this.breedingId = breedingId;
         this.animalEarTag = animalEarTag;
@@ -43,11 +43,11 @@ public class BreedingHasAnimalModel {
         this.breedingId = breedingId;
     }
 
-    public int getAnimalEarTag() {
+    public String getAnimalEarTag() {
         return animalEarTag;
     }
 
-    public void setAnimalEarTag(int animalEarTag) {
+    public void setAnimalEarTag(String animalEarTag) {
         this.animalEarTag = animalEarTag;
     }
 

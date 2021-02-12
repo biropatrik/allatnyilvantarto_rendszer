@@ -23,7 +23,7 @@ import model.AnimalModel;
 public class AnimalController {
     private String id;
     private List<String> breedingIds;
-    private List<Integer> animalEarTags;
+    private List<String> animalEarTags;
     
     public AnimalController(){
         this.breedingIds = getBreedingIdsByUserId();
@@ -38,11 +38,11 @@ public class AnimalController {
         return breedings;
     }
     
-    private List<Integer> getAnimalEarTagsByBreedingIds(){
+    private List<String> getAnimalEarTagsByBreedingIds(){
         BreedingHasAnimalClient client = new BreedingHasAnimalClient();
-        List<Integer> earTags = new ArrayList<>();
+        List<String> earTags = new ArrayList<>();
         for(int i=0; i<this.breedingIds.size(); i++){
-            List<Integer> list = (List<Integer>)client.findAllEarTagsByBreedingId_JSON(List.class, String.valueOf(breedingIds.get(i)));
+            List<String> list = (List<String>)client.findAllEarTagsByBreedingId_JSON(List.class, String.valueOf(breedingIds.get(i)));
             earTags.addAll(list);
         }
         client.close();
@@ -55,10 +55,8 @@ public class AnimalController {
         
         AnimalClient client = new AnimalClient();
         List<AnimalModel> animals = new ArrayList<>();
-        for(int i=0; i<this.animalEarTags.size(); i++){
-            AnimalModel animal = client.find_JSON(AnimalModel.class, String.valueOf(this.animalEarTags.get(i)));
-            animals.add(animal);
-        }
+        AnimalModel animal = client.find_JSON(AnimalModel.class, this.animalEarTags.get(0));
+        animals.add(animal);
         return animals;
     }
 }

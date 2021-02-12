@@ -91,7 +91,10 @@ public class LoginController {
         UserClient userClient = new UserClient();
         UserModel userModel = userClient.find_withEmail_JSON(UserModel.class, email);
         userClient.close();
-        return userModel.getRoleId();
+        if(userModel != null){
+            return userModel.getRoleId();
+        }
+        return -1;
     }
     
     public int getId(String email){

@@ -84,15 +84,16 @@ public class BreedingHasAnimalFacadeREST extends AbstractFacade<BreedingHasAnima
         return String.valueOf(super.count());
     }
     
+    
     @GET
     @Path("eartags_by_breedingid/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public ArrayList<Integer> findAllEarTagsByBreedingId(@PathParam("id") Integer id){
+    public ArrayList<String> findAllEarTagsByBreedingId(@PathParam("id") Integer id){
         List<BreedingHasAnimal> animals = super.findAll();
-        ArrayList<Integer> earTags = new ArrayList<>();
+        ArrayList<String> earTags = new ArrayList<>();
         for(int i=0; i<animals.size(); i++){
             if(animals.get(i).getBreedingId() == id){
-                earTags.add(animals.get(i).getBreedingId());
+                earTags.add(animals.get(i).getAnimalEarTag());
             }
         }
         return earTags;

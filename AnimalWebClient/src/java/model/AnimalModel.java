@@ -10,8 +10,8 @@ package model;
  * @author Patrik
  */
 public class AnimalModel {
-    private Integer earTag;
-    private Integer motherId;
+    private String earTag;
+    private String motherId;
     private String name;
     private boolean sex;
     private long birthdate;
@@ -26,7 +26,7 @@ public class AnimalModel {
         
     }
 
-    public AnimalModel(Integer earTag, Integer motherId, String name, boolean sex, long birthdate, long deathdate, int speciesId, int breedId, int colorId, boolean isAccepted, long inseminationDate) {
+    public AnimalModel(String earTag, String motherId, String name, boolean sex, long birthdate, long deathdate, int speciesId, int breedId, int colorId, boolean isAccepted, long inseminationDate) {
         this.earTag = earTag;
         this.motherId = motherId;
         this.name = name;
@@ -40,19 +40,19 @@ public class AnimalModel {
         this.inseminationDate = inseminationDate;
     }
 
-    public Integer getEarTag() {
+    public String getEarTag() {
         return earTag;
     }
 
-    public void setEarTag(Integer earTag) {
+    public void setEarTag(String earTag) {
         this.earTag = earTag;
     }
 
-    public Integer getMotherId() {
+    public String getMotherId() {
         return motherId;
     }
 
-    public void setMotherId(Integer motherId) {
+    public void setMotherId(String motherId) {
         this.motherId = motherId;
     }
 
