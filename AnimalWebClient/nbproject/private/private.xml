@@ -3,11 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Patrik/Documents/NetBeansProjects/AnimalWebClient/src/java/controller/AccountController.java</file>
+            <file>file:/C:/Users/Patrik/Documents/NetBeansProjects/AnimalWebClient/src/java/controller/AnimalController.java</file>
             <file>file:/C:/Users/Patrik/Documents/NetBeansProjects/AnimalWebClient/web/private/index.xhtml</file>
-            <file>file:/C:/Users/Patrik/Documents/NetBeansProjects/AnimalWebClient/web/private/accountEdit.xhtml</file>
-            <file>file:/C:/Users/Patrik/Documents/NetBeansProjects/AnimalWebClient/web/private/account.xhtml</file>
             <file>file:/C:/Users/Patrik/Documents/NetBeansProjects/AnimalWebClient/src/java/controller/UserHasMailController.java</file>
+            <file>file:/C:/Users/Patrik/Documents/NetBeansProjects/AnimalWebClient/web/private/animalList.xhtml</file>
         </group>
     </open-files>
 </project-private>

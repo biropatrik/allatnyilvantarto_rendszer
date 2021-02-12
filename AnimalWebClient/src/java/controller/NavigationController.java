@@ -32,4 +32,8 @@ public class NavigationController {
     public String accountEdit(){
         return "accountEdit.xhtml?faces-redirect=true";
     }
+    
+    public String animalList(){
+        return "animalList.xhtml?faces-redirect=true";
+    }
 }

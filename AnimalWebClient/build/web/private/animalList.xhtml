@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Állatok</title>
+    </h:head>
+    <h:body>
+        <link type="text/css" rel="stylesheet" href="../resources/css/animal.css" />
+        <link type="text/css" rel="stylesheet" href="../resources/css/navigationBar.css" />
+        <div class="content">
+            <f:metadata>
+                <f:viewAction action="#{loginController.checkLogin('animalList.xhtml',3)}" />
+            </f:metadata>
+
+            <div class="navigation">
+                <h:form id="navigation">
+                <h:commandLink  value="Üzenetek" action="#{navigationController.index}"></h:commandLink>
+                <h:commandLink  value="Új üzenet" action="#{navigationController.newMail}"></h:commandLink>
+                <h:commandLink  value="Saját állatok" class="active" action="#{navigationController.animalList}"></h:commandLink>
+                <h:commandLink  value="Állatkereső"></h:commandLink>
+                <h:commandLink  class="logout" action="#{loginController.logout}" value="Kilépés"></h:commandLink>
+                <h:commandLink  style="float: right" value="Fiók" action="#{navigationController.account}"></h:commandLink>
+                </h:form>
+            </div>
+        
+        <h:form id="checkAnimal">
+            <div class="content-block">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>#{animalController.allAnimal.size()}</td>
+                    </tr>
+                    <c:forEach items="#{animalController.allAnimal}" var="animal">
+                        <tr class="mail_#{mail.id}" style="background-color:#F9F9F9;">
+                            <td>#{animal.earTag}</td>
+                            <td>#{animal.name}</td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+            </div>
+            </h:form>
+            </div>
+    </h:body>
+</html>
+

@@ -6,6 +6,7 @@
 package service;
 
 import entity.UserHasBreeding;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -81,6 +82,20 @@ public class UserHasBreedingFacadeREST extends AbstractFacade<UserHasBreeding> {
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
         return String.valueOf(super.count());
+    }
+    
+    @GET
+    @Path("breedings_by_id/{id}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public ArrayList<String> findAllBreedingIdByUserId(@PathParam("id") Integer id){
+        List<UserHasBreeding> allBreedings = super.findAll();
+        ArrayList<String> breedings = new ArrayList<>();
+        for(int i=0; i<allBreedings.size(); i++){
+            if(allBreedings.get(i).getUserId() == id){
+                breedings.add(String.valueOf(allBreedings.get(i).getBreedingId()));
+            }
+        }
+        return breedings;
     }
 
     @Override

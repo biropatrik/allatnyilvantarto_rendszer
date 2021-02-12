@@ -45,7 +45,7 @@ public class UserHasMailController {
         validatePairs.add(new Pairs("mail_text", false));
     }
     
-    public List<UserHasMailModel> getAllMailsWithReceiverId(){
+    public List<UserHasMailModel> getAllMailsByReceiverId(){
         id = Session.getUserId();
         UserHasMailClient mailClient = new UserHasMailClient();
         List<UserHasMailModel> mails = (List<UserHasMailModel>) mailClient.findAll_withRecId_JSON(List.class, id);

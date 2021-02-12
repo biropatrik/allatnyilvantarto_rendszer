@@ -22,7 +22,7 @@
                 <h:form id="navigation">
                 <h:commandLink  class="active" action="#{navigationController.index}" value="Üzenetek"></h:commandLink>
                 <h:commandLink  value="Új üzenet" action="#{navigationController.newMail}"></h:commandLink>
-                <h:commandLink  value="Saját állatok"></h:commandLink>
+                <h:commandLink  value="Saját állatok" action="#{navigationController.animalList}"></h:commandLink>
                 <h:commandLink  value="Állatkereső"></h:commandLink>
                 <h:commandLink  class="logout" action="#{loginController.logout}" value="Kilépés"></h:commandLink>
                 <h:commandLink  style="float: right" value="Fiók" action="#{navigationController.account}"></h:commandLink>
@@ -33,7 +33,7 @@
             <div class="mail-block">
             <table>
                 <tbody class="mail_data">
-                    <c:forEach items="#{userHasMailController.allMailsWithReceiverId}" var="mail">
+                    <c:forEach items="#{userHasMailController.allMailsByReceiverId}" var="mail">
                         <tr class="mail_#{mail.id}" style="#{mail.isNew ? 'background-color:#DCDCDC; font-weight:bold' : 'background-color:#F9F9F9;'}">
                             <td>#{userHasMailController.getUserName(mail.senderUserId)}</td>
                             <td>#{mail.subject}</td>
@@ -52,7 +52,7 @@
         </div>
         
         <script src="jquery-3.5.1.js"></script>
-        <ui:repeat value="#{userHasMailController.allMailsWithReceiverId}" var="mail">
+        <ui:repeat value="#{userHasMailController.allMailsByReceiverId}" var="mail">
             <script>
                 $('body').on('click', '.mail_#{mail.id}', function(){
                     $('.#{mail.id}').toggle();
