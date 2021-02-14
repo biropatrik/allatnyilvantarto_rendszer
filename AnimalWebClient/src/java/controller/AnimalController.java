@@ -6,13 +6,23 @@
 package controller;
 
 import client.AnimalClient;
+import client.BreedClient;
 import client.BreedingHasAnimalClient;
+import client.CalvingClient;
+import client.ColorClient;
+import client.SpeciesClient;
 import client.UserHasBreedingClient;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import model.AnimalModel;
+import model.BreedModel;
+import model.CalvingModel;
+import model.ColorModel;
+import model.SpeciesModel;
 
 /**
  *
@@ -22,6 +32,7 @@ import model.AnimalModel;
 @SessionScoped
 public class AnimalController {
     private String id;
+    private String openedId = "-1";
     private List<String> breedingIds;
     private List<String> animalEarTags;
     
@@ -55,8 +66,60 @@ public class AnimalController {
         
         AnimalClient client = new AnimalClient();
         List<AnimalModel> animals = new ArrayList<>();
-        AnimalModel animal = client.find_JSON(AnimalModel.class, this.animalEarTags.get(0));
-        animals.add(animal);
+        for(int i=0; i<this.animalEarTags.size(); i++){
+            AnimalModel animal = client.find_JSON(AnimalModel.class, this.animalEarTags.get(i));
+            animals.add(animal);
+        }
         return animals;
+    }
+    
+    public String getDateFormat(long date){
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd. HH:mm");
+        Date correctDate = new Date(date);
+        return formatter.format(correctDate);
+    }
+    
+    public String getSpeciesName(String id){
+        SpeciesClient client = new SpeciesClient();
+        SpeciesModel model = client.find_JSON(SpeciesModel.class, id);
+        client.close();
+        return model.getName();
+    }
+    
+    public String getBreedName(String id){
+        BreedClient client = new BreedClient();
+        BreedModel model = client.find_JSON(BreedModel.class, id);
+        client.close();
+        return model.getName();
+    }
+    
+    public String getColorName(String id){
+        ColorClient client = new ColorClient();
+        ColorModel model = client.find_JSON(ColorModel.class, id);
+        client.close();
+        return model.getName();
+    }
+    
+    public String getCalvingName(String id){
+        CalvingClient client = new CalvingClient();
+        CalvingModel model = client.find_JSON(CalvingModel.class, id);
+        client.close();
+        return model.getName();
+    }
+    
+    public String getSexName(boolean id){
+        return id ? "Hímivarú" : "Nőivarú";
+    }
+    
+    public String getTwinningName(boolean id){
+        return id ? "Igen" : "Nem";
+    }
+
+    public String getOpenedId() {
+        return openedId;
+    }
+
+    public void setOpenedId(String openedId) {
+        this.openedId = openedId;
     }
 }

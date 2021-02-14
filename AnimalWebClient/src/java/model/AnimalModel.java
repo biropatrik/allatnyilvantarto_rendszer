@@ -19,6 +19,9 @@ public class AnimalModel {
     private int speciesId;
     private int breedId;
     private int colorId;
+    private boolean twinning;
+    private int calvingId;
+    private int calvingWeight;
     private boolean isAccepted;
     private long inseminationDate;
     
@@ -26,7 +29,7 @@ public class AnimalModel {
         
     }
 
-    public AnimalModel(String earTag, String motherId, String name, boolean sex, long birthdate, long deathdate, int speciesId, int breedId, int colorId, boolean isAccepted, long inseminationDate) {
+    public AnimalModel(String earTag, String motherId, String name, boolean sex, long birthdate, long deathdate, int speciesId, int breedId, int colorId, boolean twinning, int calvingId, int calvingWeight, boolean isAccepted, long inseminationDate) {
         this.earTag = earTag;
         this.motherId = motherId;
         this.name = name;
@@ -36,9 +39,14 @@ public class AnimalModel {
         this.speciesId = speciesId;
         this.breedId = breedId;
         this.colorId = colorId;
+        this.twinning = twinning;
+        this.calvingId = calvingId;
+        this.calvingWeight = calvingWeight;
         this.isAccepted = isAccepted;
         this.inseminationDate = inseminationDate;
     }
+
+    
 
     public String getEarTag() {
         return earTag;
@@ -111,6 +119,32 @@ public class AnimalModel {
     public void setColorId(int colorId) {
         this.colorId = colorId;
     }
+
+    public boolean isTwinning() {
+        return twinning;
+    }
+
+    public void setTwinning(boolean twinning) {
+        this.twinning = twinning;
+    }
+
+    public int getCalvingId() {
+        return calvingId;
+    }
+
+    public void setCalvingId(int calvingId) {
+        this.calvingId = calvingId;
+    }
+
+    public int getCalvingWeight() {
+        return calvingWeight;
+    }
+
+    public void setCalvingWeight(int calvingWeight) {
+        this.calvingWeight = calvingWeight;
+    }
+    
+    
 
     public boolean isIsAccepted() {
         return isAccepted;

@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Species.findAll", query = "SELECT s FROM Species s"),
     @NamedQuery(name = "Species.findById", query = "SELECT s FROM Species s WHERE s.id = :id"),
-    @NamedQuery(name = "Species.findBySpecies", query = "SELECT s FROM Species s WHERE s.species = :species")})
+    @NamedQuery(name = "Species.findByName", query = "SELECT s FROM Species s WHERE s.name = :name")})
 public class Species implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -41,8 +41,8 @@ public class Species implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 250)
-    @Column(name = "species")
-    private String species;
+    @Column(name = "name")
+    private String name;
 
     public Species() {
     }
@@ -51,9 +51,9 @@ public class Species implements Serializable {
         this.id = id;
     }
 
-    public Species(Integer id, String species) {
+    public Species(Integer id, String name) {
         this.id = id;
-        this.species = species;
+        this.name = name;
     }
 
     public Integer getId() {
@@ -64,12 +64,12 @@ public class Species implements Serializable {
         this.id = id;
     }
 
-    public String getSpecies() {
-        return species;
+    public String getName() {
+        return name;
     }
 
-    public void setSpecies(String species) {
-        this.species = species;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override

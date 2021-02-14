@@ -9,8 +9,6 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -24,18 +22,18 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Patrik
  */
 @Entity
-@Table(name = "breeding_qualification")
+@Table(name = "calving")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "BreedingQualification.findAll", query = "SELECT b FROM BreedingQualification b"),
-    @NamedQuery(name = "BreedingQualification.findById", query = "SELECT b FROM BreedingQualification b WHERE b.id = :id"),
-    @NamedQuery(name = "BreedingQualification.findByName", query = "SELECT b FROM BreedingQualification b WHERE b.name = :name")})
-public class BreedingQualification implements Serializable {
+    @NamedQuery(name = "Calving.findAll", query = "SELECT c FROM Calving c"),
+    @NamedQuery(name = "Calving.findById", query = "SELECT c FROM Calving c WHERE c.id = :id"),
+    @NamedQuery(name = "Calving.findByName", query = "SELECT c FROM Calving c WHERE c.name = :name")})
+public class Calving implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
+    @NotNull
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
@@ -44,14 +42,14 @@ public class BreedingQualification implements Serializable {
     @Column(name = "name")
     private String name;
 
-    public BreedingQualification() {
+    public Calving() {
     }
 
-    public BreedingQualification(Integer id) {
+    public Calving(Integer id) {
         this.id = id;
     }
 
-    public BreedingQualification(Integer id, String name) {
+    public Calving(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -82,10 +80,10 @@ public class BreedingQualification implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof BreedingQualification)) {
+        if (!(object instanceof Calving)) {
             return false;
         }
-        BreedingQualification other = (BreedingQualification) object;
+        Calving other = (Calving) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -94,7 +92,7 @@ public class BreedingQualification implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.BreedingQualification[ id=" + id + " ]";
+        return "entity.Calving[ id=" + id + " ]";
     }
     
 }

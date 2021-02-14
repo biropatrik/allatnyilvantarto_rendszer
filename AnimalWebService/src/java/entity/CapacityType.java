@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "CapacityType.findAll", query = "SELECT c FROM CapacityType c"),
     @NamedQuery(name = "CapacityType.findById", query = "SELECT c FROM CapacityType c WHERE c.id = :id"),
-    @NamedQuery(name = "CapacityType.findByType", query = "SELECT c FROM CapacityType c WHERE c.type = :type")})
+    @NamedQuery(name = "CapacityType.findByName", query = "SELECT c FROM CapacityType c WHERE c.name = :name")})
 public class CapacityType implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -41,8 +41,8 @@ public class CapacityType implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 250)
-    @Column(name = "type")
-    private String type;
+    @Column(name = "name")
+    private String name;
 
     public CapacityType() {
     }
@@ -51,9 +51,9 @@ public class CapacityType implements Serializable {
         this.id = id;
     }
 
-    public CapacityType(Integer id, String type) {
+    public CapacityType(Integer id, String name) {
         this.id = id;
-        this.type = type;
+        this.name = name;
     }
 
     public Integer getId() {
@@ -64,12 +64,12 @@ public class CapacityType implements Serializable {
         this.id = id;
     }
 
-    public String getType() {
-        return type;
+    public String getName() {
+        return name;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override

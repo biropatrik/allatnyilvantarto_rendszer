@@ -36,6 +36,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Animal.findBySpeciesId", query = "SELECT a FROM Animal a WHERE a.speciesId = :speciesId"),
     @NamedQuery(name = "Animal.findByBreedId", query = "SELECT a FROM Animal a WHERE a.breedId = :breedId"),
     @NamedQuery(name = "Animal.findByColorId", query = "SELECT a FROM Animal a WHERE a.colorId = :colorId"),
+    @NamedQuery(name = "Animal.findByTwinning", query = "SELECT a FROM Animal a WHERE a.twinning = :twinning"),
+    @NamedQuery(name = "Animal.findByCalvingId", query = "SELECT a FROM Animal a WHERE a.calvingId = :calvingId"),
+    @NamedQuery(name = "Animal.findByCalvingWeight", query = "SELECT a FROM Animal a WHERE a.calvingWeight = :calvingWeight"),
     @NamedQuery(name = "Animal.findByIsAccepted", query = "SELECT a FROM Animal a WHERE a.isAccepted = :isAccepted"),
     @NamedQuery(name = "Animal.findByInseminationDate", query = "SELECT a FROM Animal a WHERE a.inseminationDate = :inseminationDate")})
 public class Animal implements Serializable {
@@ -77,6 +80,18 @@ public class Animal implements Serializable {
     private int colorId;
     @Basic(optional = false)
     @NotNull
+    @Column(name = "twinning")
+    private boolean twinning;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "calving_id")
+    private int calvingId;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "calving_weight")
+    private int calvingWeight;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "isAccepted")
     private boolean isAccepted;
     @Column(name = "insemination_date")
@@ -89,13 +104,16 @@ public class Animal implements Serializable {
         this.earTag = earTag;
     }
 
-    public Animal(String earTag, boolean sex, long birthdate, int speciesId, int breedId, int colorId, boolean isAccepted) {
+    public Animal(String earTag, boolean sex, long birthdate, int speciesId, int breedId, int colorId, boolean twinning, int calvingId, int calvingWeight, boolean isAccepted) {
         this.earTag = earTag;
         this.sex = sex;
         this.birthdate = birthdate;
         this.speciesId = speciesId;
         this.breedId = breedId;
         this.colorId = colorId;
+        this.twinning = twinning;
+        this.calvingId = calvingId;
+        this.calvingWeight = calvingWeight;
         this.isAccepted = isAccepted;
     }
 
@@ -169,6 +187,30 @@ public class Animal implements Serializable {
 
     public void setColorId(int colorId) {
         this.colorId = colorId;
+    }
+
+    public boolean getTwinning() {
+        return twinning;
+    }
+
+    public void setTwinning(boolean twinning) {
+        this.twinning = twinning;
+    }
+
+    public int getCalvingId() {
+        return calvingId;
+    }
+
+    public void setCalvingId(int calvingId) {
+        this.calvingId = calvingId;
+    }
+
+    public int getCalvingWeight() {
+        return calvingWeight;
+    }
+
+    public void setCalvingWeight(int calvingWeight) {
+        this.calvingWeight = calvingWeight;
     }
 
     public boolean getIsAccepted() {

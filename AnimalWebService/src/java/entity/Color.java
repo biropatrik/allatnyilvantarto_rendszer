@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Color.findAll", query = "SELECT c FROM Color c"),
     @NamedQuery(name = "Color.findById", query = "SELECT c FROM Color c WHERE c.id = :id"),
-    @NamedQuery(name = "Color.findByColor", query = "SELECT c FROM Color c WHERE c.color = :color")})
+    @NamedQuery(name = "Color.findByName", query = "SELECT c FROM Color c WHERE c.name = :name")})
 public class Color implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -41,8 +41,8 @@ public class Color implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 250)
-    @Column(name = "color")
-    private String color;
+    @Column(name = "name")
+    private String name;
 
     public Color() {
     }
@@ -51,9 +51,9 @@ public class Color implements Serializable {
         this.id = id;
     }
 
-    public Color(Integer id, String color) {
+    public Color(Integer id, String name) {
         this.id = id;
-        this.color = color;
+        this.name = name;
     }
 
     public Integer getId() {
@@ -64,12 +64,12 @@ public class Color implements Serializable {
         this.id = id;
     }
 
-    public String getColor() {
-        return color;
+    public String getName() {
+        return name;
     }
 
-    public void setColor(String color) {
-        this.color = color;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
