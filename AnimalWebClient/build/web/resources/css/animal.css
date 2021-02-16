@@ -8,19 +8,17 @@ body {
     padding: 1%;
     background: #fff;
     border-radius: 5px;
-    border-top: 5px solid #2e5d75;
     margin-top: 2%;
 }
 
 table {
-  border-collapse: collapse;
   width: 100%;
+  border-collapse: collapse;
 }
 
 th, td {
   padding: 1%;
   text-align: left;
-  border-bottom: 1px solid #ddd;
 }
 
 .content{
@@ -49,3 +47,5 @@ th, td {
 .content-block input {
     width: 180px;
 }
+
+.hover tr:hover td {background-color:#999999;}

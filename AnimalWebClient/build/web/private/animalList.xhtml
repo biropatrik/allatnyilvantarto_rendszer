@@ -3,12 +3,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Állatok</title>
     </h:head>
     <h:body>
-        <link type="text/css" rel="stylesheet" href="../resources/css/animal.css" />
+        <link type="text/css" rel="stylesheet" href="../resources/css/animal.css?v=${applicationInfoBean.projectVersion}" />
         <link type="text/css" rel="stylesheet" href="../resources/css/navigationBar.css" />
         <div class="content">
             <f:metadata>
@@ -29,14 +30,82 @@
         <h:form id="checkAnimal">
             <div class="content-block">
             <table>
-                <tbody>
+                <tbody class="hover">
                     <tr>
-                        <td>#{animalController.allAnimal.size()}</td>
+                        <th>Azonosító szám</th>
+                        <th>Név</th>
+                        <th>Faj</th>
+                        <th>Születési dátum</th>
                     </tr>
                     <c:forEach items="#{animalController.allAnimal}" var="animal">
-                        <tr class="mail_#{mail.id}" style="background-color:#F9F9F9;">
+                        <tr class="animal_#{animal.earTag}" style="background-color:#F9F9F9;">
                             <td>#{animal.earTag}</td>
                             <td>#{animal.name}</td>
+                            <td>#{animalController.getSpeciesName(animal.speciesId)}</td>
+                            <td>#{animalController.getDateFormat(animal.birthdate)}</td>
+                        </tr>
+                        <tr id="details_#{animal.earTag}" class="#{animal.earTag}" style="#{userHasMailController.openedId == mail.id ? 'display: table-row' : 'display: none'};">
+                            <th colspan="4">Az egyed adatai</th>
+                        </tr>
+                        <tr id="details_#{animal.earTag}" class="#{animal.earTag}" style="#{userHasMailController.openedId == mail.id ? 'display: table-row' : 'display: none'};">
+                            <td>Egyed azonosítója:</td>
+                            <td colspan="3">#{animal.earTag}</td>
+                        </tr>
+                        <tr id="details_#{animal.earTag}" class="#{animal.earTag}" style="#{userHasMailController.openedId == mail.id ? 'display: table-row' : 'display: none'};">
+                            <td>Születési dátum:</td>
+                            <td colspan="3">#{animalController.getDateFormat(animal.birthdate)}</td>
+                        </tr>
+                        <tr id="details_#{animal.earTag}" class="#{animal.earTag}" style="#{userHasMailController.openedId == mail.id ? 'display: table-row' : 'display: none'};">
+                            <td>Neme:</td>
+                            <td colspan="3">#{animalController.getSexName(animal.sex)}</td>
+                        </tr>
+                        <tr id="details_#{animal.earTag}" class="#{animal.earTag}" style="#{userHasMailController.openedId == mail.id ? 'display: table-row' : 'display: none'};">
+                            <td>Egyed faj (kód):</td>
+                            <td colspan="3">(#{animal.speciesId}) #{animalController.getSpeciesName(animal.speciesId)}</td>
+                        </tr>
+                        <tr id="details_#{animal.earTag}" class="#{animal.earTag}" style="#{userHasMailController.openedId == mail.id ? 'display: table-row' : 'display: none'};">
+                            <td>Egyed fajta (kód):</td>
+                            <td colspan="3">(#{animal.breedId}) #{animalController.getBreedName(animal.breedId)}</td>
+                        </tr>
+                        <tr id="details_#{animal.earTag}" class="#{animal.earTag}" style="#{userHasMailController.openedId == mail.id ? 'display: table-row' : 'display: none'};">
+                            <td>Egyed színe (kód):</td>
+                            <td colspan="3">(#{animal.colorId}) #{animalController.getColorName(animal.colorId)}</td>
+                        </tr>
+                        <tr id="details_#{animal.earTag}" class="#{animal.earTag}" style="#{userHasMailController.openedId == mail.id ? 'display: table-row' : 'display: none'};">
+                            <td>Tenyészetkód:</td>
+                            <td colspan="3">#{animalController.getBreedingIdByAnimal(animal.earTag)}</td>
+                        </tr>
+                        <tr id="details_#{animal.earTag}" class="#{animal.earTag}" style="#{userHasMailController.openedId == mail.id ? 'display: table-row' : 'display: none'};">
+                            <td>Tartó neve:</td>
+                            <td colspan="3">#{animalController.userName}</td>
+                        </tr>
+                        <tr id="details_#{animal.earTag}" class="#{animal.earTag}" style="#{userHasMailController.openedId == mail.id ? 'display: table-row' : 'display: none'};">
+                            <td>Tenyészet címe:</td>
+                            <td colspan="3">#{animalController.getBreedAddressByAnimal(animal.earTag)}</td>
+                        </tr>
+                        <tr id="details_#{animal.earTag}" class="#{animal.earTag}" style="#{userHasMailController.openedId == mail.id ? 'display: table-row' : 'display: none'};">
+                            <td>Tenyészetbe érkezés dátuma:</td>
+                            <td colspan="3">#{animalController.getBreedingHasAnimalStartDate(animal.earTag)}</td>
+                        </tr>
+                        
+                        <tr id="details_#{animal.earTag}" class="#{animal.earTag}" style="#{userHasMailController.openedId == mail.id ? 'display: table-row' : 'display: none'};">
+                            <th colspan="4">Az ellés adatai</th>
+                        </tr>
+                        <tr id="details_#{animal.earTag}" class="#{animal.earTag}" style="#{userHasMailController.openedId == mail.id ? 'display: table-row' : 'display: none'};">
+                            <td>Anya(recipiens) azonosítója:</td>
+                            <td colspan="3">#{animal.motherId}</td>
+                        </tr>
+                        <tr id="details_#{animal.earTag}" class="#{animal.earTag}" style="#{userHasMailController.openedId == mail.id ? 'display: table-row' : 'display: none'};">
+                            <td>Ikerellés:</td>
+                            <td colspan="3">#{animalController.getTwinningName(animal.twinning)}</td>
+                        </tr>
+                        <tr id="details_#{animal.earTag}" class="#{animal.earTag}" style="#{userHasMailController.openedId == mail.id ? 'display: table-row' : 'display: none'};">
+                            <td>Ellés módja (kód):</td>
+                            <td colspan="3">(#{animal.calvingId}) #{animalController.getCalvingName(animal.calvingId)}</td>
+                        </tr>
+                        <tr id="details_#{animal.earTag}" class="#{animal.earTag}" style="#{userHasMailController.openedId == mail.id ? 'display: table-row' : 'display: none'};">
+                            <td>Borjú tömege:</td>
+                            <td colspan="3">#{animal.calvingWeight} kg</td>
                         </tr>
                     </c:forEach>
                 </tbody>
@@ -44,6 +113,18 @@
             </div>
             </h:form>
             </div>
+        
+        <script src="jquery-3.5.1.js"></script>
+        <ui:repeat value="#{animalController.allAnimal}" var="animal">
+            <script>
+                $('body').on('click', '.animal_#{animal.earTag}', function(){
+                    $('.#{animal.earTag}').toggle();
+                });
+                if(#{animal.earTag} === #{animalController.openedId}){
+                        #{animalController.openedId = '-1'}
+                }
+            </script>
+        </ui:repeat>
     </h:body>
 </html>
 

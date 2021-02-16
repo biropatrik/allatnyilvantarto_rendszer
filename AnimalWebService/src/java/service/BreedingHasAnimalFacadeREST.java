@@ -88,15 +88,15 @@ public class BreedingHasAnimalFacadeREST extends AbstractFacade<BreedingHasAnima
     @GET
     @Path("eartags_by_breedingid/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public ArrayList<String> findAllEarTagsByBreedingId(@PathParam("id") Integer id){
-        List<BreedingHasAnimal> animals = super.findAll();
-        ArrayList<String> earTags = new ArrayList<>();
-        for(int i=0; i<animals.size(); i++){
-            if(animals.get(i).getBreedingId() == id){
-                earTags.add(animals.get(i).getAnimalEarTag());
+    public ArrayList<BreedingHasAnimal> findAllEarTagsByBreedingId(@PathParam("id") Integer id){
+        List<BreedingHasAnimal> allBreedings = super.findAll();
+        ArrayList<BreedingHasAnimal> breedings = new ArrayList<>();
+        for(int i=0; i<allBreedings.size(); i++){
+            if(allBreedings.get(i).getBreedingId() == id){
+                breedings.add(allBreedings.get(i));
             }
         }
-        return earTags;
+        return breedings;
     }
 
     @Override

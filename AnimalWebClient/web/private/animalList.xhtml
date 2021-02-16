@@ -73,19 +73,19 @@
                         </tr>
                         <tr id="details_#{animal.earTag}" class="#{animal.earTag}" style="#{userHasMailController.openedId == mail.id ? 'display: table-row' : 'display: none'};">
                             <td>Tenyészetkód:</td>
-                            <td colspan="3"></td>
+                            <td colspan="3">#{animalController.getBreedingIdByAnimal(animal.earTag)}</td>
                         </tr>
                         <tr id="details_#{animal.earTag}" class="#{animal.earTag}" style="#{userHasMailController.openedId == mail.id ? 'display: table-row' : 'display: none'};">
                             <td>Tartó neve:</td>
-                            <td colspan="3"></td>
+                            <td colspan="3">#{animalController.userName}</td>
                         </tr>
                         <tr id="details_#{animal.earTag}" class="#{animal.earTag}" style="#{userHasMailController.openedId == mail.id ? 'display: table-row' : 'display: none'};">
                             <td>Tenyészet címe:</td>
-                            <td colspan="3"></td>
+                            <td colspan="3">#{animalController.getBreedAddressByAnimal(animal.earTag)}</td>
                         </tr>
                         <tr id="details_#{animal.earTag}" class="#{animal.earTag}" style="#{userHasMailController.openedId == mail.id ? 'display: table-row' : 'display: none'};">
                             <td>Tenyészetbe érkezés dátuma:</td>
-                            <td colspan="3"></td>
+                            <td colspan="3">#{animalController.getBreedingHasAnimalStartDate(animal.earTag)}</td>
                         </tr>
                         
                         <tr id="details_#{animal.earTag}" class="#{animal.earTag}" style="#{userHasMailController.openedId == mail.id ? 'display: table-row' : 'display: none'};">

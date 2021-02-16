@@ -6,6 +6,7 @@
 package service;
 
 import entity.HoldingPlaceHasBreeding;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -81,6 +82,19 @@ public class HoldingPlaceHasBreedingFacadeREST extends AbstractFacade<HoldingPla
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
         return String.valueOf(super.count());
+    }
+    
+    @GET
+    @Path("holdingplace_by_id/{id}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public HoldingPlaceHasBreeding findHoldingPlaceByBreedingId(@PathParam("id") Integer id){
+        List<HoldingPlaceHasBreeding> allBreedings = super.findAll();
+        for(int i=0; i<allBreedings.size(); i++){
+            if(allBreedings.get(i).getBreedingId() == id){
+                return allBreedings.get(i);
+            }
+        }
+        return null;
     }
 
     @Override
