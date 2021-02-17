@@ -6,6 +6,7 @@
 package service;
 
 import entity.BreedingHasAnimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -92,7 +93,22 @@ public class BreedingHasAnimalFacadeREST extends AbstractFacade<BreedingHasAnima
         List<BreedingHasAnimal> allBreedings = super.findAll();
         ArrayList<BreedingHasAnimal> breedings = new ArrayList<>();
         for(int i=0; i<allBreedings.size(); i++){
-            if(allBreedings.get(i).getBreedingId() == id){
+            BigInteger endDate = allBreedings.get(i).getEndDate();
+            if(allBreedings.get(i).getBreedingId() == id && endDate == null ){
+                breedings.add(allBreedings.get(i));
+            }
+        }
+        return breedings;
+    }
+    
+    @GET
+    @Path("breedingids_by_eartag/{id}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public ArrayList<BreedingHasAnimal> findAllBreedingIdsByEarTag(@PathParam("id") String id){
+        List<BreedingHasAnimal> allBreedings = super.findAll();
+        ArrayList<BreedingHasAnimal> breedings = new ArrayList<>();
+        for(int i=0; i<allBreedings.size(); i++){
+            if(allBreedings.get(i).getAnimalEarTag().equals(id)){
                 breedings.add(allBreedings.get(i));
             }
         }

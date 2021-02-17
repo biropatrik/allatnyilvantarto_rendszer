@@ -97,6 +97,19 @@ public class UserHasBreedingFacadeREST extends AbstractFacade<UserHasBreeding> {
         }
         return breedings;
     }
+    
+    @GET
+    @Path("userid_by_breedingid/{id}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public int findUserIdByBreedingId(@PathParam("id") Integer id){
+        List<UserHasBreeding> allBreedings = super.findAll();
+        for(int i=0; i<allBreedings.size(); i++){
+            if(allBreedings.get(i).getBreedingId() == id){
+                return allBreedings.get(i).getUserId();
+            }
+        }
+        return -1;
+    }
 
     @Override
     protected EntityManager getEntityManager() {

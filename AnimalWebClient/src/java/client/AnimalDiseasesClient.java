@@ -10,11 +10,11 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 
 /**
- * Jersey REST client generated for REST resource:UserHasBreedingFacadeREST
- * [entity.userhasbreeding]<br>
+ * Jersey REST client generated for REST resource:AnimalDiseasesFacadeREST
+ * [entity.animaldiseases]<br>
  * USAGE:
  * <pre>
- *        UserHasBreedingClient client = new UserHasBreedingClient();
+ *        AnimalDiseasesClient client = new AnimalDiseasesClient();
  *        Object response = client.XXX(...);
  *        // do whatever with response
  *        client.close();
@@ -22,15 +22,15 @@ import javax.ws.rs.client.WebTarget;
  *
  * @author Patrik
  */
-public class UserHasBreedingClient {
+public class AnimalDiseasesClient {
 
     private WebTarget webTarget;
     private Client client;
     private static final String BASE_URI = "http://localhost:8080/AnimalWebService/webresources";
 
-    public UserHasBreedingClient() {
+    public AnimalDiseasesClient() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
-        webTarget = client.target(BASE_URI).path("entity.userhasbreeding");
+        webTarget = client.target(BASE_URI).path("entity.animaldiseases");
     }
 
     public String countREST() throws ClientErrorException {
@@ -79,18 +79,6 @@ public class UserHasBreedingClient {
         webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON));
     }
 
-    public <T> T findUserIdByBreedingId_XML(Class<T> responseType, String id) throws ClientErrorException {
-        WebTarget resource = webTarget;
-        resource = resource.path(java.text.MessageFormat.format("userid_by_breedingid/{0}", new Object[]{id}));
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
-    }
-
-    public <T> T findUserIdByBreedingId_JSON(Class<T> responseType, String id) throws ClientErrorException {
-        WebTarget resource = webTarget;
-        resource = resource.path(java.text.MessageFormat.format("userid_by_breedingid/{0}", new Object[]{id}));
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
-    }
-
     public <T> T findAll_XML(Class<T> responseType) throws ClientErrorException {
         WebTarget resource = webTarget;
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
@@ -103,18 +91,6 @@ public class UserHasBreedingClient {
 
     public void remove(String id) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{id})).request().delete();
-    }
-
-    public <T> T findAllBreedingIdByUserId_XML(Class<T> responseType, String id) throws ClientErrorException {
-        WebTarget resource = webTarget;
-        resource = resource.path(java.text.MessageFormat.format("breedings_by_id/{0}", new Object[]{id}));
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
-    }
-
-    public <T> T findAllBreedingIdByUserId_JSON(Class<T> responseType, String id) throws ClientErrorException {
-        WebTarget resource = webTarget;
-        resource = resource.path(java.text.MessageFormat.format("breedings_by_id/{0}", new Object[]{id}));
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
     public void close() {

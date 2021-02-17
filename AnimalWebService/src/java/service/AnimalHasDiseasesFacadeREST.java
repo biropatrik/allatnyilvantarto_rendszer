@@ -6,6 +6,7 @@
 package service;
 
 import entity.AnimalHasDiseases;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -81,6 +82,20 @@ public class AnimalHasDiseasesFacadeREST extends AbstractFacade<AnimalHasDisease
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
         return String.valueOf(super.count());
+    }
+    
+    @GET
+    @Path("diseases_by_eartag/{id}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public ArrayList<AnimalHasDiseases> findAllBreedingIdsByEarTag(@PathParam("id") String id){
+        List<AnimalHasDiseases> allDiseases = super.findAll();
+        ArrayList<AnimalHasDiseases> diseases = new ArrayList<>();
+        for(int i=0; i<allDiseases.size(); i++){
+            if(allDiseases.get(i).getAnimalEarTag().equals(id)){
+                diseases.add(allDiseases.get(i));
+            }
+        }
+        return diseases;
     }
 
     @Override

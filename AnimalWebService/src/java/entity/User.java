@@ -100,7 +100,7 @@ public class User implements Serializable {
     @Column(name = "isActive")
     private boolean isActive;
     @Column(name = "isAccepted")
-    private Short isAccepted;
+    private Boolean isAccepted;
 
     public User() {
     }
@@ -219,11 +219,11 @@ public class User implements Serializable {
         this.isActive = isActive;
     }
 
-    public Short getIsAccepted() {
+    public Boolean getIsAccepted() {
         return isAccepted;
     }
 
-    public void setIsAccepted(Short isAccepted) {
+    public void setIsAccepted(Boolean isAccepted) {
         this.isAccepted = isAccepted;
     }
 

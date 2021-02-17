@@ -6,6 +6,8 @@
 package controller;
 
 import client.AnimalClient;
+import client.AnimalDiseasesClient;
+import client.AnimalHasDiseasesClient;
 import client.BreedClient;
 import client.BreedingHasAnimalClient;
 import client.CalvingClient;
@@ -37,6 +39,11 @@ import model.HoldingPlaceModel;
 import model.SpeciesModel;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import model.AnimalDiseasesModel;
+import model.AnimalHasDiseasesModel;
+import model.UserHasBreedingModel;
 import model.UserModel;
 
 /**
@@ -44,58 +51,99 @@ import model.UserModel;
  * @author Patrik
  */
 @ManagedBean(name="animalController", eager = true)
-@SessionScoped
+//@SessionScoped
 public class AnimalController {
     private String id;
     private String userName;
-    private String openedId = "-1";
     private List<String> breedingIds;
     private List<BreedingHasAnimalModel> breedingHasAnimals;
     private List<HoldingPlaceHasBreedingModel> holdingPlaceHasBreedings;
     private List<HoldingPlaceModel> holdingPlaces;
     
+    private String searchedEarTag;
+    private AnimalModel searchedAnimal;
+    
+    private UserHasBreedingClient userHasBreedingClient;
+    private BreedingHasAnimalClient breedingHasAnimalClient;
+    private AnimalHasDiseasesClient animalHasDiseasesClient;
+    private HoldingPlaceHasBreedingClient holdingPlaceHasBreedingClient;
+    private HoldingPlaceClient holdingPlaceClient;
+    private AnimalClient animalClient;
+    private SpeciesClient speciesClient;
+    private BreedClient breedClient;
+    private ColorClient colorClient;
+    private CalvingClient calvingClient;
+    private CountryClient countryClient;
+    private CountyClient countyClient;
+    private CityClient cityClient;
+    private UserClient userClient;
+    private AnimalDiseasesClient animalDiseasesClient;
+    
     public AnimalController(){
-        this.userName = getUserNameFromService();
     }
     
     private List<String> getBreedingIdsByUserId(){
         id = Session.getUserId();
-        UserHasBreedingClient client = new UserHasBreedingClient();
-        List<String> breedings = (List<String>) client.findAllBreedingIdByUserId_JSON(List.class, id);
-        client.close();
+        userHasBreedingClient = new UserHasBreedingClient();
+        List<String> breedings = (List<String>) userHasBreedingClient.findAllBreedingIdByUserId_JSON(List.class, id);
+        userHasBreedingClient.close();
         return breedings;
     }
     
+    private int getUserIdByBreedingId(String breedingId){
+        userHasBreedingClient = new UserHasBreedingClient();
+        int model = userHasBreedingClient.findUserIdByBreedingId_JSON(Integer.class, breedingId);
+        userHasBreedingClient.close();
+        return model;
+    }
+    
     public List<BreedingHasAnimalModel> getAllBreedingsHasAnimalByBreedingIds(){
-        BreedingHasAnimalClient client = new BreedingHasAnimalClient();
+        breedingHasAnimalClient = new BreedingHasAnimalClient();
         
         List<BreedingHasAnimalModel> breedings = new ArrayList<>();
         for(int i=0; i<this.breedingIds.size(); i++){
-            List<BreedingHasAnimalModel> list = (List<BreedingHasAnimalModel>)client.findAllEarTagsByBreedingId_JSON(List.class, breedingIds.get(i));
+            List<BreedingHasAnimalModel> list = (List<BreedingHasAnimalModel>)breedingHasAnimalClient.findAllEarTagsByBreedingId_JSON(List.class, breedingIds.get(i));
             breedings.addAll(list);
         }
-        client.close();
+        breedingHasAnimalClient.close();
         
         ObjectMapper mapper = new ObjectMapper();
         List<BreedingHasAnimalModel> breedingHasAnimalList = mapper.convertValue(breedings, new TypeReference<List<BreedingHasAnimalModel>>(){});
         return breedingHasAnimalList;
     }
     
+    public List<BreedingHasAnimalModel> getAllBreedingsHasAnimalByEarTag(String earTag){
+        breedingHasAnimalClient = new BreedingHasAnimalClient();
+        List<BreedingHasAnimalModel> list = (List<BreedingHasAnimalModel>)breedingHasAnimalClient.findAllBreedingIdsByEarTag_JSON(List.class, earTag);
+        breedingHasAnimalClient.close();
+        
+        ObjectMapper mapper = new ObjectMapper();
+        List<BreedingHasAnimalModel> breedingHasAnimalList = mapper.convertValue(list, new TypeReference<List<BreedingHasAnimalModel>>(){});
+        return breedingHasAnimalList;
+    }
+    
+    public List<AnimalHasDiseasesModel> getAllAnimalHasDiseasesByEarTags(String earTag){
+        animalHasDiseasesClient = new AnimalHasDiseasesClient();
+        List<AnimalHasDiseasesModel> list = (List<AnimalHasDiseasesModel>)animalHasDiseasesClient.findAllBreedingIdsByEarTag_JSON(List.class, earTag);
+        animalHasDiseasesClient.close();
+        return list;
+    }
+    
     private List<HoldingPlaceHasBreedingModel> getHoldingPlacesByBreedingId(){
-        HoldingPlaceHasBreedingClient client = new HoldingPlaceHasBreedingClient();
+        holdingPlaceHasBreedingClient = new HoldingPlaceHasBreedingClient();
         List<HoldingPlaceHasBreedingModel> breedings = new ArrayList<>();
         for(int i=0; i<this.breedingIds.size(); i++){
-            breedings.add(client.findHoldingPlaceByBreedingId_JSON(HoldingPlaceHasBreedingModel.class, this.breedingIds.get(i)));
+            breedings.add(holdingPlaceHasBreedingClient.findHoldingPlaceByBreedingId_JSON(HoldingPlaceHasBreedingModel.class, this.breedingIds.get(i)));
         }
-        client.close();
+        holdingPlaceHasBreedingClient.close();
         return breedings;
     }
     
     private List<HoldingPlaceModel> getHoldingPlaces(){
-        HoldingPlaceClient client = new HoldingPlaceClient();
+        holdingPlaceClient = new HoldingPlaceClient();
         List<HoldingPlaceModel> holdingPlaces = new ArrayList<>();
         for(int i=0; i<this.holdingPlaceHasBreedings.size(); i++){
-            holdingPlaces.add(client.find_JSON(HoldingPlaceModel.class, String.valueOf(this.holdingPlaceHasBreedings.get(i).getHoldingPlaceId())));
+            holdingPlaces.add(holdingPlaceClient.find_JSON(HoldingPlaceModel.class, String.valueOf(this.holdingPlaceHasBreedings.get(i).getHoldingPlaceId())));
         }
         return holdingPlaces;
     }
@@ -106,46 +154,50 @@ public class AnimalController {
         this.holdingPlaceHasBreedings = getHoldingPlacesByBreedingId();
         this.holdingPlaces = getHoldingPlaces();
         
-        AnimalClient client = new AnimalClient();
+        animalClient = new AnimalClient();
         List<AnimalModel> animals = new ArrayList<>();
         for(int i=0; i<this.breedingHasAnimals.size(); i++){
-            AnimalModel animal = client.find_JSON(AnimalModel.class, this.breedingHasAnimals.get(i).getAnimalEarTag());
+            AnimalModel animal = animalClient.find_JSON(AnimalModel.class, this.breedingHasAnimals.get(i).getAnimalEarTag());
             animals.add(animal);
         }
         return animals;
     }
     
     public String getDateFormat(long date){
+        if(date == 0){
+            return ("-");
+        }
+        
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd. HH:mm");
         Date correctDate = new Date(date);
         return formatter.format(correctDate);
     }
     
     public String getSpeciesName(String id){
-        SpeciesClient client = new SpeciesClient();
-        SpeciesModel model = client.find_JSON(SpeciesModel.class, id);
-        client.close();
+        speciesClient = new SpeciesClient();
+        SpeciesModel model = speciesClient.find_JSON(SpeciesModel.class, id);
+        speciesClient.close();
         return model.getName();
     }
     
     public String getBreedName(String id){
-        BreedClient client = new BreedClient();
-        BreedModel model = client.find_JSON(BreedModel.class, id);
-        client.close();
+        breedClient = new BreedClient();
+        BreedModel model = breedClient.find_JSON(BreedModel.class, id);
+        breedClient.close();
         return model.getName();
     }
     
     public String getColorName(String id){
-        ColorClient client = new ColorClient();
-        ColorModel model = client.find_JSON(ColorModel.class, id);
-        client.close();
+        colorClient = new ColorClient();
+        ColorModel model = colorClient.find_JSON(ColorModel.class, id);
+        colorClient.close();
         return model.getName();
     }
     
     public String getCalvingName(String id){
-        CalvingClient client = new CalvingClient();
-        CalvingModel model = client.find_JSON(CalvingModel.class, id);
-        client.close();
+        calvingClient = new CalvingClient();
+        CalvingModel model = calvingClient.find_JSON(CalvingModel.class, id);
+        calvingClient.close();
         return model.getName();
     }
     
@@ -159,7 +211,7 @@ public class AnimalController {
     
     public int getBreedingIdByAnimal(String earTag){
         for(int i=0; i<this.breedingHasAnimals.size(); i++){
-            if(this.breedingHasAnimals.get(i).getAnimalEarTag().equals(earTag)){
+            if(this.breedingHasAnimals.get(i).getAnimalEarTag().equals(earTag) && this.breedingHasAnimals.get(i).getEndDate() == 0){
                 return this.breedingHasAnimals.get(i).getBreedingId();
             }
         }
@@ -205,16 +257,16 @@ public class AnimalController {
     }
         
     private String getCountryName(String iso2){
-        CountryClient client = new CountryClient();
-        CountryModel country = client.find_JSON(CountryModel.class, iso2);
-        client.close();
+        countryClient = new CountryClient();
+        CountryModel country = countryClient.find_JSON(CountryModel.class, iso2);
+        countryClient.close();
         return country.getName();
     }
     
     private String getCountyName(int id){
-        CountyClient client = new CountyClient();
-        CountyModel county = client.find_JSON(CountyModel.class, String.valueOf(id));
-        client.close();
+        countyClient = new CountyClient();
+        CountyModel county = countyClient.find_JSON(CountyModel.class, String.valueOf(id));
+        countyClient.close();
         if(county == null){
             return "Hiba történt!";
         }
@@ -222,9 +274,9 @@ public class AnimalController {
     }
     
     private String getCityName(int id){
-        CityClient client = new CityClient();
-        CityModel city = client.find_JSON(CityModel.class, String.valueOf(id));
-        client.close();
+        cityClient = new CityClient();
+        CityModel city = cityClient.find_JSON(CityModel.class, String.valueOf(id));
+        cityClient.close();
         if(city == null){
             return "Hiba történt!";
         }
@@ -232,9 +284,9 @@ public class AnimalController {
     }
     
     private String getCityPostalCode(int id){
-        CityClient client = new CityClient();
-        CityModel city = client.find_JSON(CityModel.class, String.valueOf(id));
-        client.close();
+        cityClient = new CityClient();
+        CityModel city = cityClient.find_JSON(CityModel.class, String.valueOf(id));
+        cityClient.close();
         if(city == null){
             return "Hiba történt!";
         }
@@ -243,18 +295,17 @@ public class AnimalController {
     
     private String getUserNameFromService(){
         id = Session.getUserId();
-        UserClient client = new UserClient();
-        UserModel model = client.find_JSON(UserModel.class, id);
-        client.close();
+        userClient = new UserClient();
+        UserModel model = userClient.find_JSON(UserModel.class, id);
+        userClient.close();
         return model.getLastName() + " " + model.getFirstName();
     }
-
-    public String getOpenedId() {
-        return openedId;
-    }
-
-    public void setOpenedId(String openedId) {
-        this.openedId = openedId;
+    
+    public String getAnimalDiseasesName(String id){
+        animalDiseasesClient = new AnimalDiseasesClient();
+        AnimalDiseasesModel model = animalDiseasesClient.find_JSON(AnimalDiseasesModel.class, id);
+        animalDiseasesClient.close();
+        return model.getName();
     }
 
     public String getUserName() {
@@ -262,5 +313,48 @@ public class AnimalController {
             userName = getUserNameFromService();
         }
         return userName;
+    }
+
+    public AnimalModel getSearchedAnimal() {
+        return searchedAnimal;
+    }
+
+    public String getSearchedEarTag() {
+        return searchedEarTag;
+    }
+
+    public void setSearchedEarTag(String searchedEarTag) {
+        if(searchedEarTag.isEmpty() || !searchedEarTag.matches("^[0-9]+$")){
+            FacesContext.getCurrentInstance().addMessage("search:ear_tag", new FacesMessage("Csak számot tartalmazhat!"));
+        }
+        this.searchedEarTag = searchedEarTag;
+    }
+    
+    public void searchAnimal(){
+        if(this.searchedEarTag.isEmpty()){
+            return;
+        }
+        //1. fülszám -> állat lekérés
+        animalClient = new AnimalClient();
+        searchedAnimal = animalClient.find_JSON(AnimalModel.class, this.searchedEarTag);
+        animalClient.close();
+        //2. állat -> tenyészetId lekérés
+        this.breedingHasAnimals = getAllBreedingsHasAnimalByEarTag(this.searchedEarTag);
+        
+        this.breedingIds = new ArrayList<>();
+        for(int i=0; i<this.breedingHasAnimals.size(); i++){
+            if(this.breedingHasAnimals.get(i).getEndDate() == 0){
+                this.breedingIds.add(String.valueOf(this.breedingHasAnimals.get(i).getBreedingId()));
+            }
+        }
+        
+        this.holdingPlaceHasBreedings = getHoldingPlacesByBreedingId();
+        this.holdingPlaces = getHoldingPlaces();
+        
+        this.id = String.valueOf(getUserIdByBreedingId(this.breedingIds.get(0)));
+        userClient = new UserClient();
+        UserModel model = userClient.find_JSON(UserModel.class, id);
+        userClient.close();
+        this.userName = model.getLastName() + " " + model.getFirstName();
     }
 }

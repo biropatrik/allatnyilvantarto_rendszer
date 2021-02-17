@@ -115,6 +115,7 @@ public class RegisterController {
         userModel.setStreet(street);
         userModel.setRoleId(3);
         userModel.setIsActive(false);
+        userModel.setIsAccepted(false);
         
         if(isValidatePairsOk()){
             UserClient userClient = new UserClient();

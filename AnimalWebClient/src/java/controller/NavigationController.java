@@ -36,4 +36,8 @@ public class NavigationController {
     public String animalList(){
         return "animalList.xhtml?faces-redirect=true";
     }
+    
+    public String animalSearch(){
+        return "animalSearch.xhtml?faces-redirect=true";
+    }
 }
