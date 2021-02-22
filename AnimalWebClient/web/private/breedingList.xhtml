@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Tenyészetes</title>
+    </h:head>
+    <h:body>
+        <link type="text/css" rel="stylesheet" href="../resources/css/animal.css?v=${applicationInfoBean.projectVersion}" />
+        
+        <div class="content">
+            <f:metadata>
+                <f:viewAction action="#{loginController.checkLogin('breedingList.xhtml',3)}" />
+            </f:metadata>
+
+            <ui:include src="navigationbar.xhtml" />
+        
+        <h:form id="checkBreeding">
+            <div class="content-block">
+                <table>
+                    <tbody class="hover">
+                        <tr>
+                            <th>Tenyészetkód</th>
+                            <th>Tenyészet típus</th>
+                            <th>Tenyészet minősítés</th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </h:form>
+        </div>
+        <script src="jquery-3.5.1.js"></script>
+        <c:forEach items="#{animalController.allAnimal}" var="animal">
+            <script>
+                $('body').on('click', '.animal_#{animal.earTag}', function(){
+                    $('.#{animal.earTag}').toggle();
+                });
+            </script>
+        </c:forEach>
+    </h:body>
+</html>
+

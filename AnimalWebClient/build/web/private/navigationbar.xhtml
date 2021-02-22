@@ -1,0 +1,31 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    
+    <link type="text/css" rel="stylesheet" href="../resources/css/navigationBar.css?v=${applicationInfoBean.projectVersion}" />
+    
+    <ul>
+        <h:form id="navigation">
+        <li class="dropdown" style="float:left" >
+            <h:commandLink  value="Üzenetek" action="#{navigationController.index}" class="#{navigationController.activePageName == 'index' || navigationController.activePageName == 'newMail' ? 'active' : ' '}"></h:commandLink>
+            <div class="dropdown-content">
+                <h:commandLink  value="Új üzenet" action="#{navigationController.newMail}"></h:commandLink>
+            </div>
+        </li>
+                
+        <li class="dropdown" style="float:left" >
+            <h:commandLink class="dropbtn #{navigationController.activePageName == 'animalList' || navigationController.activePageName == 'breedingList'? 'active' : ' '}" value="Saját állatok" action="#{navigationController.animalList}"></h:commandLink>
+            <div class="dropdown-content">
+                <h:commandLink style="text-align: left" value="Tenyészetek" action="#{navigationController.breedingList}"></h:commandLink>
+                <h:commandLink style="text-align: left" value="Tartási helyek" action="#{navigationController.animalList}"></h:commandLink>
+            </div>
+        </li>
+
+        <li style="float:left"><h:commandLink value="Állatkereső" action="#{navigationController.animalSearch}" class="#{navigationController.activePageName == 'animalSearch' ? 'active' : ' '}"></h:commandLink></li>
+        <li style="float:right"><h:commandLink value="Kilépés" action="#{loginController.logout}" ></h:commandLink></li>
+        <li style="float:right"><h:commandLink value="Fiók" action="#{navigationController.account}" class="#{navigationController.activePageName == 'account' || navigationController.activePageName == 'accountEdit' ? 'active' : ' '}"></h:commandLink></li>
+        </h:form>
+    </ul>
+</ui:composition>
+

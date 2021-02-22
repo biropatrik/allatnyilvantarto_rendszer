@@ -14,6 +14,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -26,6 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Breeding.findAll", query = "SELECT b FROM Breeding b"),
     @NamedQuery(name = "Breeding.findById", query = "SELECT b FROM Breeding b WHERE b.id = :id"),
+    @NamedQuery(name = "Breeding.findByName", query = "SELECT b FROM Breeding b WHERE b.name = :name"),
     @NamedQuery(name = "Breeding.findByBreedingType", query = "SELECT b FROM Breeding b WHERE b.breedingType = :breedingType"),
     @NamedQuery(name = "Breeding.findByBreedingQualification", query = "SELECT b FROM Breeding b WHERE b.breedingQualification = :breedingQualification"),
     @NamedQuery(name = "Breeding.findByIsActive", query = "SELECT b FROM Breeding b WHERE b.isActive = :isActive")})
@@ -37,6 +39,9 @@ public class Breeding implements Serializable {
     @NotNull
     @Column(name = "id")
     private Integer id;
+    @Size(max = 250)
+    @Column(name = "name")
+    private String name;
     @Basic(optional = false)
     @NotNull
     @Column(name = "breeding_type")
@@ -70,6 +75,14 @@ public class Breeding implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getBreedingType() {

@@ -13,6 +13,8 @@ public class BreedingModel {
     private Integer id;
     private int breedingType;
     private int breedingQualification;
+    private .. name;
+    private .. breedingClassification;
     private boolean isActive;
 
     public BreedingModel() {

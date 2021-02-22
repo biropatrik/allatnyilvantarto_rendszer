@@ -43,7 +43,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import model.AnimalDiseasesModel;
 import model.AnimalHasDiseasesModel;
-import model.UserHasBreedingModel;
 import model.UserModel;
 
 /**
@@ -51,8 +50,9 @@ import model.UserModel;
  * @author Patrik
  */
 @ManagedBean(name="animalController", eager = true)
-//@SessionScoped
+@SessionScoped
 public class AnimalController {
+    private String openedId = "-1";
     private String id;
     private String userName;
     private List<String> breedingIds;
@@ -323,6 +323,14 @@ public class AnimalController {
         return searchedEarTag;
     }
 
+    public String getOpenedId() {
+        return openedId;
+    }
+
+    public void setOpenedId(String openedId) {
+        this.openedId = openedId;
+    }
+
     public void setSearchedEarTag(String searchedEarTag) {
         if(searchedEarTag.isEmpty() || !searchedEarTag.matches("^[0-9]+$")){
             FacesContext.getCurrentInstance().addMessage("search:ear_tag", new FacesMessage("Csak számot tartalmazhat!"));
@@ -330,8 +338,15 @@ public class AnimalController {
         this.searchedEarTag = searchedEarTag;
     }
     
+    public void searchAnimalWithEarTag(String earTag){
+        if(earTag != null){
+            this.searchedEarTag = earTag;
+            searchAnimal();
+        }
+    }
+    
     public void searchAnimal(){
-        if(this.searchedEarTag.isEmpty()){
+        if(this.searchedEarTag == null){
             return;
         }
         //1. fülszám -> állat lekérés
