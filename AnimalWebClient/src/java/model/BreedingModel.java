@@ -11,21 +11,41 @@ package model;
  */
 public class BreedingModel {
     private Integer id;
+    private String name;
     private int breedingType;
     private int breedingQualification;
-    private .. name;
-    private .. breedingClassification;
+    private int breedingClassification;
     private boolean isActive;
 
     public BreedingModel() {
     }
 
-    public BreedingModel(Integer id, int breedingType, int breedingQualification, boolean isActive) {
+    public BreedingModel(Integer id, String name, int breedingType, int breedingQualification, int breedingClassification, boolean isActive) {
         this.id = id;
+        this.name = name;
         this.breedingType = breedingType;
         this.breedingQualification = breedingQualification;
+        this.breedingClassification = breedingClassification;
         this.isActive = isActive;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getBreedingClassification() {
+        return breedingClassification;
+    }
+
+    public void setBreedingClassification(int breedingClassification) {
+        this.breedingClassification = breedingClassification;
+    }
+
+    
 
     public Integer getId() {
         return id;

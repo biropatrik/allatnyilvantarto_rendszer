@@ -33,6 +33,7 @@ public class ApplicationConfig extends Application {
         resources.add(service.AnimalFacadeREST.class);
         resources.add(service.AnimalHasDiseasesFacadeREST.class);
         resources.add(service.BreedFacadeREST.class);
+        resources.add(service.BreedingClassificationFacadeREST.class);
         resources.add(service.BreedingFacadeREST.class);
         resources.add(service.BreedingHasAnimalFacadeREST.class);
         resources.add(service.BreedingQualificationFacadeREST.class);

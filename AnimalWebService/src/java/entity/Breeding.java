@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Breeding.findByName", query = "SELECT b FROM Breeding b WHERE b.name = :name"),
     @NamedQuery(name = "Breeding.findByBreedingType", query = "SELECT b FROM Breeding b WHERE b.breedingType = :breedingType"),
     @NamedQuery(name = "Breeding.findByBreedingQualification", query = "SELECT b FROM Breeding b WHERE b.breedingQualification = :breedingQualification"),
+    @NamedQuery(name = "Breeding.findByBreedingClassification", query = "SELECT b FROM Breeding b WHERE b.breedingClassification = :breedingClassification"),
     @NamedQuery(name = "Breeding.findByIsActive", query = "SELECT b FROM Breeding b WHERE b.isActive = :isActive")})
 public class Breeding implements Serializable {
 
@@ -52,6 +53,10 @@ public class Breeding implements Serializable {
     private int breedingQualification;
     @Basic(optional = false)
     @NotNull
+    @Column(name = "breeding_classification")
+    private int breedingClassification;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "isActive")
     private boolean isActive;
 
@@ -62,10 +67,11 @@ public class Breeding implements Serializable {
         this.id = id;
     }
 
-    public Breeding(Integer id, int breedingType, int breedingQualification, boolean isActive) {
+    public Breeding(Integer id, int breedingType, int breedingQualification, int breedingClassification, boolean isActive) {
         this.id = id;
         this.breedingType = breedingType;
         this.breedingQualification = breedingQualification;
+        this.breedingClassification = breedingClassification;
         this.isActive = isActive;
     }
 
@@ -99,6 +105,14 @@ public class Breeding implements Serializable {
 
     public void setBreedingQualification(int breedingQualification) {
         this.breedingQualification = breedingQualification;
+    }
+
+    public int getBreedingClassification() {
+        return breedingClassification;
+    }
+
+    public void setBreedingClassification(int breedingClassification) {
+        this.breedingClassification = breedingClassification;
     }
 
     public boolean getIsActive() {

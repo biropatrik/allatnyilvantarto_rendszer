@@ -293,12 +293,17 @@ public class AnimalController {
         return city.getPostalCode();
     }
     
-    private String getUserNameFromService(){
-        id = Session.getUserId();
+    public String getUserNameByUserId(String userId){
         userClient = new UserClient();
-        UserModel model = userClient.find_JSON(UserModel.class, id);
+        UserModel model = userClient.find_JSON(UserModel.class, userId);
         userClient.close();
         return model.getLastName() + " " + model.getFirstName();
+    }
+    
+    public String getUserNameByAnimalEarTag(String earTag){
+        int breedingId = getBreedingIdByAnimal(earTag);
+        int userId = getUserIdByBreedingId(String.valueOf(breedingId));
+        return getUserNameByUserId(String.valueOf(userId));
     }
     
     public String getAnimalDiseasesName(String id){
@@ -306,13 +311,6 @@ public class AnimalController {
         AnimalDiseasesModel model = animalDiseasesClient.find_JSON(AnimalDiseasesModel.class, id);
         animalDiseasesClient.close();
         return model.getName();
-    }
-
-    public String getUserName() {
-        if(userName == null){
-            userName = getUserNameFromService();
-        }
-        return userName;
     }
 
     public AnimalModel getSearchedAnimal() {
@@ -349,11 +347,11 @@ public class AnimalController {
         if(this.searchedEarTag == null){
             return;
         }
-        //1. fülszám -> állat lekérés
+        
         animalClient = new AnimalClient();
         searchedAnimal = animalClient.find_JSON(AnimalModel.class, this.searchedEarTag);
         animalClient.close();
-        //2. állat -> tenyészetId lekérés
+        
         this.breedingHasAnimals = getAllBreedingsHasAnimalByEarTag(this.searchedEarTag);
         
         this.breedingIds = new ArrayList<>();
@@ -366,10 +364,5 @@ public class AnimalController {
         this.holdingPlaceHasBreedings = getHoldingPlacesByBreedingId();
         this.holdingPlaces = getHoldingPlaces();
         
-        this.id = String.valueOf(getUserIdByBreedingId(this.breedingIds.get(0)));
-        userClient = new UserClient();
-        UserModel model = userClient.find_JSON(UserModel.class, id);
-        userClient.close();
-        this.userName = model.getLastName() + " " + model.getFirstName();
     }
 }

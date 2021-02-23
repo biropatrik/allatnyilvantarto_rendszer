@@ -39,110 +39,110 @@
                         
                 
                             <c:if test="#{animalController.searchedAnimal != null &amp;&amp; animalController.searchedEarTag == details.earTag}">
-                        <c:set var="animal" value="#{animalController.searchedAnimal}" />
+                            <c:set var="animal" value="#{animalController.searchedAnimal}" />
                         
-                        <tr id="details_#{animal.earTag}" class="#{animal.earTag}">
-                            <th colspan="4" style="border: solid thin;">Az egyed adatai</th>
-                        </tr>
-                        <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
-                            <td>Egyed azonosítója:</td>
-                            <td colspan="3">#{animal.earTag}</td>
-                        </tr>
-                        <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
-                            <td>Születési dátum:</td>
-                            <td colspan="3">#{animalController.getDateFormat(animal.birthdate)}</td>
-                        </tr>
-                        <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
-                            <td>Neme:</td>
-                            <td colspan="3">#{animalController.getSexName(animal.sex)}</td>
-                        </tr>
-                        <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
-                            <td>Egyed faj (kód):</td>
-                            <td colspan="3">(#{animal.speciesId}) #{animalController.getSpeciesName(animal.speciesId)}</td>
-                        </tr>
-                        <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
-                            <td>Egyed fajta (kód):</td>
-                            <td colspan="3">(#{animal.breedId}) #{animalController.getBreedName(animal.breedId)}</td>
-                        </tr>
-                        <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
-                            <td>Egyed színe (kód):</td>
-                            <td colspan="3">(#{animal.colorId}) #{animalController.getColorName(animal.colorId)}</td>
-                        </tr>
-                        <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
-                            <td>Tenyészetkód:</td>
-                            <td colspan="3">#{animalController.getBreedingIdByAnimal(animal.earTag)}</td>
-                        </tr>
-                        <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
-                            <td>Tartó neve:</td>
-                            <td colspan="3">#{animalController.userName}</td>
-                        </tr>
-                        <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
-                            <td>Tenyészet címe:</td>
-                            <td colspan="3">#{animalController.getBreedAddressByAnimal(animal.earTag)}</td>
-                        </tr>
-                        <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
-                            <td>Tenyészetbe érkezés dátuma:</td>
-                            <td colspan="3">#{animalController.getBreedingHasAnimalStartDate(animal.earTag)}</td>
-                        </tr>
-                        
-                        <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
-                            <th colspan="4" style="border: solid thin;">Az ellés adatai</th>
-                        </tr>
-                        <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
-                            <td>Anya(recipiens) azonosítója:</td>
-                            <td colspan="3">#{animal.motherId}</td>
-                        </tr>
-                        <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
-                            <td>Ikerellés:</td>
-                            <td colspan="3">#{animalController.getTwinningName(animal.twinning)}</td>
-                        </tr>
-                        <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
-                            <td>Ellés módja (kód):</td>
-                            <td colspan="3">(#{animal.calvingId}) #{animalController.getCalvingName(animal.calvingId)}</td>
-                        </tr>
-                        <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
-                            <td>Borjú tömege:</td>
-                            <td colspan="3">#{animal.calvingWeight} kg</td>
-                        </tr>
-                        <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
-                            <th colspan="4" style="border: solid thin;">Az egyed előző tenyészetei</th>
-                        </tr>
-                        <c:if test="#{animalController.getAllBreedingsHasAnimalByEarTag(animal.earTag).size() > 0}">
-                            <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
-                                <th>Tenyészetkód</th>
-                                <th>Bekerülés</th>
-                                <th>Kikerülés</th>
-                            </tr> 
-                        </c:if>
-                        <c:forEach items="#{animalController.getAllBreedingsHasAnimalByEarTag(animal.earTag)}" var="breeding">
-                            <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
-                                <td>#{breeding.breedingId}</td>
-                                <td>#{animalController.getDateFormat(breeding.startDate)}</td>
-                                <td>#{animalController.getDateFormat(breeding.endDate)}</td>
+                            <tr id="details_#{animal.earTag}" class="#{animal.earTag}">
+                                <th colspan="4" style="border: solid thin;">Az egyed adatai</th>
                             </tr>
-                        </c:forEach>
-                        
-                        <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
-                            <th colspan="4" style="border: solid thin;">Az egyed betegségei</th>
-                        </tr>
-                        <c:if test="#{animalController.getAllAnimalHasDiseasesByEarTags(animal.earTag).size() > 0}">
                             <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
-                                <th>Betegség neve</th>
-                                <th>Betegség kezdete</th>
-                                <th>Betegség vége</th>
-                                <th>Megjegyzés</th>
-                            </tr> 
-                        </c:if>
-                        <c:forEach items="#{animalController.getAllAnimalHasDiseasesByEarTags(animal.earTag)}" var="diseases">
-                            <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
-                                <td>#{animalController.getAnimalDiseasesName(diseases.animalDiseasesId)}</td>
-                                <td>#{animalController.getDateFormat(diseases.startDate)}</td>
-                                <td>#{animalController.getDateFormat(diseases.endDate)}</td>
-                                <td>#{diseases.comment}</td>
+                                <td>Egyed azonosítója:</td>
+                                <td colspan="3">#{animal.earTag}</td>
                             </tr>
-                        </c:forEach>
-                        
-                        </c:if>
+                            <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
+                                <td>Születési dátum:</td>
+                                <td colspan="3">#{animalController.getDateFormat(animal.birthdate)}</td>
+                            </tr>
+                            <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
+                                <td>Neme:</td>
+                                <td colspan="3">#{animalController.getSexName(animal.sex)}</td>
+                            </tr>
+                            <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
+                                <td>Egyed faj (kód):</td>
+                                <td colspan="3">(#{animal.speciesId}) #{animalController.getSpeciesName(animal.speciesId)}</td>
+                            </tr>
+                            <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
+                                <td>Egyed fajta (kód):</td>
+                                <td colspan="3">(#{animal.breedId}) #{animalController.getBreedName(animal.breedId)}</td>
+                            </tr>
+                            <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
+                                <td>Egyed színe (kód):</td>
+                                <td colspan="3">(#{animal.colorId}) #{animalController.getColorName(animal.colorId)}</td>
+                            </tr>
+                            <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
+                                <td>Tenyészetkód:</td>
+                                <td colspan="3">#{animalController.getBreedingIdByAnimal(animal.earTag)}</td>
+                            </tr>
+                            <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
+                                <td>Tartó neve:</td>
+                                <td colspan="3">#{animalController.getUserNameByAnimalEarTag(animal.earTag)}</td>
+                            </tr>
+                            <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
+                                <td>Tenyészet címe:</td>
+                                <td colspan="3">#{animalController.getBreedAddressByAnimal(animal.earTag)}</td>
+                            </tr>
+                            <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
+                                <td>Tenyészetbe érkezés dátuma:</td>
+                                <td colspan="3">#{animalController.getBreedingHasAnimalStartDate(animal.earTag)}</td>
+                            </tr>
+
+                            <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
+                                <th colspan="4" style="border: solid thin;">Az ellés adatai</th>
+                            </tr>
+                            <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
+                                <td>Anya(recipiens) azonosítója:</td>
+                                <td colspan="3">#{animal.motherId}</td>
+                            </tr>
+                            <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
+                                <td>Ikerellés:</td>
+                                <td colspan="3">#{animalController.getTwinningName(animal.twinning)}</td>
+                            </tr>
+                            <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
+                                <td>Ellés módja (kód):</td>
+                                <td colspan="3">(#{animal.calvingId}) #{animalController.getCalvingName(animal.calvingId)}</td>
+                            </tr>
+                            <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
+                                <td>Borjú tömege:</td>
+                                <td colspan="3">#{animal.calvingWeight} kg</td>
+                            </tr>
+                            <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
+                                <th colspan="4" style="border: solid thin;">Az egyed előző tenyészetei</th>
+                            </tr>
+                            <c:if test="#{animalController.getAllBreedingsHasAnimalByEarTag(animal.earTag).size() > 0}">
+                                <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
+                                    <th>Tenyészetkód</th>
+                                    <th>Bekerülés</th>
+                                    <th>Kikerülés</th>
+                                </tr> 
+                            </c:if>
+                            <c:forEach items="#{animalController.getAllBreedingsHasAnimalByEarTag(animal.earTag)}" var="breeding">
+                                <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
+                                    <td>#{breeding.breedingId}</td>
+                                    <td>#{animalController.getDateFormat(breeding.startDate)}</td>
+                                    <td>#{animalController.getDateFormat(breeding.endDate)}</td>
+                                </tr>
+                            </c:forEach>
+
+                            <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
+                                <th colspan="4" style="border: solid thin;">Az egyed betegségei</th>
+                            </tr>
+                            <c:if test="#{animalController.getAllAnimalHasDiseasesByEarTags(animal.earTag).size() > 0}">
+                                <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
+                                    <th>Betegség neve</th>
+                                    <th>Betegség kezdete</th>
+                                    <th>Betegség vége</th>
+                                    <th>Megjegyzés</th>
+                                </tr> 
+                            </c:if>
+                            <c:forEach items="#{animalController.getAllAnimalHasDiseasesByEarTags(animal.earTag)}" var="diseases">
+                                <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
+                                    <td>#{animalController.getAnimalDiseasesName(diseases.animalDiseasesId)}</td>
+                                    <td>#{animalController.getDateFormat(diseases.startDate)}</td>
+                                    <td>#{animalController.getDateFormat(diseases.endDate)}</td>
+                                    <td>#{diseases.comment}</td>
+                                </tr>
+                            </c:forEach>
+
+                            </c:if>
                     </c:forEach>
                     </tbody>
                 </table>
