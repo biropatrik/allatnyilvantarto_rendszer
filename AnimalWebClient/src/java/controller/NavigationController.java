@@ -52,6 +52,11 @@ public class NavigationController {
         return "breedingList.xhtml?faces-redirect=true";
     }
     
+    public String holdingPlaceList(){
+        this.activePageName = "holdingPlaceList";
+        return "holdingPlaceList.xhtml?faces-redirect=true";
+    }
+    
     public String animalSearch(){
         this.activePageName = "animalSearch";
         return "animalSearch.xhtml?faces-redirect=true";

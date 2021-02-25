@@ -15,23 +15,21 @@ public class HoldingPlaceModel {
     private int countyId;
     private int cityId;
     private String street;
-    private int capacityType;
-    private int capacity;
     private Integer breedingType;
+    private Integer userVetId;
     private boolean isActive;
 
     public HoldingPlaceModel() {
     }
 
-    public HoldingPlaceModel(Integer id, String countryIso2, int countyId, int cityId, String street, int capacityType, int capacity, Integer breedingType, boolean isActive) {
+    public HoldingPlaceModel(Integer id, String countryIso2, int countyId, int cityId, String street, Integer breedingType, Integer userVetId, boolean isActive) {
         this.id = id;
         this.countryIso2 = countryIso2;
         this.countyId = countyId;
         this.cityId = cityId;
         this.street = street;
-        this.capacityType = capacityType;
-        this.capacity = capacity;
         this.breedingType = breedingType;
+        this.userVetId = userVetId;
         this.isActive = isActive;
     }
 
@@ -75,28 +73,20 @@ public class HoldingPlaceModel {
         this.street = street;
     }
 
-    public int getCapacityType() {
-        return capacityType;
-    }
-
-    public void setCapacityType(int capacityType) {
-        this.capacityType = capacityType;
-    }
-
-    public int getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
-    }
-
     public Integer getBreedingType() {
         return breedingType;
     }
 
     public void setBreedingType(Integer breedingType) {
         this.breedingType = breedingType;
+    }
+
+    public Integer getUserVetId() {
+        return userVetId;
+    }
+
+    public void setUserVetId(Integer userVetId) {
+        this.userVetId = userVetId;
     }
 
     public boolean isIsActive() {

@@ -15,10 +15,10 @@
         </li>
                 
         <li class="dropdown" style="float:left" >
-            <h:commandLink class="dropbtn #{navigationController.activePageName == 'animalList' || navigationController.activePageName == 'breedingList'? 'active' : ' '}" value="Saját állatok" action="#{navigationController.animalList}"></h:commandLink>
+            <h:commandLink class="dropbtn #{navigationController.activePageName == 'animalList' || navigationController.activePageName == 'breedingList' || navigationController.activePageName == 'holdingPlaceList' ? 'active' : ' '}" value="Saját állatok" action="#{navigationController.animalList}"></h:commandLink>
             <div class="dropdown-content">
                 <h:commandLink style="text-align: left" value="Tenyészetek" action="#{navigationController.breedingList}"></h:commandLink>
-                <h:commandLink style="text-align: left" value="Tartási helyek" action="#{navigationController.animalList}"></h:commandLink>
+                <h:commandLink style="text-align: left" value="Tartási helyek" action="#{navigationController.holdingPlaceList}"></h:commandLink>
             </div>
         </li>
 

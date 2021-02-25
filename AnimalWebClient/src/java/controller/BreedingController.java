@@ -29,7 +29,6 @@ import model.CountryModel;
 import model.CountyModel;
 import model.HoldingPlaceHasBreedingModel;
 import model.HoldingPlaceModel;
-import model.UserHasBreedingModel;
 import model.UserModel;
 
 /**
@@ -113,6 +112,16 @@ public class BreedingController {
         userClient = new UserClient();
         int userId = userHasBreedingClient.findUserIdByBreedingId_JSON(Integer.class, breedingId);
         UserModel model = userClient.find_JSON(UserModel.class, String.valueOf(userId));
+        userClient.close();
+        userHasBreedingClient.close();
+        
+        return model.getLastName() + " " + model.getFirstName();
+    }
+    
+    public String getUserNameByUserId(String userId){
+        userClient = new UserClient();
+        UserModel model = userClient.find_JSON(UserModel.class, userId);
+        userClient.close();
         
         return model.getLastName() + " " + model.getFirstName();
     }
@@ -173,6 +182,13 @@ public class BreedingController {
         
         return address;
     }
+    
+    public String getVetIdByBreedingId(String breedingId){
+        int holdingPlaceId = getHoldingPlaceHasBreedingByBreedingId(breedingId).getHoldingPlaceId();
+        HoldingPlaceModel holdingPlace = getHoldingPlaceByHoldingPlaceId(String.valueOf(holdingPlaceId));
+        
+        return String.valueOf(holdingPlace.getUserVetId());
+    }
 
     public String getSearchedId() {
         return searchedId;
@@ -197,6 +213,5 @@ public class BreedingController {
         breedingClient = new BreedingClient();
         this.searchedBreeding = breedingClient.find_JSON(BreedingModel.class, this.searchedId);
         breedingClient.close();
-                
     }
 }

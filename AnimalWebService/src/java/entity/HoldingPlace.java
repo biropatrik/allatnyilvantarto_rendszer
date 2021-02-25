@@ -33,9 +33,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "HoldingPlace.findByCountyId", query = "SELECT h FROM HoldingPlace h WHERE h.countyId = :countyId"),
     @NamedQuery(name = "HoldingPlace.findByCityId", query = "SELECT h FROM HoldingPlace h WHERE h.cityId = :cityId"),
     @NamedQuery(name = "HoldingPlace.findByStreet", query = "SELECT h FROM HoldingPlace h WHERE h.street = :street"),
-    @NamedQuery(name = "HoldingPlace.findByCapacityType", query = "SELECT h FROM HoldingPlace h WHERE h.capacityType = :capacityType"),
-    @NamedQuery(name = "HoldingPlace.findByCapacity", query = "SELECT h FROM HoldingPlace h WHERE h.capacity = :capacity"),
     @NamedQuery(name = "HoldingPlace.findByBreedingType", query = "SELECT h FROM HoldingPlace h WHERE h.breedingType = :breedingType"),
+    @NamedQuery(name = "HoldingPlace.findByUserVetId", query = "SELECT h FROM HoldingPlace h WHERE h.userVetId = :userVetId"),
     @NamedQuery(name = "HoldingPlace.findByIsActive", query = "SELECT h FROM HoldingPlace h WHERE h.isActive = :isActive")})
 public class HoldingPlace implements Serializable {
 
@@ -63,16 +62,10 @@ public class HoldingPlace implements Serializable {
     @Size(min = 1, max = 250)
     @Column(name = "street")
     private String street;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "capacity_type")
-    private int capacityType;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "capacity")
-    private int capacity;
     @Column(name = "breeding_type")
     private Integer breedingType;
+    @Column(name = "user_vet_id")
+    private Integer userVetId;
     @Basic(optional = false)
     @NotNull
     @Column(name = "isActive")
@@ -85,14 +78,12 @@ public class HoldingPlace implements Serializable {
         this.id = id;
     }
 
-    public HoldingPlace(Integer id, String countryIso2, int countyId, int cityId, String street, int capacityType, int capacity, boolean isActive) {
+    public HoldingPlace(Integer id, String countryIso2, int countyId, int cityId, String street, boolean isActive) {
         this.id = id;
         this.countryIso2 = countryIso2;
         this.countyId = countyId;
         this.cityId = cityId;
         this.street = street;
-        this.capacityType = capacityType;
-        this.capacity = capacity;
         this.isActive = isActive;
     }
 
@@ -136,28 +127,20 @@ public class HoldingPlace implements Serializable {
         this.street = street;
     }
 
-    public int getCapacityType() {
-        return capacityType;
-    }
-
-    public void setCapacityType(int capacityType) {
-        this.capacityType = capacityType;
-    }
-
-    public int getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
-    }
-
     public Integer getBreedingType() {
         return breedingType;
     }
 
     public void setBreedingType(Integer breedingType) {
         this.breedingType = breedingType;
+    }
+
+    public Integer getUserVetId() {
+        return userVetId;
+    }
+
+    public void setUserVetId(Integer userVetId) {
+        this.userVetId = userVetId;
     }
 
     public boolean getIsActive() {

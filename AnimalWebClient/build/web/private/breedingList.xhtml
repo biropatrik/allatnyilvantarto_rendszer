@@ -6,7 +6,7 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-        <title>Tenyészetes</title>
+        <title>Tenyészetek</title>
     </h:head>
     <h:body>
         <link type="text/css" rel="stylesheet" href="../resources/css/animal.css?v=${applicationInfoBean.projectVersion}" />
@@ -24,19 +24,84 @@
                     <tbody class="hover">
                         <tr>
                             <th>Tenyészetkód</th>
-                            <th>Tenyészet típus</th>
-                            <th>Tenyészet minősítés</th>
+                            <th>Név</th>
+                            <th>Típus</th>
+                            <th>Besorolás</th>
                         </tr>
+                        <c:forEach items="#{breedingController.allBreedingByBreedingIds}" var="details">
+                            <tr class="breeding_#{details.id}" style="background-color:#B5B5B5;">
+                                <td>#{details.id}</td>
+                                <td>#{details.name == null ? "-" : details.name}</td>
+                                <td>#{breedingController.getBreedingTypeName(details.breedingType)}</td>
+                                <td>#{breedingController.getBreedingClassificationName(details.breedingClassification)}</td>
+                                <h:commandButton id="details_#{details.id}" actionListener="#{breedingController.searchBreedingWithId(details.id)}" style="display: none;" />
+                            </tr>
+                            
+                            <c:if test="#{breedingController.searchedId != null &amp;&amp; breedingController.searchedId == details.id}">
+                            <c:set var="breeding" value="#{breedingController.searchedBreeding}" />
+                            
+                            <tr id="breeding_#{breeding.id}" class="#{breeding.id}">
+                                <th colspan="5" style="border: solid thin;">Állattartó adatai</th>
+                            </tr>
+                            <tr id="breeding_#{breeding.id}" class="#{breeding.id}" >
+                                <td>Állattartó neve:</td>
+                                <td colspan="4">#{breedingController.getUserNameByBreedingId(breeding.id)}</td>
+                            </tr>
+                            
+                            <tr id="breeding_#{breeding.id}" class="#{breeding.id}">
+                                <th colspan="5" style="border: solid thin;">Tenyészet adatai</th>
+                            </tr>
+                            <tr id="breeding_#{breeding.id}" class="#{breeding.id}" >
+                                <td>Tenyészetkód:</td>
+                                <td colspan="4">#{breeding.id}</td>
+                            </tr>
+                            <tr id="breeding_#{breeding.id}" class="#{breeding.id}" >
+                                <td>Tenyészet neve:</td>
+                                <td colspan="4">#{breeding.name == null ? "-" : breeding.name}</td>
+                            </tr>
+                            <tr id="breeding_#{breeding.id}" class="#{breeding.id}" >
+                                <td>Tenyészet címe:</td>
+                                <td colspan="4">#{breedingController.getBreedAddressByBreedingId(breeding.id)}</td>
+                            </tr>
+                            <tr id="breeding_#{breeding.id}" class="#{breeding.id}" >
+                                <td>Típus (kód):</td>
+                                <td colspan="4">(#{breeding.breedingType}) #{breedingController.getBreedingTypeName(breeding.breedingType)}</td>
+                            </tr>
+                            <tr id="breeding_#{breeding.id}" class="#{breeding.id}" >
+                                <td>Minősítés (kód):</td>
+                                <td colspan="4">(#{breeding.breedingQualification}) #{breedingController.getBreedingQualificationName(breeding.breedingQualification)}</td>
+                            </tr>
+                            
+                            <tr id="breeding_#{breeding.id}" class="#{breeding.id}">
+                                <th colspan="5" style="border: solid thin;">Állategészségügyi adatok</th>
+                            </tr>
+                            <tr id="breeding_#{breeding.id}" class="#{breeding.id}" >
+                                <td>Besorolás (kód):</td>
+                                <td colspan="4">(#{breeding.breedingClassification}) #{breedingController.getBreedingClassificationName(breeding.breedingClassification)}</td>
+                            </tr>
+                            <tr id="breeding_#{breeding.id}" class="#{breeding.id}" >
+                                <td>Illetékes áeü. hat. azonosítója:</td>
+                                <td colspan="4">#{breedingController.getVetIdByBreedingId(breeding.id)}</td>
+                            </tr>
+                            <tr id="breeding_#{breeding.id}" class="#{breeding.id}" >
+                                <td>Illetékes áeü. hat. neve:</td>
+                                <td colspan="4">#{breedingController.getUserNameByUserId(breedingController.getVetIdByBreedingId(breeding.id))}</td>
+                            </tr>
+                            </c:if>
+                        </c:forEach>
                     </tbody>
                 </table>
             </div>
         </h:form>
         </div>
         <script src="jquery-3.5.1.js"></script>
-        <c:forEach items="#{animalController.allAnimal}" var="animal">
+        <c:forEach items="#{breedingController.allBreedingByBreedingIds}" var="breeding">
             <script>
-                $('body').on('click', '.animal_#{animal.earTag}', function(){
-                    $('.#{animal.earTag}').toggle();
+                $('body').on('click', '.breeding_#{breeding.id}', function(){
+                    $('.#{breeding.id}').toggle();
+                    if('#{breeding.id}' !== '#{breedingController.searchedId}'){
+                        document.getElementById('checkBreeding:details_#{breeding.id}').click();
+                    }
                 });
             </script>
         </c:forEach>

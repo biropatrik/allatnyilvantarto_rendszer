@@ -6,7 +6,7 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-        <title>Tenyészetes</title>
+        <title>Tenyészetek</title>
     </h:head>
     <h:body>
         <link type="text/css" rel="stylesheet" href="../resources/css/animal.css?v=${applicationInfoBean.projectVersion}" />
@@ -81,11 +81,11 @@
                             </tr>
                             <tr id="breeding_#{breeding.id}" class="#{breeding.id}" >
                                 <td>Illetékes áeü. hat. azonosítója:</td>
-                                <td colspan="4">...</td>
+                                <td colspan="4">#{breedingController.getVetIdByBreedingId(breeding.id)}</td>
                             </tr>
                             <tr id="breeding_#{breeding.id}" class="#{breeding.id}" >
                                 <td>Illetékes áeü. hat. neve:</td>
-                                <td colspan="4">...</td>
+                                <td colspan="4">#{breedingController.getUserNameByUserId(breedingController.getVetIdByBreedingId(breeding.id))}</td>
                             </tr>
                             </c:if>
                         </c:forEach>

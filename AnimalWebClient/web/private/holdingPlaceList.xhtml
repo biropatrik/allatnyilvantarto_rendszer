@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Tartási helyek</title>
+    </h:head>
+    <h:body>
+        <link type="text/css" rel="stylesheet" href="../resources/css/animal.css?v=${applicationInfoBean.projectVersion}" />
+        
+        <div class="content">
+            <f:metadata>
+                <f:viewAction action="#{loginController.checkLogin('holdingPlaceList.xhtml',3)}" />
+            </f:metadata>
+
+            <ui:include src="navigationbar.xhtml" />
+        
+        <h:form id="checkBreeding">
+            <div class="content-block">
+                <table>
+                    <tbody class="hover">
+                        <tr>
+                            <th>Tartási hely azonosító</th>
+                            <th>Cím</th>
+                        </tr>
+                        <c:forEach items="#{holdingPlaceController.allHoldingPlacesByBreedingIds}" var="details">
+                            <tr class="holdingPlace_#{details.id}" style="background-color:#B5B5B5;">
+                                <td>#{details.id}</td>
+                                <td colspan="4">#{holdingPlaceController.getAddressByHoldingPlaceId(details.id)}</td>
+                                <h:commandButton id="details_#{details.id}" actionListener="#{holdingPlaceController.searchHoldingPlaceWithId(details.id)}" style="display: none;" />
+                            </tr>
+                            
+                            <c:if test="#{holdingPlaceController.searchedId != null &amp;&amp; holdingPlaceController.searchedId == details.id}">
+                                <c:set var="holdingPlace" value="#{holdingPlaceController.searchedHoldingPlace}" />
+                            
+                            <tr id="holdingPlace_#{holdingPlace.id}" class="#{holdingPlace.id}">
+                                <th colspan="5" style="border: solid thin;">Tartási hely azonosítása</th>
+                            </tr>
+                            <tr id="holdingPlace_#{holdingPlace.id}" class="#{holdingPlace.id}" >
+                                <td>Tartási hely azonosítója:</td>
+                                <td colspan="4">#{holdingPlace.id}</td>
+                            </tr>
+                            <tr id="holdingPlace_#{holdingPlace.id}" class="#{holdingPlace.id}" >
+                                <td>Tartási hely címe</td>
+                                <td colspan="4">#{holdingPlaceController.getAddressByHoldingPlaceId(holdingPlace.id)}</td>
+                            </tr>
+                            
+                            <tr id="holdingPlace_#{holdingPlace.id}" class="#{holdingPlace.id}">
+                                <th colspan="5" style="border: solid thin;">Tenyészetek tevékenységei</th>
+                            </tr>
+                            <c:forEach items="#{holdingPlaceController.getAllHoldingPlaceHasSpeciesById(holdingPlace.id)}" var="species">
+                                <tr id="holdingPlace_#{holdingPlace.id}" class="#{holdingPlace.id}" >
+                                    <td>#{holdingPlaceController.getSpeciesName(species.speciesId)}</td>
+                                    <td>Tevékenység kezdete:</td>
+                                    <td>#{holdingPlaceController.getDateFormat(species.startDate)}</td>
+                                    <td>Hasznosítás:</td>
+                                    <td>#{species.utilization}</td>
+                                </tr>
+                            </c:forEach>
+                                
+                            <tr id="holdingPlace_#{holdingPlace.id}" class="#{holdingPlace.id}">
+                                <th colspan="5" style="border: solid thin;">Tartási hely helyrajzi száma(i)</th>
+                            </tr>
+                            <c:forEach items="#{holdingPlaceController.getAllHoldingPlaceHasParcelNumberById(holdingPlace.id)}" var="parcelNumber">
+                                <tr id="holdingPlace_#{holdingPlace.id}" class="#{holdingPlace.id}">
+                                    <td>Helység:</td>
+                                    <td>#{holdingPlaceController.getCityName(parcelNumber.cityId)}</td>
+                                    <td>Helyrajzi szám:</td>
+                                    <td colspan="2">#{parcelNumber.parcelNumber}</td>
+                                </tr>
+                            </c:forEach>
+                            
+                            <tr id="holdingPlace_#{holdingPlace.id}" class="#{holdingPlace.id}">
+                                <th colspan="5" style="border: solid thin;">Kapacitások</th>
+                            </tr>
+                            <c:forEach items="#{holdingPlaceController.getAllHoldingPlaceHasCapacityById(holdingPlace.id)}" var="capacity">
+                                <tr id="holdingPlace_#{holdingPlace.id}" class="#{holdingPlace.id}" >
+                                    <td>#{holdingPlaceController.getCapacityTypeName(capacity.capacityType)}:</td>
+                                    <td>#{capacity.size}</td>
+                                    <td>Létesítés dátuma:</td>
+                                    <td colspan="2">#{holdingPlaceController.getDateFormat(capacity.startDate)}</td>
+                                </tr>
+                            </c:forEach>
+                                
+                            <tr id="holdingPlace_#{holdingPlace.id}" class="#{holdingPlace.id}">
+                                <th colspan="5" style="border: solid thin;">Hatósági állatorvos adatai</th>
+                            </tr>
+                            <tr id="holdingPlace_#{holdingPlace.id}" class="#{holdingPlace.id}">
+                                <td>Illetékes áeü. hat. azonosítója:</td>
+                                <td colspan="4">#{holdingPlace.userVetId}</td>
+                            </tr>
+                            <tr id="holdingPlace_#{holdingPlace.id}" class="#{holdingPlace.id}">
+                                <td>Illetékes áeü. hat. neve:</td>
+                                <td colspan="4">#{holdingPlaceController.getUserNameByUserId(holdingPlace.userVetId)}</td>
+                            </tr>
+                            
+                            </c:if>
+                        </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+        </h:form>
+        </div>
+        <script src="jquery-3.5.1.js"></script>
+        <c:forEach items="#{holdingPlaceController.allHoldingPlacesByBreedingIds}" var="holdingPlace">
+            <script>
+                $('body').on('click', '.holdingPlace_#{holdingPlace.id}', function(){
+                    $('.#{holdingPlace.id}').toggle();
+                    if('#{holdingPlace.id}' !== '#{holdingPlaceController.searchedId}'){
+                        document.getElementById('checkBreeding:details_#{holdingPlace.id}').click();
+                    }
+                });
+            </script>
+        </c:forEach>
+    </h:body>
+</html>
+
