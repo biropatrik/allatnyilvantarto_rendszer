@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1:3308
--- Létrehozás ideje: 2021. Feb 22. 14:57
+-- Létrehozás ideje: 2021. Feb 25. 13:00
 -- Kiszolgáló verziója: 8.0.18
 -- PHP verzió: 7.3.12
 
@@ -149,19 +149,21 @@ CREATE TABLE IF NOT EXISTS `breeding` (
   `name` varchar(250) DEFAULT NULL,
   `breeding_type` int(11) NOT NULL,
   `breeding_qualification` int(11) NOT NULL,
+  `breeding_classification` int(11) NOT NULL,
   `isActive` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_breeding_breeding_type_id` (`breeding_type`),
-  KEY `FK_breeding_breeding_qualification_id` (`breeding_qualification`)
+  KEY `FK_breeding_breeding_qualification_id` (`breeding_qualification`),
+  KEY `FK_breeding_breeding_classification_id` (`breeding_classification`) USING BTREE
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- A tábla adatainak kiíratása `breeding`
 --
 
-INSERT INTO `breeding` (`id`, `name`, `breeding_type`, `breeding_qualification`, `isActive`) VALUES
-(476836, NULL, 1, 1, 1),
-(490797, NULL, 2, 1, 1);
+INSERT INTO `breeding` (`id`, `name`, `breeding_type`, `breeding_qualification`, `breeding_classification`, `isActive`) VALUES
+(476836, NULL, 1, 6, 1, 1),
+(490797, NULL, 2, 6, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -4008,25 +4010,24 @@ CREATE TABLE IF NOT EXISTS `holding_place` (
   `county_id` int(11) NOT NULL,
   `city_id` int(11) NOT NULL,
   `street` varchar(250) NOT NULL,
-  `capacity_type` int(11) NOT NULL,
-  `capacity` int(11) NOT NULL,
   `breeding_type` int(11) DEFAULT NULL,
+  `user_vet_id` int(11) DEFAULT NULL,
   `isActive` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_holding_place_country_iso2` (`country_iso2`),
   KEY `FK_holding_place_county_id` (`county_id`),
   KEY `FK_holding_place_city_id` (`city_id`),
-  KEY `FK_holding_place_capacity_type_id` (`capacity_type`),
-  KEY `FK_holding_place_breeding_type_id` (`breeding_type`) USING BTREE
+  KEY `FK_holding_place_breeding_type_id` (`breeding_type`) USING BTREE,
+  KEY `FK_user_user_vet_id` (`user_vet_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 --
 -- A tábla adatainak kiíratása `holding_place`
 --
 
-INSERT INTO `holding_place` (`id`, `country_iso2`, `county_id`, `city_id`, `street`, `capacity_type`, `capacity`, `breeding_type`, `isActive`) VALUES
-(1, 'HU', 2, 868, 'Széchenyi út 15.', 1, 50, 1, 1),
-(2, 'HU', 2, 868, 'XY út 5.', 1, 50, 1, 1);
+INSERT INTO `holding_place` (`id`, `country_iso2`, `county_id`, `city_id`, `street`, `breeding_type`, `user_vet_id`, `isActive`) VALUES
+(1, 'HU', 2, 868, 'Széchenyi út 15.', 1, 14, 1),
+(2, 'HU', 2, 868, 'XY út 5.', 1, 14, 1);
 
 -- --------------------------------------------------------
 
@@ -4051,6 +4052,82 @@ CREATE TABLE IF NOT EXISTS `holding_place_has_breeding` (
 INSERT INTO `holding_place_has_breeding` (`id`, `holding_place_id`, `breeding_id`) VALUES
 (1, 1, 476836),
 (2, 2, 490797);
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `holding_place_has_capacity`
+--
+
+DROP TABLE IF EXISTS `holding_place_has_capacity`;
+CREATE TABLE IF NOT EXISTS `holding_place_has_capacity` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `holding_place_id` int(11) NOT NULL,
+  `capacity_type` int(11) NOT NULL,
+  `size` int(11) NOT NULL,
+  `start_date` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_holding_place_id` (`holding_place_id`),
+  KEY `FK_capacity_type` (`capacity_type`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+--
+-- A tábla adatainak kiíratása `holding_place_has_capacity`
+--
+
+INSERT INTO `holding_place_has_capacity` (`id`, `holding_place_id`, `capacity_type`, `size`, `start_date`) VALUES
+(1, 1, 3, 3, 1612789382200),
+(2, 1, 4, 5, 1612789382200);
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `holding_place_has_parcel_number`
+--
+
+DROP TABLE IF EXISTS `holding_place_has_parcel_number`;
+CREATE TABLE IF NOT EXISTS `holding_place_has_parcel_number` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `holding_place_id` int(11) NOT NULL,
+  `city_id` int(11) NOT NULL,
+  `parcel_number` varchar(250) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+--
+-- A tábla adatainak kiíratása `holding_place_has_parcel_number`
+--
+
+INSERT INTO `holding_place_has_parcel_number` (`id`, `holding_place_id`, `city_id`, `parcel_number`) VALUES
+(1, 1, 868, '9880/1'),
+(2, 1, 868, '9880/2'),
+(3, 1, 868, '9880/3');
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `holding_place_has_species`
+--
+
+DROP TABLE IF EXISTS `holding_place_has_species`;
+CREATE TABLE IF NOT EXISTS `holding_place_has_species` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `holding_place_id` int(11) NOT NULL,
+  `species_id` int(11) NOT NULL,
+  `start_date` bigint(20) NOT NULL,
+  `utilization` varchar(250) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_holding_place_id` (`holding_place_id`),
+  KEY `FK_species_id` (`species_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+--
+-- A tábla adatainak kiíratása `holding_place_has_species`
+--
+
+INSERT INTO `holding_place_has_species` (`id`, `holding_place_id`, `species_id`, `start_date`, `utilization`) VALUES
+(1, 1, 1, 1613160799712, NULL),
+(2, 1, 5, 1613150759712, 'Tojás');
 
 -- --------------------------------------------------------
 
@@ -4127,7 +4204,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   KEY `FK_user_county_id` (`county_id`),
   KEY `FK_user_city_id` (`city_id`),
   KEY `FK_user_role_id` (`role_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 --
 -- A tábla adatainak kiíratása `user`
@@ -4135,7 +4212,8 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 INSERT INTO `user` (`id`, `first_name`, `last_name`, `email`, `password`, `phone_number`, `country_iso2`, `county_id`, `city_id`, `street`, `role_id`, `isActive`, `isAccepted`) VALUES
 (1, 'Zsolt', 'Nagy', 'a@c.hu', 'YXNk', '06302001000', 'HU', 2, 868, 'Széchenyi út 15', 1, 1, NULL),
-(2, 'István', 'Kis', 'a@v.hu', 'YXNk', '0123', 'HU', 2, 2, 'Körte 2', 1, 1, NULL);
+(2, 'István', 'Kis', 'a@v.hu', 'YXNk', '0123', 'HU', 2, 2, 'Körte 2', 1, 1, NULL),
+(14, 'Ernő', 'Dr. Fügedi', 'drerno@praxis.hu', 'YXNk', '06304445555', 'HU', 2, 868, 'Ipar út 23', 3, 1, 1);
 
 -- --------------------------------------------------------
 
