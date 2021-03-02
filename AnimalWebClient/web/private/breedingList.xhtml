@@ -19,6 +19,13 @@
             <ui:include src="navigationbar.xhtml" />
         
         <h:form id="checkBreeding">
+            
+            <div class="content-block">
+                <div class="button">
+                    <h:commandButton value="Új tenyészet felvétele" type="submit" action="#{navigationController.accountEdit()}" styleClass="add"/>
+                </div>
+            </div>
+            
             <div class="content-block">
                 <table>
                     <tbody class="hover">
@@ -86,6 +93,17 @@
                             <tr id="breeding_#{breeding.id}" class="#{breeding.id}" >
                                 <td>Illetékes áeü. hat. neve:</td>
                                 <td colspan="4">#{breedingController.getUserNameByUserId(breedingController.getVetIdByBreedingId(breeding.id))}</td>
+                            </tr>
+                            
+                            <tr id="breeding_#{breeding.id}" class="#{breeding.id}">
+                                <th colspan="5" style="border: solid thin;">Tenyészet módosítása</th>
+                            </tr>
+                            <tr id="breeding_#{breeding.id}" class="#{breeding.id}">
+                                <th>
+                                    <div class="button">
+                                        <h:commandButton value="Tenyészet módosítása" type="submit" action="#{navigationController.accountEdit()}" styleClass="add"/>
+                                    </div>
+                                </th>
                             </tr>
                             </c:if>
                         </c:forEach>
