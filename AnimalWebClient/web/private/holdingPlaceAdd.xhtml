@@ -23,61 +23,74 @@
         <h:form id="addHoldingPlace">
                 <table>
                     <tbody>
-                            <tr id="holdingPlace_add" class="holdingPlace_add">
-                                <th colspan="5" style="border: solid thin;">Tartási hely címe</th>
-                            </tr>
-                            <tr id="holdingPlace_add" class="holdingPlace_add" >
-                                <td>Ország:</td>
-                                <td colspan="4">
-                                    <h:selectOneMenu styleClass="selectonemenu" value="#{holdingPlaceController.newHoldingPlace.countryIso2}">
-                                        <f:selectItems value="#{holdingPlaceController.countries}" var="co"
-                                                       itemLabel="#{co.name}" itemValue="#{co.iso2}" />
-                                    </h:selectOneMenu>
-                                </td>
-                            </tr>
-                            <tr id="holdingPlace_add" class="holdingPlace_add" >
-                                <td>Megye:</td>
-                                <td colspan="4">
-                                    <h:selectOneMenu styleClass="selectonemenu" value="#{holdingPlaceController.newHoldingPlace.countyId}">
-                                        <f:selectItems value="#{holdingPlaceController.counties}" var="cn"
-                                                       itemLabel="#{cn.name}" itemValue="#{cn.id}" />
-                                    </h:selectOneMenu>
-                                </td>
-                            </tr>
-                            <tr id="holdingPlace_add" class="holdingPlace_add" >
-                                <td>Irányítószám:</td>
-                                <td colspan="1">
-                                    <h:message for="postal_code" style="color:red" />
-                                    <h:inputText id="postal_code" label="Irányítószám" a:placeholder="Irányítószám" required="false" value="#{holdingPlaceController.postal_code}">
-                                        <f:ajax execute = "postal_code" render = "cities" />
-                                    </h:inputText>
-                                </td>
-                            </tr>
-                            <tr id="holdingPlace_add" class="holdingPlace_add" >
-                                <td>Város:</td>
-                                <td colspan="2">
-                                    <h:selectOneMenu id="cities" styleClass="selectonemenu" value="#{holdingPlaceController.newHoldingPlace.cityId}">
-                                        <f:selectItems value="#{holdingPlaceController.cities}" var="ci"
-                                                       itemLabel="#{ci.name}" itemValue="#{ci.id}" />
-                                    </h:selectOneMenu>
-                                </td>
-                            </tr>
-                            <tr id="holdingPlace_add" class="holdingPlace_add" >
-                                <td>Utca:</td>
-                                <td colspan="1">
-                                    <h:message for="street" style="color:red" />
-                                    <h:inputText id="street" label="Utca" requiredMessage="A mező kitöltése kötelező!" a:placeholder="Utca" required="false" value="#{holdingPlaceController.newHoldingPlace.street}"/>
-                                </td>
-                            </tr>
+                        <tr id="holdingPlace_add" class="holdingPlace_add">
+                            <th colspan="5" style="border: solid thin;">Tartási hely címe</th>
+                        </tr>
+                        <tr id="holdingPlace_add" class="holdingPlace_add" >
+                            <td>Azonosító szám:</td>
+                            <td colspan="1">
+                                <h:message for="id" style="color:red" />
+                                <h:inputText id="id" label="Azonosító szám" a:placeholder="Azonosító szám" required="false" value="#{holdingPlaceController.newHoldingPlace.id}" >
+                                    <f:ajax execute = "id" render = "id" />
+                                </h:inputText>
+                            </td>
+                        </tr>
+                        
+                        <tr id="holdingPlace_add" class="holdingPlace_add" >
+                            <td>Ország:</td>
+                            <td colspan="4">
+                                <h:selectOneMenu id="selectCountries" styleClass="selectonemenu" value="#{holdingPlaceController.newHoldingPlace.countryIso2}">
+                                    <f:selectItems value="#{holdingPlaceController.countries}" var="co"
+                                                   itemLabel="#{co.name}" itemValue="#{co.iso2}" />
+                                        <f:ajax execute = "selectCountries" render = "selectCountries" />
+                                </h:selectOneMenu>
+                            </td>
+                        </tr>
+                        <tr id="holdingPlace_add" class="holdingPlace_add" >
+                            <td>Megye:</td>
+                            <td colspan="4">
+                                <h:selectOneMenu id="selectCounties" styleClass="selectonemenu" value="#{holdingPlaceController.newHoldingPlace.countyId}">
+                                    <f:selectItems value="#{holdingPlaceController.counties}" var="cn"
+                                                   itemLabel="#{cn.name}" itemValue="#{cn.id}" />
+                                        <f:ajax execute = "selectCounties" render = "selectCounties" />
+                                </h:selectOneMenu>
+                            </td>
+                        </tr>
+                        <tr id="holdingPlace_add" class="holdingPlace_add" >
+                            <td>Irányítószám:</td>
+                            <td colspan="1">
+                                <h:message for="postal_code" style="color:red" />
+                                <h:inputText id="postal_code" label="Irányítószám" a:placeholder="Irányítószám" required="false" value="#{holdingPlaceController.postal_code}">
+                                    <f:ajax execute = "postal_code" render = "cities" />
+                                </h:inputText>
+                            </td>
+                        </tr>
+                        <tr id="holdingPlace_add" class="holdingPlace_add" >
+                            <td>Város:</td>
+                            <td colspan="2">
+                                <h:selectOneMenu id="cities" styleClass="selectonemenu" value="#{holdingPlaceController.newHoldingPlace.cityId}">
+                                    <f:selectItems value="#{holdingPlaceController.cities}" var="ci"
+                                                   itemLabel="#{ci.name}" itemValue="#{ci.id}" />
+                                </h:selectOneMenu>
+                            </td>
+                        </tr>
+                        <tr id="holdingPlace_add" class="holdingPlace_add" >
+                            <td>Utca:</td>
+                            <td colspan="1">
+                                <h:message for="street" style="color:red" />
+                                <h:inputText id="street" label="Utca" requiredMessage="A mező kitöltése kötelező!" a:placeholder="Utca" required="false" value="#{holdingPlaceController.newHoldingPlace.street}">
+                                    <f:ajax execute = "street" render = "street" />
+                                </h:inputText>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
-        </h:form>
-        <h:form id="addHoldingPlaceHasSpecies">
+            
                 <table id="species_table" class="species">
                     <tbody>
-                            <tr id="holdingPlace_add" class="holdingPlace_add" >
-                                <th colspan="5" style="border: solid thin;">Tenyészetek tevékenységei</th>
-                            </tr>
+                        <tr id="holdingPlace_add" class="holdingPlace_add" >
+                            <th colspan="5" style="border: solid thin;">Tenyészetek tevékenységei</th>
+                        </tr>
                         <c:forEach id="species_loop" items="#{holdingPlaceController.newHoldingPlaceHasSpecies}" var="species">
                             <tr id="species_row">
                                 <td>
@@ -99,32 +112,19 @@
                         </c:forEach>
                     </tbody>
                 </table>
+            
                 <div class="button">
                     <h:commandButton id="addSpeciesRowButton" action="#{holdingPlaceController.addNewHoldingPlaceHasSpecies()}" styleClass="add" value = " + ">
-                        <f:ajax execute = "addSpeciesRowButton" render = "addHoldingPlaceHasSpecies" />
+                        <f:ajax execute = "addSpeciesRowButton" render = "addHoldingPlace" />
                     </h:commandButton>
                 </div>
+            
                 <div class="button">
-                    <h:commandButton id="addButton" type="submit" action="#{holdingPlaceController.addNewHoldingPlaceHasSpecies()}" styleClass="add" value = " + ">
-                    </h:commandButton>
+                    <h:commandButton id="saveButton" type="submit" action="#{holdingPlaceController.saveNewHoldingPlace()}" styleClass="add" value = "Mentés" />
                 </div>
         </h:form>
         </div>
         </div>
-        <script src="jquery-3.5.1.js"></script>
-            <script>
-                $('body').on('click', '.holdingPlace_species', function(){
-                    var row = document.getElementById('species_row');
-                    var clone = row.cloneNode(true);
-                    $(".species").append(clone);
-                  });
-                
-                $('body').on('click', '.holdingPlace_parcel_number', function(){
-                    var row = document.getElementById('parcel_number_row');
-                    var clone = row.cloneNode(true);
-                    $(".parcel_numbers").append(clone);
-                });
-            </script>
     </h:body>
 </html>
 

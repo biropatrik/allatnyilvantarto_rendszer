@@ -37,6 +37,7 @@ import model.HoldingPlaceHasSpeciesModel;
 import model.HoldingPlaceModel;
 import model.SpeciesModel;
 import model.UserModel;
+import org.json.JSONObject;
 
 /**
  *
@@ -178,22 +179,6 @@ public class HoldingPlaceController {
         return formatter.format(correctDate);
     }
     
-    public long getLongFormatFromDate(String date){
-        if(date == null || date.equals("0")){
-            return (0);
-        }
-        long milliseconds = 0;
-        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            Date d = f.parse(date);
-            milliseconds = d.getTime();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        
-        return milliseconds;
-    }
-    
     private String getCountryName(String iso2){
         countryClient = new CountryClient();
         CountryModel country = countryClient.find_JSON(CountryModel.class, iso2);
@@ -322,20 +307,6 @@ public class HoldingPlaceController {
     }
 
     public List<HoldingPlaceHasSpeciesModel> getNewHoldingPlaceHasSpecies() {
-        //List<SpeciesModel> species = getAllSpecies();
-        
-        //newHoldingPlaceHasSpecies.clear();
-        /*for(int i=0; i < species.size(); i++){
-            HoldingPlaceHasSpeciesModel newModel = new HoldingPlaceHasSpeciesModel();
-            newModel.setSpeciesId(species.get(i).getId());
-            newHoldingPlaceHasSpecies.add(newModel);
-        }
-        */
-        
-        /*for(int i=0; i < speciesListCount; i++){
-            HoldingPlaceHasSpeciesModel newModel = new HoldingPlaceHasSpeciesModel();
-            newHoldingPlaceHasSpecies.add(newModel);
-        }*/
         if(newHoldingPlaceHasSpecies.isEmpty()){
             addNewHoldingPlaceHasSpecies();
         }
@@ -344,13 +315,8 @@ public class HoldingPlaceController {
     }
 
     public void addNewHoldingPlaceHasSpecies(){
-        
         HoldingPlaceHasSpeciesModel model = new HoldingPlaceHasSpeciesModel();
         this.newHoldingPlaceHasSpecies.add(model);
-        
-        FacesContext.getCurrentInstance().addMessage("addHoldingPlace:postal_code", 
-                new FacesMessage("Teszt: " + newHoldingPlaceHasSpecies.get(0).getStartDate()));
-        
     }
 
     public String getPostal_code() {
@@ -374,5 +340,31 @@ public class HoldingPlaceController {
         }else{
             this.postal_code = postal_code;
         }
+    }
+    
+    public void saveNewHoldingPlace(){
+        
+        //Ellenőrzés hiányzik!
+        
+        this.newHoldingPlace.setIsActive(false);
+        holdingPlaceClient = new HoldingPlaceClient();
+        holdingPlaceClient.create_JSON(this.newHoldingPlace);
+        holdingPlaceClient.close();
+        
+        for(int i=0; i < newHoldingPlaceHasSpecies.size(); i++){
+            newHoldingPlaceHasSpecies.get(i).setHoldingPlaceId(this.newHoldingPlace.getId());
+
+            String jsonString = new JSONObject()
+                                .put("holdingPlaceId", newHoldingPlaceHasSpecies.get(i).getHoldingPlaceId())
+                                .put("speciesId", newHoldingPlaceHasSpecies.get(i).getSpeciesId())
+                                .put("startDate", newHoldingPlaceHasSpecies.get(i).getStartDate())
+                                .put("utilization", newHoldingPlaceHasSpecies.get(i).getUtilization())
+                                .toString();
+
+            holdingPlaceHasSpeciesClient = new HoldingPlaceHasSpeciesClient();
+            holdingPlaceHasSpeciesClient.create_JSON(jsonString);
+        }
+        
+        holdingPlaceHasSpeciesClient.close();
     }
 }
