@@ -5,10 +5,6 @@
  */
 package controller;
 
-import client.BreedingClassificationClient;
-import client.BreedingClient;
-import client.BreedingQualificationClient;
-import client.BreedingTypeClient;
 import client.CapacityTypeClient;
 import client.CityClient;
 import client.CountryClient;
@@ -21,13 +17,15 @@ import client.HoldingPlaceHasSpeciesClient;
 import client.SpeciesClient;
 import client.UserClient;
 import client.UserHasBreedingClient;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import model.BreedingModel;
+import javax.faces.context.FacesContext;
 import model.CapacityTypeModel;
 import model.CityModel;
 import model.CountryModel;
@@ -51,6 +49,14 @@ public class HoldingPlaceController {
     private String searchedId;
     private HoldingPlaceModel searchedHoldingPlace;
     private List<String> breedingIds;
+    
+    private HoldingPlaceModel newHoldingPlace = new HoldingPlaceModel();
+    private List<HoldingPlaceHasBreedingModel> newHoldingPlaceHasBreeding = new ArrayList<>();
+    private List<HoldingPlaceHasCapacityModel> newHoldingPlaceHasCapacity = new ArrayList<>();
+    private List<HoldingPlaceHasParcelNumberModel> newHoldingPlaceHasParcelNumber = new ArrayList<>();
+    private List<HoldingPlaceHasSpeciesModel> newHoldingPlaceHasSpecies = new ArrayList<>();
+    private String postal_code;
+    private int speciesListCount = 0;
     
     private UserHasBreedingClient userHasBreedingClient;
     private UserClient userClient;
@@ -172,6 +178,22 @@ public class HoldingPlaceController {
         return formatter.format(correctDate);
     }
     
+    public long getLongFormatFromDate(String date){
+        if(date == null || date.equals("0")){
+            return (0);
+        }
+        long milliseconds = 0;
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date d = f.parse(date);
+            milliseconds = d.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        
+        return milliseconds;
+    }
+    
     private String getCountryName(String iso2){
         countryClient = new CountryClient();
         CountryModel country = countryClient.find_JSON(CountryModel.class, iso2);
@@ -208,6 +230,38 @@ public class HoldingPlaceController {
         }
         return city.getPostalCode();
     }
+    
+    public List<CountryModel> getCountries(){
+        countryClient = new CountryClient();
+        List<CountryModel> countries = (List<CountryModel>) countryClient.findAll_JSON(List.class);
+        countryClient.close();
+        return countries;
+    }
+    
+    public List<CountyModel> getCounties(){
+        countyClient = new CountyClient();
+        List<CountyModel> counties = (List<CountyModel>) countyClient.findAll_JSON(List.class);
+        countyClient.close();
+        return counties;
+    }
+    
+    public List<CityModel> getCities(){
+        if(postal_code!=null && !postal_code.isEmpty()){
+            cityClient = new CityClient();
+            List<CityModel> cities = (List<CityModel>)cityClient.findAll_withPostalCode_JSON(List.class, postal_code);
+            cityClient.close();
+            return cities;
+        }else{
+            return null;
+        }
+    }
+    
+    public List<SpeciesModel> getAllSpecies(){
+        speciesClient = new SpeciesClient();
+        List<SpeciesModel> species = (List<SpeciesModel>) speciesClient.findAll_JSON(List.class);
+        speciesClient.close();
+        return species;
+    }
 
     public HoldingPlaceModel getSearchedHoldingPlace() {
         return searchedHoldingPlace;
@@ -232,5 +286,93 @@ public class HoldingPlaceController {
         holdingPlaceClient = new HoldingPlaceClient();
         this.searchedHoldingPlace = holdingPlaceClient.find_JSON(HoldingPlaceModel.class, this.searchedId);
         holdingPlaceClient.close();
+    }
+
+    public HoldingPlaceModel getNewHoldingPlace() {
+        return newHoldingPlace;
+    }
+
+    public void setNewHoldingPlace(HoldingPlaceModel newHoldingPlace) {
+        this.newHoldingPlace = newHoldingPlace;
+    }
+
+    public List<HoldingPlaceHasBreedingModel> getNewHoldingPlaceHasBreeding() {
+        return newHoldingPlaceHasBreeding;
+    }
+    
+    public void addNewHoldingPlaceHasBreeding(){
+        HoldingPlaceHasBreedingModel model = new HoldingPlaceHasBreedingModel();
+        this.newHoldingPlaceHasBreeding.add(model);
+    }
+
+    public List<HoldingPlaceHasCapacityModel> getNewHoldingPlaceHasCapacity() {
+        return newHoldingPlaceHasCapacity;
+    }
+
+    public void setNewHoldingPlaceHasCapacity(List<HoldingPlaceHasCapacityModel> newHoldingPlaceHasCapacity) {
+        this.newHoldingPlaceHasCapacity = newHoldingPlaceHasCapacity;
+    }
+
+    public List<HoldingPlaceHasParcelNumberModel> getNewHoldingPlaceHasParcelNumber() {
+        return newHoldingPlaceHasParcelNumber;
+    }
+
+    public void setNewHoldingPlaceHasParcelNumber(List<HoldingPlaceHasParcelNumberModel> newHoldingPlaceHasParcelNumber) {
+        this.newHoldingPlaceHasParcelNumber = newHoldingPlaceHasParcelNumber;
+    }
+
+    public List<HoldingPlaceHasSpeciesModel> getNewHoldingPlaceHasSpecies() {
+        //List<SpeciesModel> species = getAllSpecies();
+        
+        //newHoldingPlaceHasSpecies.clear();
+        /*for(int i=0; i < species.size(); i++){
+            HoldingPlaceHasSpeciesModel newModel = new HoldingPlaceHasSpeciesModel();
+            newModel.setSpeciesId(species.get(i).getId());
+            newHoldingPlaceHasSpecies.add(newModel);
+        }
+        */
+        
+        /*for(int i=0; i < speciesListCount; i++){
+            HoldingPlaceHasSpeciesModel newModel = new HoldingPlaceHasSpeciesModel();
+            newHoldingPlaceHasSpecies.add(newModel);
+        }*/
+        if(newHoldingPlaceHasSpecies.isEmpty()){
+            addNewHoldingPlaceHasSpecies();
+        }
+        
+        return newHoldingPlaceHasSpecies;
+    }
+
+    public void addNewHoldingPlaceHasSpecies(){
+        
+        HoldingPlaceHasSpeciesModel model = new HoldingPlaceHasSpeciesModel();
+        this.newHoldingPlaceHasSpecies.add(model);
+        
+        FacesContext.getCurrentInstance().addMessage("addHoldingPlace:postal_code", 
+                new FacesMessage("Teszt: " + newHoldingPlaceHasSpecies.get(0).getStartDate()));
+        
+    }
+
+    public String getPostal_code() {
+        return postal_code;
+    }
+
+    public int getSpeciesListCount() {
+        return speciesListCount;
+    }
+
+    public void setSpeciesListCount(int speciesListCount) {
+        this.speciesListCount = speciesListCount;
+    }
+    
+    public void setPostal_code(String postal_code) {
+        
+        if(postal_code == null || postal_code.isEmpty()){
+            FacesContext.getCurrentInstance().addMessage("addHoldingPlace:postal_code", new FacesMessage("A mező kitöltése kötelező!"));
+        }else if(!postal_code.matches("^[0-9]+$")){
+            FacesContext.getCurrentInstance().addMessage("addHoldingPlace:postal_code", new FacesMessage("Csak számot tartalmazhat!"));
+        }else{
+            this.postal_code = postal_code;
+        }
     }
 }

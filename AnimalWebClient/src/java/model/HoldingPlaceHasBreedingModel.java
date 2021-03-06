@@ -5,10 +5,13 @@
  */
 package model;
 
+import javax.faces.bean.RequestScoped;
+
 /**
  *
  * @author Patrik
  */
+@RequestScoped
 public class HoldingPlaceHasBreedingModel {
     private Integer id;
     private int holdingPlaceId;

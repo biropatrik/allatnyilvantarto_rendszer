@@ -18,7 +18,14 @@
 
             <ui:include src="navigationbar.xhtml" />
         
-        <h:form id="checkBreeding">
+        <h:form id="listHoldingPlace">
+            
+            <div class="content-block">
+                <div class="button">
+                    <h:commandButton value="Új tartási hely felvétele" type="submit" action="#{navigationController.holdingPlaceAdd()}" styleClass="add"/>
+                </div>
+            </div>
+            
             <div class="content-block">
                 <table>
                     <tbody class="hover">
@@ -27,12 +34,12 @@
                             <th>Cím</th>
                         </tr>
                         <c:forEach items="#{holdingPlaceController.allHoldingPlacesByBreedingIds}" var="details">
+                            
                             <tr class="holdingPlace_#{details.id}" style="background-color:#B5B5B5;">
                                 <td>#{details.id}</td>
                                 <td colspan="4">#{holdingPlaceController.getAddressByHoldingPlaceId(details.id)}</td>
                                 <h:commandButton id="details_#{details.id}" actionListener="#{holdingPlaceController.searchHoldingPlaceWithId(details.id)}" style="display: none;" />
                             </tr>
-                            
                             <c:if test="#{holdingPlaceController.searchedId != null &amp;&amp; holdingPlaceController.searchedId == details.id}">
                                 <c:set var="holdingPlace" value="#{holdingPlaceController.searchedHoldingPlace}" />
                             
@@ -96,6 +103,18 @@
                                 <td>Illetékes áeü. hat. neve:</td>
                                 <td colspan="4">#{holdingPlaceController.getUserNameByUserId(holdingPlace.userVetId)}</td>
                             </tr>
+                                
+                            <tr id="holdingPlace_#{holdingPlace.id}" class="#{holdingPlace.id}">
+                                <th colspan="5" style="border: solid thin;">Tartási hely módosítása</th>
+                            </tr>
+                            <tr id="holdingPlace_#{holdingPlace.id}" class="#{holdingPlace.id}">
+                                <th>
+                                    <div class="button">
+                                        <h:commandButton value="Tartási hely módosítása" type="submit" action="#{navigationController.accountEdit()}" styleClass="add"/>
+                                    </div>
+                                </th>
+                            </tr>
+                            
                             
                             </c:if>
                         </c:forEach>
@@ -110,7 +129,7 @@
                 $('body').on('click', '.holdingPlace_#{holdingPlace.id}', function(){
                     $('.#{holdingPlace.id}').toggle();
                     if('#{holdingPlace.id}' !== '#{holdingPlaceController.searchedId}'){
-                        document.getElementById('checkBreeding:details_#{holdingPlace.id}').click();
+                        document.getElementById('listHoldingPlace:details_#{holdingPlace.id}').click();
                     }
                 });
             </script>

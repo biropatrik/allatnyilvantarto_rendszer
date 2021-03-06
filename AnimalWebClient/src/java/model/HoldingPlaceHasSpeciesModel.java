@@ -5,6 +5,10 @@
  */
 package model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  *
  * @author Patrik
@@ -57,6 +61,31 @@ public class HoldingPlaceHasSpeciesModel {
 
     public void setStartDate(long startDate) {
         this.startDate = startDate;
+    }
+
+    public String getStartDateString() {
+        if(startDate == 0){
+            return ("");
+        }
+        
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date correctDate = new Date(startDate);
+        return formatter.format(correctDate);
+    }
+
+    public void setStartDateString(String startDateString) {
+        
+        if(startDateString != null){
+            long milliseconds = 0;
+            SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                Date d = f.parse(startDateString);
+                milliseconds = d.getTime();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            this.startDate = milliseconds;
+        }
     }
 
     public String getUtilization() {

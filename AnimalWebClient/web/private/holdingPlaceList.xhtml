@@ -18,11 +18,11 @@
 
             <ui:include src="navigationbar.xhtml" />
         
-        <h:form id="checkBreeding">
+        <h:form id="listHoldingPlace">
             
             <div class="content-block">
                 <div class="button">
-                    <h:commandButton value="Új tartási hely felvétele" type="submit" action="#{navigationController.accountEdit()}" styleClass="add"/>
+                    <h:commandButton value="Új tartási hely felvétele" type="submit" action="#{navigationController.holdingPlaceAdd()}" styleClass="add"/>
                 </div>
             </div>
             
@@ -129,7 +129,7 @@
                 $('body').on('click', '.holdingPlace_#{holdingPlace.id}', function(){
                     $('.#{holdingPlace.id}').toggle();
                     if('#{holdingPlace.id}' !== '#{holdingPlaceController.searchedId}'){
-                        document.getElementById('checkBreeding:details_#{holdingPlace.id}').click();
+                        document.getElementById('listHoldingPlace:details_#{holdingPlace.id}').click();
                     }
                 });
             </script>
