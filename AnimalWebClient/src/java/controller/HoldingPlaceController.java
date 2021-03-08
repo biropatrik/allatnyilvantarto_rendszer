@@ -52,12 +52,10 @@ public class HoldingPlaceController {
     private List<String> breedingIds;
     
     private HoldingPlaceModel newHoldingPlace = new HoldingPlaceModel();
-    private List<HoldingPlaceHasBreedingModel> newHoldingPlaceHasBreeding = new ArrayList<>();
     private List<HoldingPlaceHasCapacityModel> newHoldingPlaceHasCapacity = new ArrayList<>();
     private List<HoldingPlaceHasParcelNumberModel> newHoldingPlaceHasParcelNumber = new ArrayList<>();
     private List<HoldingPlaceHasSpeciesModel> newHoldingPlaceHasSpecies = new ArrayList<>();
     private String postal_code;
-    private int speciesListCount = 0;
     
     private UserHasBreedingClient userHasBreedingClient;
     private UserClient userClient;
@@ -230,6 +228,17 @@ public class HoldingPlaceController {
         return counties;
     }
     
+    public List<CityModel> getCities(String postal_code){
+        if(postal_code!=null && !postal_code.isEmpty()){
+            cityClient = new CityClient();
+            List<CityModel> cities = (List<CityModel>)cityClient.findAll_withPostalCode_JSON(List.class, postal_code);
+            cityClient.close();
+            return cities;
+        }else{
+            return null;
+        }
+    }
+    
     public List<CityModel> getCities(){
         if(postal_code!=null && !postal_code.isEmpty()){
             cityClient = new CityClient();
@@ -281,36 +290,34 @@ public class HoldingPlaceController {
         this.newHoldingPlace = newHoldingPlace;
     }
 
-    public List<HoldingPlaceHasBreedingModel> getNewHoldingPlaceHasBreeding() {
-        return newHoldingPlaceHasBreeding;
-    }
-    
-    public void addNewHoldingPlaceHasBreeding(){
-        HoldingPlaceHasBreedingModel model = new HoldingPlaceHasBreedingModel();
-        this.newHoldingPlaceHasBreeding.add(model);
-    }
-
     public List<HoldingPlaceHasCapacityModel> getNewHoldingPlaceHasCapacity() {
+        if(newHoldingPlaceHasCapacity.isEmpty()){
+            addNewHoldingPlaceHasCapacity();
+        }
         return newHoldingPlaceHasCapacity;
     }
 
-    public void setNewHoldingPlaceHasCapacity(List<HoldingPlaceHasCapacityModel> newHoldingPlaceHasCapacity) {
-        this.newHoldingPlaceHasCapacity = newHoldingPlaceHasCapacity;
+    public void addNewHoldingPlaceHasCapacity() {
+        HoldingPlaceHasCapacityModel model = new HoldingPlaceHasCapacityModel();
+        this.newHoldingPlaceHasCapacity.add(model);
     }
 
     public List<HoldingPlaceHasParcelNumberModel> getNewHoldingPlaceHasParcelNumber() {
+        if(newHoldingPlaceHasParcelNumber.isEmpty()){
+            addNewHoldingPlaceHasParcelNumber();
+        }
         return newHoldingPlaceHasParcelNumber;
     }
 
-    public void setNewHoldingPlaceHasParcelNumber(List<HoldingPlaceHasParcelNumberModel> newHoldingPlaceHasParcelNumber) {
-        this.newHoldingPlaceHasParcelNumber = newHoldingPlaceHasParcelNumber;
+    public void addNewHoldingPlaceHasParcelNumber() {
+        HoldingPlaceHasParcelNumberModel model = new HoldingPlaceHasParcelNumberModel();
+        this.newHoldingPlaceHasParcelNumber.add(model);
     }
 
     public List<HoldingPlaceHasSpeciesModel> getNewHoldingPlaceHasSpecies() {
         if(newHoldingPlaceHasSpecies.isEmpty()){
             addNewHoldingPlaceHasSpecies();
         }
-        
         return newHoldingPlaceHasSpecies;
     }
 
@@ -321,14 +328,6 @@ public class HoldingPlaceController {
 
     public String getPostal_code() {
         return postal_code;
-    }
-
-    public int getSpeciesListCount() {
-        return speciesListCount;
-    }
-
-    public void setSpeciesListCount(int speciesListCount) {
-        this.speciesListCount = speciesListCount;
     }
     
     public void setPostal_code(String postal_code) {
@@ -351,6 +350,7 @@ public class HoldingPlaceController {
         holdingPlaceClient.create_JSON(this.newHoldingPlace);
         holdingPlaceClient.close();
         
+        holdingPlaceHasSpeciesClient = new HoldingPlaceHasSpeciesClient();
         for(int i=0; i < newHoldingPlaceHasSpecies.size(); i++){
             newHoldingPlaceHasSpecies.get(i).setHoldingPlaceId(this.newHoldingPlace.getId());
 
@@ -361,10 +361,21 @@ public class HoldingPlaceController {
                                 .put("utilization", newHoldingPlaceHasSpecies.get(i).getUtilization())
                                 .toString();
 
-            holdingPlaceHasSpeciesClient = new HoldingPlaceHasSpeciesClient();
             holdingPlaceHasSpeciesClient.create_JSON(jsonString);
         }
-        
         holdingPlaceHasSpeciesClient.close();
+        
+        holdingPlaceHasParcelNumberClient = new HoldingPlaceHasParcelNumberClient();
+        for(int i=0; i < newHoldingPlaceHasParcelNumber.size(); i++){
+            newHoldingPlaceHasParcelNumber.get(i).setHoldingPlaceId(this.newHoldingPlace.getId());
+            
+            String jsonString = new JSONObject()
+                                .put("holdingPlaceId", newHoldingPlaceHasParcelNumber.get(i).getHoldingPlaceId())
+                                .put("cityId", newHoldingPlaceHasParcelNumber.get(i).getCityId())
+                                .put("parcelNumber", newHoldingPlaceHasParcelNumber.get(i).getParcelNumber())
+                                .toString();
+            holdingPlaceHasParcelNumberClient.create_JSON(jsonString);
+        }
+        holdingPlaceHasParcelNumberClient.close();
     }
 }

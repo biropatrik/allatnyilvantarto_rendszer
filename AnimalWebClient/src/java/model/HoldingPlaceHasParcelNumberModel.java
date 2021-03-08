@@ -17,6 +17,8 @@ public class HoldingPlaceHasParcelNumberModel {
     private int holdingPlaceId;
     private int cityId;
     private String parcelNumber;
+    
+    private String postalCode;
 
     public HoldingPlaceHasParcelNumberModel() {
     }
@@ -58,5 +60,15 @@ public class HoldingPlaceHasParcelNumberModel {
 
     public void setParcelNumber(String parcelNumber) {
         this.parcelNumber = parcelNumber;
+    }
+
+    
+    
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
     }
 }
