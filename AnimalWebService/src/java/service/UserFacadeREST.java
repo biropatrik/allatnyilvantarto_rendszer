@@ -6,6 +6,7 @@
 package service;
 
 import entity.User;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -117,6 +118,20 @@ public class UserFacadeREST extends AbstractFacade<User> {
             }
         }
         return "emailerror";
+    }
+    
+    @GET
+    @Path("get_all_userid_by_role/{role}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public ArrayList<String> getAllUserIdByRole(@PathParam("role") String role){
+        ArrayList<String> ids = new ArrayList<>();
+        List<User> users = super.findAll();
+        for(int i=0; i<users.size(); i++){
+            if(users.get(i).getRoleId() == Integer.parseInt(role)){
+                ids.add(String.valueOf(users.get(i).getId()));
+            }
+        }
+        return ids;
     }
 
     @Override

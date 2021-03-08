@@ -256,6 +256,21 @@ public class HoldingPlaceController {
         speciesClient.close();
         return species;
     }
+    
+    public List<CapacityTypeModel> getAllCapacityType(){
+        capacityTypeClient = new CapacityTypeClient();
+        List<CapacityTypeModel> capacities = (List<CapacityTypeModel>) capacityTypeClient.findAll_JSON(List.class);
+        capacityTypeClient.close();
+        return capacities;
+    }
+    
+    public List<String> getAllUserIdByVetRole(){
+        userClient = new UserClient();
+        List<String> ids = userClient.getAllUserIdByRole_JSON(List.class, "2");
+        ids.addAll(userClient.getAllUserIdByRole_JSON(List.class, "1"));
+        userClient.close();
+        return ids;
+    }
 
     public HoldingPlaceModel getSearchedHoldingPlace() {
         return searchedHoldingPlace;
@@ -301,6 +316,10 @@ public class HoldingPlaceController {
         HoldingPlaceHasCapacityModel model = new HoldingPlaceHasCapacityModel();
         this.newHoldingPlaceHasCapacity.add(model);
     }
+    
+    public void removeNewHoldingPlaceHasCapacity(HoldingPlaceHasCapacityModel model){
+        this.newHoldingPlaceHasCapacity.remove(model);
+    }
 
     public List<HoldingPlaceHasParcelNumberModel> getNewHoldingPlaceHasParcelNumber() {
         if(newHoldingPlaceHasParcelNumber.isEmpty()){
@@ -313,6 +332,10 @@ public class HoldingPlaceController {
         HoldingPlaceHasParcelNumberModel model = new HoldingPlaceHasParcelNumberModel();
         this.newHoldingPlaceHasParcelNumber.add(model);
     }
+    
+    public void removeNewHoldingPlaceHasParcelNumber(HoldingPlaceHasParcelNumberModel model){
+        this.newHoldingPlaceHasParcelNumber.remove(model);
+    }
 
     public List<HoldingPlaceHasSpeciesModel> getNewHoldingPlaceHasSpecies() {
         if(newHoldingPlaceHasSpecies.isEmpty()){
@@ -324,6 +347,10 @@ public class HoldingPlaceController {
     public void addNewHoldingPlaceHasSpecies(){
         HoldingPlaceHasSpeciesModel model = new HoldingPlaceHasSpeciesModel();
         this.newHoldingPlaceHasSpecies.add(model);
+    }
+    
+    public void removeNewHoldingPlaceHasSpecies(HoldingPlaceHasSpeciesModel model){
+        this.newHoldingPlaceHasSpecies.remove(model);
     }
 
     public String getPostal_code() {

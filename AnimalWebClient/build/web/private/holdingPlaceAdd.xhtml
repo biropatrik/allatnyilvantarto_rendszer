@@ -10,7 +10,7 @@
         <title>Tartási hely felvétele</title>
     </h:head>
     <h:body>
-        <link type="text/css" rel="stylesheet" href="../resources/css/animal.css?v=${applicationInfoBean.projectVersion}" />
+        <link type="text/css" rel="stylesheet" href="../resources/css/animal.css" />
         
         <div class="content">
             <f:metadata>
@@ -89,7 +89,7 @@
             <table id="species_table" class="species">
                 <tbody>
                     <tr id="holdingPlace_add" class="holdingPlace_add" >
-                        <th colspan="5" style="border: solid thin;">Tenyészetek tevékenységei</th>
+                        <th colspan="6" style="border: solid thin;">Tenyészetek tevékenységei</th>
                     </tr>
                     <c:forEach items="#{holdingPlaceController.newHoldingPlaceHasSpecies}" var="species">
                         <tr>
@@ -108,6 +108,13 @@
                                 <h:message for="utilization" style="color:red" />
                                 <h:inputText id="utilization" label="Hasznosítás" requiredMessage="A mező kitöltése kötelező!" a:placeholder="Hasznosítás" required="false" value="#{species.utilization}"/>
                             </td>
+                            <td>
+                                <div class="button" style="#{holdingPlaceController.newHoldingPlaceHasSpecies.size() > 1 ? '' : 'display: none;'}">
+                                    <h:commandButton id="removeSpeciesRowButton" action="#{holdingPlaceController.removeNewHoldingPlaceHasSpecies(species)}" styleClass="remove" value = "X">
+                                        <f:ajax execute = "removeSpeciesRowButton" render = "addHoldingPlace" />
+                                    </h:commandButton>
+                                </div>
+                            </td>
                         </tr>
                     </c:forEach>
                 </tbody>
@@ -122,7 +129,7 @@
             <table id="parcel_number_table" class="parcelNumber">
                     <tbody>
                         <tr id="holdingPlace_add" class="holdingPlace_add" >
-                            <th colspan="5" style="border: solid thin;">Tartási hely helyrajzi száma(i)</th>
+                            <th colspan="6" style="border: solid thin;">Tartási hely helyrajzi száma(i)</th>
                         </tr>
                         <c:forEach items="#{holdingPlaceController.newHoldingPlaceHasParcelNumber}" var="parcelNumber" varStatus="loop">
                             <tr>
@@ -145,6 +152,13 @@
                                         <f:ajax execute = "parcelNumber_#{loop.index}" render = "parcelNumber_#{loop.index}" />
                                     </h:inputText>
                                 </td>
+                                <td>
+                                    <div class="button" style="#{holdingPlaceController.newHoldingPlaceHasParcelNumber.size() > 1 ? '' : 'display: none;'}">
+                                        <h:commandButton id="removeParcelNumberRowButton" action="#{holdingPlaceController.removeNewHoldingPlaceHasParcelNumber(parcelNumber)}" styleClass="remove" value = "X">
+                                            <f:ajax execute = "removeParcelNumberRowButton" render = "addHoldingPlace" />
+                                        </h:commandButton>
+                                    </div>
+                                </td>
                             </tr>
                         </c:forEach>
                     </tbody>
@@ -155,6 +169,63 @@
                         <f:ajax execute = "addParcelNumberRowButton" render = "addHoldingPlace" />
                     </h:commandButton>
                 </div>
+            
+                <table id="capacity_table" class="capacity">
+                    <tbody>
+                        <tr id="holdingPlace_add" class="holdingPlace_add" >
+                            <th colspan="6" style="border: solid thin;">Kapacitások</th>
+                        </tr>
+                        <c:forEach items="#{holdingPlaceController.newHoldingPlaceHasCapacity}" var="capacity">
+                            <tr>
+                                <td>
+                                    <h:selectOneMenu styleClass="selectonemenu" value="#{capacity.capacityType}">
+                                        <f:selectItems value="#{holdingPlaceController.allCapacityType}" var="ct"
+                                                       itemLabel="#{ct.name}" itemValue="#{ct.id}" />
+                                    </h:selectOneMenu>
+                                </td>
+                                <td>Méret:</td>
+                                <td>
+                                    <h:message for="size" style="color:red" />
+                                    <h:inputText id="size" label="Méret" requiredMessage="A mező kitöltése kötelező!" a:placeholder="Méret" required="false" value="#{capacity.size}"/>
+                                </td>
+                                <td>Létesítés dátuma:</td>
+                                <td>
+                                    <h:inputText a:type="date" value="#{capacity.startDateString}" />
+                                </td>
+                                <td>
+                                    <div class="button" style="#{holdingPlaceController.newHoldingPlaceHasCapacity.size() > 1 ? '' : 'display: none;'}">
+                                        <h:commandButton id="removeCapacityRowButton" action="#{holdingPlaceController.removeNewHoldingPlaceHasCapacity(capacity)}" styleClass="remove" value = "X">
+                                            <f:ajax execute = "removeCapacityRowButton" render = "addHoldingPlace" />
+                                        </h:commandButton>
+                                    </div>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+
+                <div class="button">
+                    <h:commandButton id="addCapacityRowButton" action="#{holdingPlaceController.addNewHoldingPlaceHasCapacity()}" styleClass="add" value = " + ">
+                        <f:ajax execute = "addCapacityRowButton" render = "addHoldingPlace" />
+                    </h:commandButton>
+                </div>
+            
+                <table id="vet_table" class="vet">
+                    <tbody>
+                        <tr id="holdingPlace_add" class="holdingPlace_add" >
+                            <th colspan="5" style="border: solid thin;">Hatósági állatorvos</th>
+                        </tr>
+                            <tr>
+                                <td>Azonosítója:</td>
+                                <td>
+                                    <h:selectOneMenu styleClass="selectonemenu" value="#{holdingPlaceController.newHoldingPlace.userVetId}">
+                                        <f:selectItems value="#{holdingPlaceController.allUserIdByVetRole}" var="ur"
+                                                       itemLabel="#{ur}" itemValue="#{ur}" />
+                                    </h:selectOneMenu>
+                                </td>
+                            </tr>
+                    </tbody>
+                </table>
             
                 <div class="button">
                     <h:commandButton id="saveButton" type="submit" action="#{holdingPlaceController.saveNewHoldingPlace()}" styleClass="add" value = "Mentés" />
