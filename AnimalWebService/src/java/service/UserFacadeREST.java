@@ -66,14 +66,20 @@ public class UserFacadeREST extends AbstractFacade<User> {
     @GET
     @Path("email/{email}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public User find_withEmail(@PathParam("email") String email) {
-        List<User> users = super.findAll();
+    public User findByEmail(@PathParam("email") String email) {
+        /*List<User> users = super.findAll();
         for(int i=0; i<users.size(); i++){
             if(users.get(i).getEmail().equals(email)){
                 return users.get(i);
             }
         }
-        return null;
+        return null;*/
+        
+         ArrayList<User> users = (ArrayList<User>) em.createNamedQuery("User.findByEmail")
+                                .setParameter("email", email)
+                                .getResultList();
+         
+         return users.get(0);
     }
 
     @GET
@@ -104,7 +110,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
         String[] parts = loginData.split("_");
         String email = parts[0];
         String password = parts[1];
-        
+        /*
         List<User> users = super.findAll();
         for(int i=0; i<users.size(); i++){
             if(users.get(i).getEmail().equals(email)){
@@ -112,25 +118,43 @@ public class UserFacadeREST extends AbstractFacade<User> {
                     if(users.get(i).getIsActive() == true){
                         return "correct";
                     }
-                    return "notactive";
+                    return "inactive";
                 }
                 return "passworderror";
             }
         }
-        return "emailerror";
+        return "emailerror";*/
+        
+        ArrayList<User> users = (ArrayList<User>) em.createNamedQuery("User.login")
+                                .setParameter("email", email)
+                                .setParameter("password", password)
+                                .getResultList();
+        
+        if(users.size() < 1){
+            return "passworderror";
+        }
+        else if(!users.get(0).getIsActive() == true){
+            return "inactive";
+        }
+        else{
+            return "correct";
+        }
     }
     
     @GET
     @Path("get_all_userid_by_role/{role}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public ArrayList<String> getAllUserIdByRole(@PathParam("role") String role){
-        ArrayList<String> ids = new ArrayList<>();
+        /*ArrayList<String> ids = new ArrayList<>();
         List<User> users = super.findAll();
         for(int i=0; i<users.size(); i++){
             if(users.get(i).getRoleId() == Integer.parseInt(role)){
                 ids.add(String.valueOf(users.get(i).getId()));
             }
-        }
+        }*/
+        ArrayList<String> ids = (ArrayList<String>) em.createNamedQuery("User.findIdsByRoleId")
+                                .setParameter("roleId", role)
+                                .getResultList();
         return ids;
     }
 

@@ -6,6 +6,7 @@
 package service;
 
 import entity.HoldingPlace;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -81,6 +82,18 @@ public class HoldingPlaceFacadeREST extends AbstractFacade<HoldingPlace> {
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
         return String.valueOf(super.count());
+    }
+    
+    @GET
+    @Path("get_all_holding_place_ids")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public ArrayList<String> getAllHoldingPlaceIds() {
+        List<HoldingPlace> allHoldingPlaces = super.findAll();
+        ArrayList<String> ids = new ArrayList<>();
+        for(int i=0; i<allHoldingPlaces.size(); i++){
+            ids.add(String.valueOf(allHoldingPlaces.get(i).getId()));
+        }
+        return ids;
     }
 
     @Override

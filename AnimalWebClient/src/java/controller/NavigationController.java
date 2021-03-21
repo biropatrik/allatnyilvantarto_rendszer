@@ -47,9 +47,19 @@ public class NavigationController {
         return "animalList.xhtml?faces-redirect=true";
     }
     
+    public String animalAdd(){
+        this.activePageName = "animalAdd";
+        return "animalAdd.xhtml?faces-redirect=true";
+    }
+    
     public String breedingList(){
         this.activePageName = "breedingList";
         return "breedingList.xhtml?faces-redirect=true";
+    }
+    
+    public String breedingAdd(){
+        this.activePageName = "breedingAdd";
+        return "breedingAdd.xhtml?faces-redirect=true";
     }
     
     public String holdingPlaceList(){

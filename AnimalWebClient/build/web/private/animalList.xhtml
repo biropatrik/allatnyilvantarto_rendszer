@@ -22,7 +22,7 @@
             
             <div class="content-block">
                 <div class="button">
-                    <h:commandButton value="Új egyed felvétele" type="submit" action="#{navigationController.accountEdit()}" styleClass="add"/>
+                    <h:commandButton value="Új egyed felvétele" type="submit" action="#{navigationController.animalAdd()}" styleClass="add"/>
                 </div>
             </div>
             
@@ -35,7 +35,7 @@
                             <th>Faj</th>
                             <th>Születési dátum</th>
                         </tr>
-                        <c:forEach items="#{animalController.allAnimal}" var="details">
+                        <c:forEach items="#{animalController.allAnimal}" var="details" >
                             <tr class="animal_#{details.earTag}" style="background-color:#B5B5B5;">
                                 <td>#{details.earTag}</td>
                                 <td>#{details.name}</td>

@@ -215,15 +215,15 @@
                         <tr id="holdingPlace_add" class="holdingPlace_add" >
                             <th colspan="5" style="border: solid thin;">Hatósági állatorvos</th>
                         </tr>
-                            <tr>
-                                <td>Azonosítója:</td>
-                                <td>
-                                    <h:selectOneMenu styleClass="selectonemenu" value="#{holdingPlaceController.newHoldingPlace.userVetId}">
-                                        <f:selectItems value="#{holdingPlaceController.allUserIdByVetRole}" var="ur"
-                                                       itemLabel="#{ur}" itemValue="#{ur}" />
-                                    </h:selectOneMenu>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>Azonosítója:</td>
+                            <td>
+                                <h:selectOneMenu styleClass="selectonemenu" value="#{holdingPlaceController.newHoldingPlace.userVetId}">
+                                    <f:selectItems value="#{holdingPlaceController.allUserIdByVetRole}" var="ur"
+                                                   itemLabel="#{ur}" itemValue="#{ur}" />
+                                </h:selectOneMenu>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             

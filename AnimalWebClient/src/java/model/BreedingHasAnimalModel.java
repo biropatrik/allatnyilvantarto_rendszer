@@ -5,6 +5,10 @@
  */
 package model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  *
  * @author Patrik
@@ -65,5 +69,55 @@ public class BreedingHasAnimalModel {
 
     public void setEndDate(long endDate) {
         this.endDate = endDate;
+    }
+    
+    public String getStartDateString() {
+        if(startDate == 0){
+            return ("");
+        }
+        
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date correctDate = new Date(startDate);
+        return formatter.format(correctDate);
+    }
+
+    public void setStartDateString(String dateString) {
+        
+        if(dateString != null){
+            long milliseconds = 0;
+            SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                Date d = f.parse(dateString);
+                milliseconds = d.getTime();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            this.startDate = milliseconds;
+        }
+    }
+    
+    public String getEndDateString() {
+        if(endDate == 0){
+            return ("");
+        }
+        
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date correctDate = new Date(endDate);
+        return formatter.format(correctDate);
+    }
+
+    public void setEndDateString(String dateString) {
+        
+        if(dateString != null){
+            long milliseconds = 0;
+            SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                Date d = f.parse(dateString);
+                milliseconds = d.getTime();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            this.endDate = milliseconds;
+        }
     }
 }

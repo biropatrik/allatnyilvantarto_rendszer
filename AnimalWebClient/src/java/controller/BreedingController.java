@@ -29,6 +29,7 @@ import model.CountryModel;
 import model.CountyModel;
 import model.HoldingPlaceHasBreedingModel;
 import model.HoldingPlaceModel;
+import model.UserHasBreedingModel;
 import model.UserModel;
 
 /**
@@ -41,8 +42,12 @@ public class BreedingController {
     private String id;
     private String searchedId;
     private BreedingModel searchedBreeding;
-    private List<String> breedingIds;
+    private List<String> breedingIds = new ArrayList<>();
     private List<BreedingModel> breedings;
+    
+    private BreedingModel newBreeding = new BreedingModel();
+    private UserHasBreedingModel newUserHasBreeding = new UserHasBreedingModel();
+    private HoldingPlaceHasBreedingModel newHoldingPlaceHasBreeding = new HoldingPlaceHasBreedingModel();
     
     private UserHasBreedingClient userHasBreedingClient;
     private BreedingClient breedingClient;
@@ -72,9 +77,8 @@ public class BreedingController {
     }
     
     public List<BreedingModel> getAllBreedingByBreedingIds(){
-        if(this.breedingIds == null || this.breedingIds.size() < 1){
-            this.breedingIds = getBreedingIdsByUserId();
-        }
+        this.breedingIds.clear();
+        this.breedingIds = getBreedingIdsByUserId();
         
         breedingClient = new BreedingClient();
         List<BreedingModel> breedings = new ArrayList<>();
@@ -213,5 +217,86 @@ public class BreedingController {
         breedingClient = new BreedingClient();
         this.searchedBreeding = breedingClient.find_JSON(BreedingModel.class, this.searchedId);
         breedingClient.close();
+    }
+    
+    public List<String> getAllUserIdByRole(){
+        userClient = new UserClient();
+        List<String> ids = userClient.getAllUserIdByRole_JSON(List.class, "1");
+        ids.addAll(userClient.getAllUserIdByRole_JSON(List.class, "2"));
+        ids.addAll(userClient.getAllUserIdByRole_JSON(List.class, "3"));
+        userClient.close();
+        return ids;
+    }
+    
+    public List<BreedingTypeModel> getAllBreedingTypes(){
+        breedingTypeClient = new BreedingTypeClient();
+        List<BreedingTypeModel> model = breedingTypeClient.findAll_JSON(List.class);
+        breedingTypeClient.close();
+        return model;
+    }
+    
+    public List<BreedingClassificationModel> getAllBreedingClassification(){
+        breedingClassificationClient = new BreedingClassificationClient();
+        List<BreedingClassificationModel> model = breedingClassificationClient.findAll_JSON(List.class);
+        breedingClassificationClient.close();
+        return model;
+    }
+    
+    public List<BreedingQualificationModel> getAllBreedingQualification(){
+        breedingQualificationClient = new BreedingQualificationClient();
+        List<BreedingQualificationModel> model = breedingQualificationClient.findAll_JSON(List.class);
+        breedingQualificationClient.close();
+        return model;
+    }
+    
+    public List<String> getAllHoldingPlaceIds(){
+        holdingPlaceClient = new HoldingPlaceClient();
+        List<String> model = holdingPlaceClient.getAllHoldingPlaceIds_JSON(List.class);
+        holdingPlaceClient.close();
+        return model;
+    }
+
+    public BreedingModel getNewBreeding() {
+        return newBreeding;
+    }
+
+    public void setNewBreeding(BreedingModel newBreeding) {
+        this.newBreeding = newBreeding;
+    }
+
+    public UserHasBreedingModel getNewUserHasBreeding() {
+        return newUserHasBreeding;
+    }
+
+    public void setNewUserHasBreeding(UserHasBreedingModel newUserHasBreeding) {
+        this.newUserHasBreeding = newUserHasBreeding;
+    }
+
+    public HoldingPlaceHasBreedingModel getNewHoldingPlaceHasBreeding() {
+        return newHoldingPlaceHasBreeding;
+    }
+
+    public void setNewHoldingPlaceHasBreeding(HoldingPlaceHasBreedingModel newHoldingPlaceHasBreeding) {
+        this.newHoldingPlaceHasBreeding = newHoldingPlaceHasBreeding;
+    }
+    
+    public void saveNewBreeding(){
+        
+        //Ellenőrzés!
+        
+        this.newBreeding.setIsActive(false);
+        breedingClient = new BreedingClient();
+        breedingClient.create_JSON(this.newBreeding);
+        breedingClient.close();
+        
+        this.newUserHasBreeding.setBreedingId(this.newBreeding.getId());
+        userHasBreedingClient = new UserHasBreedingClient();
+        userHasBreedingClient.create_JSON(this.newUserHasBreeding);
+        userHasBreedingClient.close();
+        
+        this.newHoldingPlaceHasBreeding.setBreedingId(this.newBreeding.getId());
+        holdingPlaceHasBreedingClient = new HoldingPlaceHasBreedingClient();
+        holdingPlaceHasBreedingClient.create_JSON(this.newHoldingPlaceHasBreeding);
+        holdingPlaceHasBreedingClient.close();
     }
 }

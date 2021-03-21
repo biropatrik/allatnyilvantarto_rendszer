@@ -44,6 +44,7 @@ import javax.faces.context.FacesContext;
 import model.AnimalDiseasesModel;
 import model.AnimalHasDiseasesModel;
 import model.UserModel;
+import org.json.JSONObject;
 
 /**
  *
@@ -62,6 +63,10 @@ public class AnimalController {
     
     private String searchedEarTag;
     private AnimalModel searchedAnimal;
+    
+    private AnimalModel newAnimal = new AnimalModel();
+    private List<BreedingHasAnimalModel> newBreedingHasAnimal = new ArrayList<>();
+    private List<AnimalHasDiseasesModel> newAnimalHasDiseases = new ArrayList<>();
     
     private UserHasBreedingClient userHasBreedingClient;
     private BreedingHasAnimalClient breedingHasAnimalClient;
@@ -364,5 +369,135 @@ public class AnimalController {
         this.holdingPlaceHasBreedings = getHoldingPlacesByBreedingId();
         this.holdingPlaces = getHoldingPlaces();
         
+    }
+    
+    public void saveNewAnimal(){
+        
+        this.newAnimal.setIsAccepted(false);
+        
+        animalClient = new AnimalClient();
+        String jsonAnimal = new JSONObject()
+                            .put("earTag", this.newAnimal.getEarTag())
+                            .put("motherId", this.newAnimal.getMotherId())
+                            .put("name", this.newAnimal.getName())
+                            .put("sex", this.newAnimal.isSex())
+                            .put("birthdate", this.newAnimal.getBirthdate())
+                            .put("deathdate", this.newAnimal.getDeathdate())
+                            .put("speciesId", this.newAnimal.getSpeciesId())
+                            .put("breedId", this.newAnimal.getBreedId())
+                            .put("colorId", this.newAnimal.getColorId())
+                            .put("twinning", this.newAnimal.isTwinning())
+                            .put("calvingId", this.newAnimal.getCalvingId())
+                            .put("calvingWeight", this.newAnimal.getCalvingWeight())
+                            .put("isAccepted", this.newAnimal.isIsAccepted())
+                            .put("inseminationDate", this.newAnimal.getInseminationDate())
+                            .toString();
+                
+        animalClient.create_JSON(jsonAnimal);
+        animalClient.close();
+        
+        breedingHasAnimalClient = new BreedingHasAnimalClient();
+        for(int i=0; i < this.newBreedingHasAnimal.size(); i++){
+            if(newBreedingHasAnimal.get(i).getStartDate()!=0){
+                String jsonString = new JSONObject()
+                                    .put("breedingId", newBreedingHasAnimal.get(i).getBreedingId())
+                                    .put("animalEarTag", newAnimal.getEarTag())
+                                    .put("startDate", newBreedingHasAnimal.get(i).getStartDate())
+                                    .put("endDate", newBreedingHasAnimal.get(i).getEndDate())
+                                    .toString();
+                breedingHasAnimalClient.create_JSON(jsonString);
+            }
+        }
+        breedingHasAnimalClient.close();
+        
+        animalHasDiseasesClient = new AnimalHasDiseasesClient();
+        for(int i=0; i < this.newAnimalHasDiseases.size(); i++){
+            if(newAnimalHasDiseases.get(i).getStartDate() != 0){
+                String jsonString = new JSONObject()
+                                    .put("animalDiseasesId", newAnimalHasDiseases.get(i).getAnimalDiseasesId())
+                                    .put("animalEarTag", newAnimal.getEarTag())
+                                    .put("startDate", newAnimalHasDiseases.get(i).getStartDate())
+                                    .put("endDate", newAnimalHasDiseases.get(i).getEndDate())
+                                    .put("comment", newAnimalHasDiseases.get(i).getComment())
+                                    .toString();
+                animalHasDiseasesClient.create_JSON(jsonString);
+            }
+        }
+        animalHasDiseasesClient.close();
+    }
+
+    public AnimalModel getNewAnimal() {
+        return newAnimal;
+    }
+
+    public void setNewAnimal(AnimalModel newAnimal) {
+        this.newAnimal = newAnimal;
+    }
+
+    public List<BreedingHasAnimalModel> getNewBreedingHasAnimal() {
+        if(this.newBreedingHasAnimal.isEmpty()){
+            addNewBreedingHasAnimal();
+        }
+        return newBreedingHasAnimal;
+    }
+
+    public void addNewBreedingHasAnimal() {
+        BreedingHasAnimalModel model = new BreedingHasAnimalModel();
+        this.newBreedingHasAnimal.add(model);
+    }
+    
+    public void removeNewBreedingHasAnimal(BreedingHasAnimalModel model){
+        this.newBreedingHasAnimal.remove(model);
+    }
+
+    public List<AnimalHasDiseasesModel> getNewAnimalHasDiseases() {
+        if(this.newAnimalHasDiseases.isEmpty()){
+            addNewAnimalHasDiseases();
+        }
+        return newAnimalHasDiseases;
+    }
+
+    public void addNewAnimalHasDiseases() {
+        AnimalHasDiseasesModel model = new AnimalHasDiseasesModel();
+        this.newAnimalHasDiseases.add(model);
+    }
+    
+    public void removeNewAnimalHasDiseases(AnimalHasDiseasesModel model){
+        this.newAnimalHasDiseases.remove(model);
+    }
+    
+    public List<SpeciesModel> getAllSpecies(){
+        speciesClient = new SpeciesClient();
+        List<SpeciesModel> model = speciesClient.findAll_JSON(List.class);
+        speciesClient.close();
+        return model;
+    }
+    
+    public List<BreedModel> getAllBreed(){
+        breedClient = new BreedClient();
+        List<BreedModel> model = breedClient.findAll_JSON(List.class);
+        breedClient.close();
+        return model;
+    }
+    
+    public List<ColorModel> getAllColor(){
+        colorClient = new ColorClient();
+        List<ColorModel> model = colorClient.findAll_JSON(List.class);
+        colorClient.close();
+        return model;
+    }
+    
+    public List<CalvingModel> getAllCalving(){
+        calvingClient = new CalvingClient();
+        List<CalvingModel> model = calvingClient.findAll_JSON(List.class);
+        calvingClient.close();
+        return model;
+    }
+    
+    public List<AnimalDiseasesModel> getAllAnimalDiseases(){
+        animalDiseasesClient = new AnimalDiseasesClient();
+        List<AnimalDiseasesModel> model = animalDiseasesClient.findAll_JSON(List.class);
+        animalDiseasesClient.close();
+        return model;
     }
 }

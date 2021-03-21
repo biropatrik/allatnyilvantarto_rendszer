@@ -49,7 +49,7 @@ public class LoginController {
         } else if(checkLoginData(email, password).equals("passworderror")){
             FacesContext.getCurrentInstance().addMessage("login:password", new FacesMessage("Hibás jelszó!"));
             
-        }else if(checkLoginData(email, password).equals("notactive")){
+        }else if(checkLoginData(email, password).equals("inactive")){
             FacesContext.getCurrentInstance().addMessage("login:email", new FacesMessage("Ez a felhasználó még nincs felülvizsgálva!"));
         }
         return "login.xhtml";

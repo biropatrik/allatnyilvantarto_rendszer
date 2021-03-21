@@ -17,7 +17,6 @@ import client.HoldingPlaceHasSpeciesClient;
 import client.SpeciesClient;
 import client.UserClient;
 import client.UserHasBreedingClient;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -71,13 +70,15 @@ public class HoldingPlaceController {
     private CapacityTypeClient capacityTypeClient;
     
     public List<HoldingPlaceModel> getAllHoldingPlacesByBreedingIds(){
-        if(this.breedingIds == null || this.breedingIds.size() < 1){
-            this.breedingIds = getBreedingIdsByUserId();
-        }
+        this.breedingIds = new ArrayList<>();
+        this.breedingIds = getBreedingIdsByUserId();
         
         List<String> holdingPlaceIds = new ArrayList<>();
         for(int i=0; i<this.breedingIds.size(); i++){
-            holdingPlaceIds.add(String.valueOf(getHoldingPlaceHasBreedingByBreedingId(this.breedingIds.get(i)).getHoldingPlaceId()));
+            String id = String.valueOf(getHoldingPlaceHasBreedingByBreedingId(this.breedingIds.get(i)).getHoldingPlaceId());
+            if(!holdingPlaceIds.contains(id)){
+                holdingPlaceIds.add(id);
+            }
         }
         
         holdingPlaceClient = new HoldingPlaceClient();

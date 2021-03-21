@@ -5,6 +5,10 @@
  */
 package model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  *
  * @author Patrik
@@ -162,5 +166,78 @@ public class AnimalModel {
         this.inseminationDate = inseminationDate;
     }
     
+    public String getBirthdateString() {
+        if(birthdate == 0){
+            return ("");
+        }
+        
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date correctDate = new Date(birthdate);
+        return formatter.format(correctDate);
+    }
+
+    public void setBirthdateString(String dateString) {
+        
+        if(dateString != null){
+            long milliseconds = 0;
+            SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                Date d = f.parse(dateString);
+                milliseconds = d.getTime();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            this.birthdate = milliseconds;
+        }
+    }
     
+    public String getDeathdateString() {
+        if(deathdate == 0){
+            return ("");
+        }
+        
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date correctDate = new Date(deathdate);
+        return formatter.format(correctDate);
+    }
+
+    public void setDeathdateString(String dateString) {
+        
+        if(dateString != null){
+            long milliseconds = 0;
+            SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                Date d = f.parse(dateString);
+                milliseconds = d.getTime();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            this.deathdate = milliseconds;
+        }
+    }
+    
+    public String getInseminationdateString() {
+        if(inseminationDate == 0){
+            return ("");
+        }
+        
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date correctDate = new Date(inseminationDate);
+        return formatter.format(correctDate);
+    }
+
+    public void setInseminationdateString(String dateString) {
+        
+        if(dateString != null){
+            long milliseconds = 0;
+            SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                Date d = f.parse(dateString);
+                milliseconds = d.getTime();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            this.inseminationDate = milliseconds;
+        }
+    }
 }
