@@ -52,6 +52,11 @@ public class NavigationController {
         return "animalAdd.xhtml?faces-redirect=true";
     }
     
+    public String animalEdit(){
+        this.activePageName = "animalEdit";
+        return "animalEdit.xhtml?faces-redirect=true";
+    }
+    
     public String breedingList(){
         this.activePageName = "breedingList";
         return "breedingList.xhtml?faces-redirect=true";

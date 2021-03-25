@@ -7,26 +7,26 @@
       xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
-        <title>Egyed felvétele</title>
+        <title>Egyed módosítása</title>
     </h:head>
     <h:body>
         <link type="text/css" rel="stylesheet" href="../resources/css/animal.css?v=${applicationInfoBean.projectVersion}" />
         
         <div class="content">
             <f:metadata>
-                <f:viewAction action="#{loginController.checkLogin('animalAdd.xhtml',3)}" />
+                <f:viewAction action="#{loginController.checkLogin('animalEdit.xhtml',3)}" />
             </f:metadata>
 
             <ui:include src="navigationbar.xhtml" />
             
             <div class="content-block">
-            <h:form id="addAnimal">
+            <h:form id="editAnimal">
                 <table>
                     <tbody>
-                        <tr id="animal_add" class="animal_add">
+                        <tr id="animal_edit">
                             <th colspan="5" style="border: solid thin;">Az egyed adatai</th>
                         </tr>
-                        <tr id="animal_add" class="animal_add">
+                        <tr id="animal_edit">
                             <td>Egyed azonosítója:</td>
                             <td>
                                 <h:message for="animal_id" style="color:red" />
@@ -35,7 +35,7 @@
                                 </h:inputText>
                             </td>
                         </tr>
-                        <tr id="animal_add" class="animal_add">
+                        <tr id="animal_edit">
                             <td>Egyed neve:</td>
                             <td>
                                 <h:message for="animal_name" style="color:red" />
@@ -44,7 +44,7 @@
                                 </h:inputText>
                             </td>
                         </tr>
-                        <tr id="animal_add" class="animal_add">
+                        <tr id="animal_edit">
                             <td>Születési dátum:</td>
                             <td>
                                 <h:inputText id="birthdate" a:type="date" value="#{animalController.newAnimal.birthdateString}">
@@ -52,7 +52,7 @@
                                 </h:inputText>
                             </td>
                         </tr>
-                        <tr id="animal_add" class="animal_add">
+                        <tr id="animal_edit">
                             <td>Neme:</td>
                             <td>
                                 <h:selectOneMenu id="sex" styleClass="selectonemenu" value="#{animalController.newAnimal.sex}">
@@ -63,7 +63,7 @@
                                 </h:selectOneMenu>
                             </td>
                         </tr>
-                        <tr id="animal_add" class="animal_add">
+                        <tr id="animal_edit">
                             <td>Egyed faj:</td>
                             <td>
                                 <h:selectOneMenu id="species" styleClass="selectonemenu" value="#{animalController.newAnimal.speciesId}">
@@ -74,7 +74,7 @@
                                 </h:selectOneMenu>
                             </td>
                         </tr>
-                        <tr id="animal_add" class="animal_add">
+                        <tr id="animal_edit">
                             <td>Egyed fajta:</td>
                             <td>
                                 <h:selectOneMenu id="breed" styleClass="selectonemenu" value="#{animalController.newAnimal.breedId}">
@@ -85,7 +85,7 @@
                                 </h:selectOneMenu>
                             </td>
                         </tr>
-                        <tr id="animal_add" class="animal_add">
+                        <tr id="animal_edit">
                             <td>Egyed színe:</td>
                             <td>
                                 <h:selectOneMenu id="color" styleClass="selectonemenu" value="#{animalController.newAnimal.colorId}">
@@ -96,7 +96,7 @@
                                 </h:selectOneMenu>
                             </td>
                         </tr>
-                        <tr id="animal_add" class="animal_add">
+                        <tr id="animal_edit">
                             <td>Tenyészetkód:</td>
                             <td>
                                 <h:message for="breedingHasAnimal_id_00" style="color:red" />
@@ -105,7 +105,7 @@
                                 </h:inputText>
                             </td>
                         </tr>
-                        <tr id="animal_add" class="animal_add">
+                        <tr id="animal_edit">
                             <td>Tenyészetbe érkezés dátuma:</td>
                             <td>
                                <h:inputText id="breedingHasAnimal_startDate_00" a:type="date" value="#{animalController.newBreedingHasAnimal.get(0).startDateString}">
@@ -114,10 +114,10 @@
                             </td>
                         </tr>
                         
-                        <tr id="animal_add" class="animal_add">
+                        <tr id="animal_edit">
                             <th colspan="5" style="border: solid thin;">Az ellés adatai</th>
                         </tr>
-                        <tr id="animal_add" class="animal_add">
+                        <tr id="animal_edit">
                             <td>Anya(recipiens) azonosítója:</td>
                             <td>
                                 <h:message for="mother_id" style="color:red" />
@@ -126,7 +126,7 @@
                                 </h:inputText>
                             </td>
                         </tr>
-                        <tr id="animal_add" class="animal_add">
+                        <tr id="animal_edit">
                             <td>Ikerellés:</td>
                             <td>
                                 <h:selectOneMenu id="twinning" styleClass="selectonemenu" value="#{animalController.newAnimal.twinning}">
@@ -137,7 +137,7 @@
                                 </h:selectOneMenu>
                             </td>
                         </tr>
-                        <tr id="animal_add" class="animal_add">
+                        <tr id="animal_edit">
                             <td>Ellés módja:</td>
                             <td>
                                 <h:selectOneMenu id="calving" styleClass="selectonemenu" value="#{animalController.newAnimal.colorId}">
@@ -148,7 +148,7 @@
                                 </h:selectOneMenu>
                             </td>
                         </tr>
-                        <tr id="animal_add" class="animal_add">
+                        <tr id="animal_edit">
                             <td>Borjú tömege (kg):</td>
                             <td>
                                 <h:message for="calving_weight" style="color:red" />
@@ -162,7 +162,7 @@
                 
                 <table>
                     <tbody>
-                        <tr id="animal_add" class="animal_add">
+                        <tr id="animal_edit">
                             <th colspan="4" style="border: solid thin;">Az egyed előző tenyészetei</th>
                         </tr>
                         <tr>
@@ -174,7 +174,7 @@
                         
                         <c:forEach items="#{animalController.newBreedingHasAnimal}" var="breedingHasAnimal" varStatus="loop">
                             <c:if test="#{loop.index > 0}" >
-                            <tr id="animal_add" class="animal_add">
+                            <tr id="animal_edit">
                             <td>
                                 <h:message for="breedingHasAnimal_id_#{loop.index}" style="color:red" />
                                 <h:inputText id="breedingHasAnimal_id_#{loop.index}" label="Azonosító" requiredMessage="A mező kitöltése kötelező!" a:placeholder="Azonosító" required="false" value="#{breedingHasAnimal.breedingId}">
@@ -197,7 +197,7 @@
                             <td>
                                 <div class="button" style="#{animalController.newBreedingHasAnimal.size() > 1 ? '' : 'display: none;'}">
                                     <h:commandButton id="removeBreedingHasAnimalButton" action="#{animalController.removeNewBreedingHasAnimal(breedingHasAnimal)}" styleClass="remove" value = "X">
-                                        <f:ajax execute = "removeBreedingHasAnimalButton" render = "addAnimal" />
+                                        <f:ajax execute = "removeBreedingHasAnimalButton" render = "editAnimal" />
                                     </h:commandButton>
                                 </div>
                             </td>
@@ -208,13 +208,13 @@
                 </table>
                 <div class="button">
                     <h:commandButton id="addBreedingHasAnimalButton" action="#{animalController.addNewBreedingHasAnimal()}" styleClass="add" value = " + ">
-                        <f:ajax execute = "addBreedingHasAnimalButton" render = "addAnimal" />
+                        <f:ajax execute = "addBreedingHasAnimalButton" render = "editAnimal" />
                     </h:commandButton>
                 </div>
                 
                 <table>
                     <tbody>
-                        <tr id="animal_add" class="animal_add">
+                        <tr id="animal_edit">
                             <th colspan="5" style="border: solid thin;">Az egyed betegségei</th>
                         </tr>
                         <tr>
@@ -236,14 +236,14 @@
                                     </h:selectOneMenu>
                                 </td>
                                 <td>
-                                    <h:inputText id="startDate_#{loop.index}" a:type="date" value="#{animalHasDiseases.startDateString}">
-                                        <f:ajax execute = "startDate_#{loop.index}" render = "startDate_#{loop.index}" />
+                                    <h:inputText id="animalHasDiseases_startDate_#{loop.index}" a:type="date" value="#{animalHasDiseases.startDateString}">
+                                        <f:ajax execute = "animalHasDiseases_startDate_#{loop.index}" render = "animalHasDiseases_startDate_#{loop.index}" />
                                     </h:inputText>
                                 </td>
                                 
                                 <td>
-                                    <h:inputText id="endDate_#{loop.index}" a:type="date" value="#{animalHasDiseases.endDateString}">
-                                        <f:ajax execute = "endDate_#{loop.index}" render = "endDate_#{loop.index}" />
+                                    <h:inputText id="animalHasDiseases_endDate_#{loop.index}" a:type="date" value="#{animalHasDiseases.endDateString}">
+                                        <f:ajax execute = "animalHasDiseases_endDate_#{loop.index}" render = "animalHasDiseases_endDate_#{loop.index}" />
                                     </h:inputText>
                                 </td>
                                 
@@ -255,7 +255,7 @@
                                 <td>
                                     <div class="button" style="#{animalController.newAnimalHasDiseases.size() > 1 ? '' : 'display: none;'}">
                                         <h:commandButton id="removeAnimalHasDiseasesButton" action="#{animalController.removeNewAnimalHasDiseases(animalHasDiseases)}" styleClass="remove" value = "X">
-                                            <f:ajax execute = "removeAnimalHasDiseasesButton" render = "addAnimal" />
+                                            <f:ajax execute = "removeAnimalHasDiseasesButton" render = "editAnimal" />
                                         </h:commandButton>
                                     </div>
                                 </td>
@@ -264,13 +264,13 @@
                     </tbody>
                 </table>
                 <div class="button">
-                    <h:commandButton id="addAnimalHasDiseasesButton" action="#{animalController.addNewAnimalHasDiseases()}" styleClass="add" value = " + ">
-                        <f:ajax execute = "addAnimalHasDiseasesButton" render = "addAnimal" />
+                    <h:commandButton id="editAnimalHasDiseasesButton" action="#{animalController.addNewAnimalHasDiseases()}" styleClass="add" value = " + ">
+                        <f:ajax execute = "editAnimalHasDiseasesButton" render = "editAnimal" />
                     </h:commandButton>
                 </div>
                 
                 <div class="button">
-                    <h:commandButton id="saveButton" type="submit" action="#{animalController.saveNewAnimal()}" styleClass="add" value = "Mentés" />
+                    <h:commandButton id="saveButton" type="submit" action="#{animalController.saveModifiedAnimal()}" styleClass="add" value = "Mentés" />
                 </div>
             </h:form>
             </div>

@@ -155,7 +155,7 @@
                             <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
                                 <th>
                                     <div class="button">
-                                        <h:commandButton value="Egyed módosítása" type="submit" action="#{navigationController.accountEdit()}" styleClass="add"/>
+                                        <h:commandButton value="Egyed módosítása" type="submit" action="#{animalController.loadEditPage(animal.earTag)}" styleClass="add"/>
                                     </div>
                                 </th>
                             </tr>

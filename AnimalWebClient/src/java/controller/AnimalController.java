@@ -439,6 +439,69 @@ public class AnimalController {
         }
         animalHasDiseasesClient.close();
     }
+    
+    public void saveModifiedAnimal(){
+        this.newAnimal.setIsAccepted(false);
+        
+        animalClient = new AnimalClient();
+        String jsonAnimal = new JSONObject()
+                            .put("motherId", this.newAnimal.getMotherId())
+                            .put("name", this.newAnimal.getName())
+                            .put("sex", this.newAnimal.isSex())
+                            .put("birthdate", this.newAnimal.getBirthdate())
+                            .put("deathdate", this.newAnimal.getDeathdate())
+                            .put("speciesId", this.newAnimal.getSpeciesId())
+                            .put("breedId", this.newAnimal.getBreedId())
+                            .put("colorId", this.newAnimal.getColorId())
+                            .put("twinning", this.newAnimal.isTwinning())
+                            .put("calvingId", this.newAnimal.getCalvingId())
+                            .put("calvingWeight", this.newAnimal.getCalvingWeight())
+                            .put("isAccepted", this.newAnimal.isIsAccepted())
+                            .put("inseminationDate", this.newAnimal.getInseminationDate())
+                            .toString();
+                
+        animalClient.edit_JSON(jsonAnimal, String.valueOf(newAnimal.getEarTag()));
+        animalClient.close();
+        
+        breedingHasAnimalClient = new BreedingHasAnimalClient();
+        for(int i=0; i < this.newBreedingHasAnimal.size(); i++){
+            if(newBreedingHasAnimal.get(i).getStartDate()!=0){
+                String jsonString = new JSONObject()
+                                    .put("breedingId", newBreedingHasAnimal.get(i).getBreedingId())
+                                    .put("animalEarTag", newAnimal.getEarTag())
+                                    .put("startDate", newBreedingHasAnimal.get(i).getStartDate())
+                                    .put("endDate", newBreedingHasAnimal.get(i).getEndDate())
+                                    .toString();
+                breedingHasAnimalClient.edit_JSON(jsonString, String.valueOf(newBreedingHasAnimal.get(i).getId()));
+            }
+        }
+        breedingHasAnimalClient.close();
+        
+        animalHasDiseasesClient = new AnimalHasDiseasesClient();
+        for(int i=0; i < this.newAnimalHasDiseases.size(); i++){
+            if(newAnimalHasDiseases.get(i).getStartDate() != 0){
+                String jsonString = new JSONObject()
+                                    .put("animalDiseasesId", newAnimalHasDiseases.get(i).getAnimalDiseasesId())
+                                    .put("animalEarTag", newAnimal.getEarTag())
+                                    .put("startDate", newAnimalHasDiseases.get(i).getStartDate())
+                                    .put("endDate", newAnimalHasDiseases.get(i).getEndDate())
+                                    .put("comment", newAnimalHasDiseases.get(i).getComment())
+                                    .toString();
+                animalHasDiseasesClient.edit_JSON(jsonString, String.valueOf(newAnimalHasDiseases.get(i).getId()));
+            }
+        }
+        animalHasDiseasesClient.close();
+    }
+    
+    public String loadEditPage(String earTag){
+        
+        this.newAnimal = searchedAnimal;
+        this.newBreedingHasAnimal = getAllBreedingsHasAnimalByEarTag(earTag);
+        this.newAnimalHasDiseases = getAllAnimalHasDiseasesByEarTags(earTag);
+        
+        NavigationController c = new NavigationController();
+        return c.animalEdit();
+    }
 
     public AnimalModel getNewAnimal() {
         return newAnimal;
