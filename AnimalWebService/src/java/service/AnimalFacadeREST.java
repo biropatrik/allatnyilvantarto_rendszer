@@ -6,6 +6,7 @@
 package service;
 
 import entity.Animal;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -81,6 +82,17 @@ public class AnimalFacadeREST extends AbstractFacade<Animal> {
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
         return String.valueOf(super.count());
+    }
+    
+    @GET
+    @Path("findAnimalsByUserId/{id}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public ArrayList<Animal> findAnimalsByUserId(@PathParam("id") Integer id){
+           ArrayList<Animal> animals = (ArrayList<Animal>) em.createNamedQuery("Animal.findByUserId")
+                                        .setParameter("userId", id)
+                                        .getResultList();
+           
+        return animals;
     }
 
     @Override

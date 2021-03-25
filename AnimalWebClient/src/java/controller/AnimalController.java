@@ -154,18 +154,23 @@ public class AnimalController {
     }
     
     public List<AnimalModel> getAllAnimal(){
-        this.breedingIds = getBreedingIdsByUserId();
-        this.breedingHasAnimals = getAllBreedingsHasAnimalByBreedingIds();
-        this.holdingPlaceHasBreedings = getHoldingPlacesByBreedingId();
-        this.holdingPlaces = getHoldingPlaces();
+        //this.breedingIds = getBreedingIdsByUserId();
+        //this.breedingHasAnimals = getAllBreedingsHasAnimalByBreedingIds();
+        ////this.holdingPlaceHasBreedings = getHoldingPlacesByBreedingId();
+        ////this.holdingPlaces = getHoldingPlaces();
         
         animalClient = new AnimalClient();
-        List<AnimalModel> animals = new ArrayList<>();
-        for(int i=0; i<this.breedingHasAnimals.size(); i++){
-            AnimalModel animal = animalClient.find_JSON(AnimalModel.class, this.breedingHasAnimals.get(i).getAnimalEarTag());
-            animals.add(animal);
-        }
+//        List<AnimalModel> animals = new ArrayList<>();
+//        for(int i=0; i<this.breedingHasAnimals.size(); i++){
+//            AnimalModel animal = animalClient.find_JSON(AnimalModel.class, this.breedingHasAnimals.get(i).getAnimalEarTag());
+//            animals.add(animal);
+//        }
+//        return animals;
+        this.id = Session.getUserId();
+        List<AnimalModel> animals = animalClient.findAnimalsByUserId_JSON(List.class, this.id);
+        animalClient.close();
         return animals;
+        
     }
     
     public String getDateFormat(long date){
@@ -234,20 +239,19 @@ public class AnimalController {
     }
     
     public String getBreedAddressByAnimal(String earTag){
-        int breedingId = -1;
+        /*int breedingId = -1;
         for(int i=0; i<this.breedingHasAnimals.size(); i++){
             if(this.breedingHasAnimals.get(i).getAnimalEarTag().equals(earTag)){
                 breedingId = this.breedingHasAnimals.get(i).getBreedingId();
             }
         }
-        
         int holdingplaceId = -1;
         for(int i=0; i<this.holdingPlaceHasBreedings.size(); i++){
             if(this.holdingPlaceHasBreedings.get(i).getBreedingId() == breedingId){
                 holdingplaceId = this.holdingPlaceHasBreedings.get(i).getHoldingPlaceId();
             }
-        }
-        
+        }*/
+        /*
         String address = null;
         for(int i=0; i<this.holdingPlaces.size(); i++){
             if(this.holdingPlaces.get(i).getId().equals(holdingplaceId)){
@@ -257,7 +261,17 @@ public class AnimalController {
                           getCityName(this.holdingPlaces.get(i).getCityId()) + " " +
                           this.holdingPlaces.get(i).getStreet();
             }
-        }
+        }*/
+        String address = null;
+        holdingPlaceClient = new HoldingPlaceClient();
+        List<HoldingPlaceModel> holdingPlaces = holdingPlaceClient.findByAnimalEarTag_JSON(List.class, earTag);
+        holdingPlaceClient.close();
+        address = "(" + this.holdingPlaces.get(0).getCountryIso2() + ") " +
+                          getCountyName(this.holdingPlaces.get(0).getCountyId()) + " " +
+                          getCityPostalCode(this.holdingPlaces.get(0).getCityId()) + " " +
+                          getCityName(this.holdingPlaces.get(0).getCityId()) + " " +
+                          this.holdingPlaces.get(0).getStreet();
+        
         return address;
     }
         

@@ -40,7 +40,13 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Animal.findByCalvingId", query = "SELECT a FROM Animal a WHERE a.calvingId = :calvingId"),
     @NamedQuery(name = "Animal.findByCalvingWeight", query = "SELECT a FROM Animal a WHERE a.calvingWeight = :calvingWeight"),
     @NamedQuery(name = "Animal.findByIsAccepted", query = "SELECT a FROM Animal a WHERE a.isAccepted = :isAccepted"),
-    @NamedQuery(name = "Animal.findByInseminationDate", query = "SELECT a FROM Animal a WHERE a.inseminationDate = :inseminationDate")})
+    @NamedQuery(name = "Animal.findByInseminationDate", query = "SELECT a FROM Animal a WHERE a.inseminationDate = :inseminationDate"),
+    @NamedQuery(name = "Animal.findByUserId", query = "SELECT a FROM Animal a, BreedingHasAnimal b, UserHasBreeding u "
+                                                    + "WHERE a.earTag = b.animalEarTag "
+                                                    + "AND b.breedingId = u.breedingId "
+                                                    + "AND u.userId = :userId "
+                                                    + "AND ( b.endDate < 1 "
+                                                    + "OR b.endDate IS NULL)" )})
 public class Animal implements Serializable {
 
     private static final long serialVersionUID = 1L;

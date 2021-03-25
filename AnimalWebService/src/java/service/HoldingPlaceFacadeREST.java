@@ -95,6 +95,16 @@ public class HoldingPlaceFacadeREST extends AbstractFacade<HoldingPlace> {
         }
         return ids;
     }
+    
+    @GET
+    @Path("findByAnimalEarTag/{earTag}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public ArrayList<HoldingPlace> findByAnimalEarTag(@PathParam("earTag") String earTag) {
+        ArrayList<HoldingPlace> holdingPlaces = (ArrayList<HoldingPlace>) em.createNamedQuery("HoldingPlace.findByAnimalEarTag")
+                                    .setParameter("animalEarTag", earTag)
+                                    .getResultList();
+        return holdingPlaces;
+    }
 
     @Override
     protected EntityManager getEntityManager() {
