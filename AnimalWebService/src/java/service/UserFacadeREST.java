@@ -67,14 +67,6 @@ public class UserFacadeREST extends AbstractFacade<User> {
     @Path("email/{email}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public User findByEmail(@PathParam("email") String email) {
-        /*List<User> users = super.findAll();
-        for(int i=0; i<users.size(); i++){
-            if(users.get(i).getEmail().equals(email)){
-                return users.get(i);
-            }
-        }
-        return null;*/
-        
          ArrayList<User> users = (ArrayList<User>) em.createNamedQuery("User.findByEmail")
                                 .setParameter("email", email)
                                 .getResultList();
@@ -110,20 +102,6 @@ public class UserFacadeREST extends AbstractFacade<User> {
         String[] parts = loginData.split("_");
         String email = parts[0];
         String password = parts[1];
-        /*
-        List<User> users = super.findAll();
-        for(int i=0; i<users.size(); i++){
-            if(users.get(i).getEmail().equals(email)){
-                if(users.get(i).getPassword().equals(password)){
-                    if(users.get(i).getIsActive() == true){
-                        return "correct";
-                    }
-                    return "inactive";
-                }
-                return "passworderror";
-            }
-        }
-        return "emailerror";*/
         
         ArrayList<User> users = (ArrayList<User>) em.createNamedQuery("User.login")
                                 .setParameter("email", email)
@@ -144,15 +122,8 @@ public class UserFacadeREST extends AbstractFacade<User> {
     @GET
     @Path("get_all_userid_by_role/{role}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public ArrayList<String> getAllUserIdByRole(@PathParam("role") String role){
-        /*ArrayList<String> ids = new ArrayList<>();
-        List<User> users = super.findAll();
-        for(int i=0; i<users.size(); i++){
-            if(users.get(i).getRoleId() == Integer.parseInt(role)){
-                ids.add(String.valueOf(users.get(i).getId()));
-            }
-        }*/
-        ArrayList<String> ids = (ArrayList<String>) em.createNamedQuery("User.findIdsByRoleId")
+    public ArrayList<Integer> getAllUserIdByRole(@PathParam("role") Integer role){
+        ArrayList<Integer> ids = (ArrayList<Integer>) em.createNamedQuery("User.findIdsByRoleId")
                                 .setParameter("roleId", role)
                                 .getResultList();
         return ids;

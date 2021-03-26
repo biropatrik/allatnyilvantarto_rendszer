@@ -48,7 +48,7 @@ public class HoldingPlaceController {
     private String id;
     private String searchedId;
     private HoldingPlaceModel searchedHoldingPlace;
-    private List<String> breedingIds;
+    private List<Integer> breedingIds;
     
     private HoldingPlaceModel newHoldingPlace = new HoldingPlaceModel();
     private List<HoldingPlaceHasCapacityModel> newHoldingPlaceHasCapacity = new ArrayList<>();
@@ -75,7 +75,7 @@ public class HoldingPlaceController {
         
         List<String> holdingPlaceIds = new ArrayList<>();
         for(int i=0; i<this.breedingIds.size(); i++){
-            String id = String.valueOf(getHoldingPlaceHasBreedingByBreedingId(this.breedingIds.get(i)).getHoldingPlaceId());
+            String id = String.valueOf(getHoldingPlaceHasBreedingByBreedingId(String.valueOf(this.breedingIds.get(i))).getHoldingPlaceId());
             if(!holdingPlaceIds.contains(id)){
                 holdingPlaceIds.add(id);
             }
@@ -91,10 +91,10 @@ public class HoldingPlaceController {
         return holdingPlaces;
     }
     
-    private List<String> getBreedingIdsByUserId(){
+    private List<Integer> getBreedingIdsByUserId(){
         id = Session.getUserId();
         userHasBreedingClient = new UserHasBreedingClient();
-        List<String> breedings = (List<String>) userHasBreedingClient.findAllBreedingIdByUserId_JSON(List.class, id);
+        List<Integer> breedings = (List<Integer>) userHasBreedingClient.findAllBreedingIdByUserId_JSON(List.class, id);
         userHasBreedingClient.close();
         return breedings;
     }

@@ -67,6 +67,11 @@ public class NavigationController {
         return "breedingAdd.xhtml?faces-redirect=true";
     }
     
+    public String breedingEdit(){
+        this.activePageName = "breedingEdit";
+        return "breedingEdit.xhtml?faces-redirect=true";
+    }
+    
     public String holdingPlaceList(){
         this.activePageName = "holdingPlaceList";
         return "holdingPlaceList.xhtml?faces-redirect=true";

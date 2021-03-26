@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+    <h:head>
+        <title>Tenyészet módosítása</title>
+    </h:head>
+    <h:body>
+        <link type="text/css" rel="stylesheet" href="../resources/css/animal.css" />
+        
+        <div class="content">
+            <f:metadata>
+                <f:viewAction action="#{loginController.checkLogin('breedingEdit.xhtml',3)}" />
+            </f:metadata>
+
+            <ui:include src="navigationbar.xhtml" />
+        
+            <div class="content-block">
+            <h:form id="editBreeding">
+                <table>
+                    <tbody>
+                        <tr id="breeding_edit">
+                            <th colspan="5" style="border: solid thin;">Állattartó</th>
+                        </tr>
+                        <tr id="breeding_edit">
+                            <td>Azonosítója:</td>
+                            <td>
+                                <h:selectOneMenu styleClass="selectonemenu" value="#{breedingController.newUserHasBreeding.userId}">
+                                    <f:selectItems value="#{breedingController.allUserIdByRole}" var="ur"
+                                                   itemLabel="#{ur}" itemValue="#{ur}" />
+                                </h:selectOneMenu>
+                            </td>
+                        </tr>
+                        
+                        <tr id="breeding_edit">
+                            <th colspan="5" style="border: solid thin;">Tenyészet adatai</th>
+                        </tr>
+                        <tr id="breeding_edit">
+                            <td>Tenyészetkód:</td>
+                            <td>
+                                <h:outputText id="breeding_id" value="#{breedingController.newBreeding.id}"/>
+                            </td>
+                        </tr>
+                        <tr id="breeding_edit">
+                            <td>Tenyészet neve:</td>
+                            <td>
+                                <h:inputText id="breeding_name" required="false" value="#{breedingController.newBreeding.name}"/>
+                            </td>
+                        </tr>
+                        <tr id="breeding_edit">
+                            <td>Típus:</td>
+                            <td>
+                                <h:selectOneMenu styleClass="selectonemenu" value="#{breedingController.newBreeding.breedingType}">
+                                    <f:selectItems value="#{breedingController.allBreedingTypes}" var="bt"
+                                                   itemLabel="#{bt.name}" itemValue="#{bt.id}" />
+                                </h:selectOneMenu>
+                            </td>
+                        </tr>
+                        <tr id="breeding_edit">
+                            <td>Minősítés:</td>
+                            <td>
+                                <h:selectOneMenu styleClass="selectonemenu" value="#{breedingController.newBreeding.breedingQualification}">
+                                    <f:selectItems value="#{breedingController.allBreedingQualification}" var="bq"
+                                                   itemLabel="#{bq.name}" itemValue="#{bq.id}" />
+                                </h:selectOneMenu>
+                            </td>
+                        </tr>
+                        
+                        <tr id="breeding_edit">
+                            <th colspan="5" style="border: solid thin;">Állategészségügyi adatok</th>
+                        </tr>
+                        <tr id="breeding_edit">
+                            <td>Besorolás:</td>
+                            <td>
+                                <h:selectOneMenu styleClass="selectonemenu" value="#{breedingController.newBreeding.breedingClassification}">
+                                    <f:selectItems value="#{breedingController.allBreedingClassification}" var="bc"
+                                                   itemLabel="#{bc.name}" itemValue="#{bc.id}" />
+                                </h:selectOneMenu>
+                            </td>
+                        </tr>
+                        
+                        <tr id="breeding_edit">
+                            <th colspan="5" style="border: solid thin;">Tartási hely</th>
+                        </tr>
+                        <tr id="breeding_edit">
+                            <td>Azonosítója:</td>
+                            <td>
+                                <h:selectOneMenu styleClass="selectonemenu" value="#{breedingController.newHoldingPlaceHasBreeding.holdingPlaceId}">
+                                    <f:selectItems value="#{breedingController.allHoldingPlaceIds}" var="hp"
+                                                   itemLabel="#{hp}" itemValue="#{hp}" />
+                                </h:selectOneMenu>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="button">
+                    <h:commandButton id="saveButton" type="submit" action="#{breedingController.saveModifiedBreeding()}" styleClass="add" value = "Mentés" />
+                </div>
+            </h:form>
+            </div>
+        </div>
+    </h:body>
+</html>
+

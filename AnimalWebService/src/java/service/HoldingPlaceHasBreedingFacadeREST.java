@@ -6,6 +6,7 @@
 package service;
 
 import entity.HoldingPlaceHasBreeding;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -94,6 +95,16 @@ public class HoldingPlaceHasBreedingFacadeREST extends AbstractFacade<HoldingPla
             }
         }
         return null;
+    }
+    
+    @GET
+    @Path("findByBreedingId/{id}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public ArrayList<HoldingPlaceHasBreeding> findByBreedingId(@PathParam("id") Integer breedingId){
+        ArrayList<HoldingPlaceHasBreeding> holdingPlaces = (ArrayList<HoldingPlaceHasBreeding>) em.createNamedQuery("HoldingPlaceHasBreeding.findByBreedingId")
+                                        .setParameter("breedingId", breedingId)
+                                        .getResultList();
+        return holdingPlaces;
     }
 
     @Override

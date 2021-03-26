@@ -16,11 +16,14 @@ import client.HoldingPlaceClient;
 import client.HoldingPlaceHasBreedingClient;
 import client.UserClient;
 import client.UserHasBreedingClient;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import model.BreedingClassificationModel;
+import model.BreedingHasAnimalModel;
 import model.BreedingModel;
 import model.BreedingQualificationModel;
 import model.BreedingTypeModel;
@@ -42,7 +45,7 @@ public class BreedingController {
     private String id;
     private String searchedId;
     private BreedingModel searchedBreeding;
-    private List<String> breedingIds = new ArrayList<>();
+    private List<Integer> breedingIds = new ArrayList<>();
     private List<BreedingModel> breedings;
     
     private BreedingModel newBreeding = new BreedingModel();
@@ -61,10 +64,10 @@ public class BreedingController {
     private CountyClient countyClient;
     private CityClient cityClient;
     
-    private List<String> getBreedingIdsByUserId(){
+    private List<Integer> getBreedingIdsByUserId(){
         id = Session.getUserId();
         userHasBreedingClient = new UserHasBreedingClient();
-        List<String> breedings = (List<String>) userHasBreedingClient.findAllBreedingIdByUserId_JSON(List.class, id);
+        List<Integer> breedings = (List<Integer>) userHasBreedingClient.findAllBreedingIdByUserId_JSON(List.class, id);
         userHasBreedingClient.close();
         return breedings;
     }
@@ -83,7 +86,7 @@ public class BreedingController {
         breedingClient = new BreedingClient();
         List<BreedingModel> breedings = new ArrayList<>();
         for(int i=0; i<this.breedingIds.size(); i++){
-            BreedingModel model = breedingClient.find_JSON(BreedingModel.class, this.breedingIds.get(i));
+            BreedingModel model = breedingClient.find_JSON(BreedingModel.class, String.valueOf(this.breedingIds.get(i)));
             breedings.add(model);
         }
         breedingClient.close();
@@ -280,6 +283,32 @@ public class BreedingController {
         this.newHoldingPlaceHasBreeding = newHoldingPlaceHasBreeding;
     }
     
+    private UserHasBreedingModel getUserHasBreedingByBreedingId(int breedingId){
+        userHasBreedingClient = new UserHasBreedingClient();
+        List<UserHasBreedingModel> list = userHasBreedingClient.findByBreedingId_JSON(List.class, String.valueOf(breedingId));
+        userHasBreedingClient.close();
+        
+        if(list.size() < 0){
+            return new UserHasBreedingModel();
+        }
+        //java.lang.ClassCastException: java.util.LinkedHashMap cannot be cast to model.UserHasBreedingModel
+        //Hiba ellen: ObjectMapper!
+        ObjectMapper mapper = new ObjectMapper();
+        List<UserHasBreedingModel> userHasBreedingList = mapper.convertValue(list, new TypeReference<List<UserHasBreedingModel>>(){});
+        return userHasBreedingList.get(0);
+    }
+    
+    private HoldingPlaceHasBreedingModel getHoldingPlaceHasBreedingByBreedingId(int breedingId){
+        holdingPlaceHasBreedingClient = new HoldingPlaceHasBreedingClient();
+        List<HoldingPlaceHasBreedingModel> list = holdingPlaceHasBreedingClient.findByBreedingId_JSON(List.class, String.valueOf(breedingId));
+        holdingPlaceHasBreedingClient.close();
+        //java.lang.ClassCastException: java.util.LinkedHashMap cannot be cast to model.UserHasBreedingModel
+        //Hiba ellen: ObjectMapper!
+        ObjectMapper mapper = new ObjectMapper();
+        List<HoldingPlaceHasBreedingModel> holdingPlaceHasBreedingList = mapper.convertValue(list, new TypeReference<List<HoldingPlaceHasBreedingModel>>(){});
+        return holdingPlaceHasBreedingList.get(0);
+    }
+    
     public void saveNewBreeding(){
         
         //Ellenőrzés!
@@ -298,5 +327,40 @@ public class BreedingController {
         holdingPlaceHasBreedingClient = new HoldingPlaceHasBreedingClient();
         holdingPlaceHasBreedingClient.create_JSON(this.newHoldingPlaceHasBreeding);
         holdingPlaceHasBreedingClient.close();
+    }
+    
+    public void saveModifiedBreeding(){
+        this.newBreeding.setIsActive(false);
+        breedingClient = new BreedingClient();
+        breedingClient.edit_JSON(this.newBreeding, String.valueOf(this.newBreeding.getId()));
+        breedingClient.close();
+        
+        this.newUserHasBreeding.setBreedingId(this.newBreeding.getId());
+        userHasBreedingClient = new UserHasBreedingClient();
+        userHasBreedingClient.edit_JSON(this.newUserHasBreeding, String.valueOf(this.newUserHasBreeding.getId()));
+        userHasBreedingClient.close();
+        
+        this.newHoldingPlaceHasBreeding.setBreedingId(this.newBreeding.getId());
+        holdingPlaceHasBreedingClient = new HoldingPlaceHasBreedingClient();
+        holdingPlaceHasBreedingClient.edit_JSON(this.newHoldingPlaceHasBreeding, String.valueOf(this.newHoldingPlaceHasBreeding.getId()));
+        holdingPlaceHasBreedingClient.close();
+    }
+    
+    public String loadEditPage(int breedingId){
+        breedingClient = new BreedingClient();
+        this.newBreeding = breedingClient.find_JSON(BreedingModel.class, String.valueOf(breedingId));
+        breedingClient.close();
+        resetSearchedBreeding();
+        
+        this.newUserHasBreeding = getUserHasBreedingByBreedingId(breedingId);
+        this.newHoldingPlaceHasBreeding = getHoldingPlaceHasBreedingByBreedingId(breedingId);
+        
+        NavigationController c = new NavigationController();
+        return c.breedingEdit();
+    }
+    
+    private void resetSearchedBreeding(){
+        this.searchedId = "";
+        this.searchedBreeding = null;
     }
 }

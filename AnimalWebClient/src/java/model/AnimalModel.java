@@ -30,7 +30,6 @@ public class AnimalModel {
     private long inseminationDate;
     
     public AnimalModel(){
-        
     }
 
     public AnimalModel(String earTag, String motherId, String name, boolean sex, long birthdate, long deathdate, int speciesId, int breedId, int colorId, boolean twinning, int calvingId, int calvingWeight, boolean isAccepted, long inseminationDate) {
@@ -49,8 +48,6 @@ public class AnimalModel {
         this.isAccepted = isAccepted;
         this.inseminationDate = inseminationDate;
     }
-
-    
 
     public String getEarTag() {
         return earTag;
@@ -147,8 +144,6 @@ public class AnimalModel {
     public void setCalvingWeight(int calvingWeight) {
         this.calvingWeight = calvingWeight;
     }
-    
-    
 
     public boolean isIsAccepted() {
         return isAccepted;

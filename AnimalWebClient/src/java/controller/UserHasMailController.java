@@ -76,7 +76,7 @@ public class UserHasMailController {
     
     public String sendMail(){
         UserClient userClient = new UserClient();
-        UserModel receiver = userClient.find_withEmail_JSON(UserModel.class, this.receiver_email);
+        UserModel receiver = userClient.findByEmail_JSON(UserModel.class, this.receiver_email);
         userClient.close();
         
         UserHasMailModel mailModel = new UserHasMailModel();

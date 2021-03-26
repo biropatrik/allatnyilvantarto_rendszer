@@ -30,9 +30,8 @@
                             <td>Egyed azonosítója:</td>
                             <td>
                                 <h:message for="animal_id" style="color:red" />
-                                <h:inputText id="animal_id" label="Azonosító" requiredMessage="A mező kitöltése kötelező!" a:placeholder="Azonosító" required="false" value="#{animalController.newAnimal.earTag}">
-                                    <f:ajax execute = "animal_id" render = "animal_id" />
-                                </h:inputText>
+                                <h:outputText id="animal_id" value="#{animalController.newAnimal.earTag}"/>
+                                    
                             </td>
                         </tr>
                         <tr id="animal_edit">
@@ -56,7 +55,7 @@
                             <td>Neme:</td>
                             <td>
                                 <h:selectOneMenu id="sex" styleClass="selectonemenu" value="#{animalController.newAnimal.sex}">
-                                    <f:selectItem itemLabel = "Kérlek válassz!" />
+                                    
                                     <f:selectItem itemValue = "true" itemLabel = "Hímivarú" /> 
                                     <f:selectItem itemValue = "false" itemLabel = "Nőivarú" />
                                     <f:ajax execute = "sex" render = "sex" />
@@ -67,7 +66,7 @@
                             <td>Egyed faj:</td>
                             <td>
                                 <h:selectOneMenu id="species" styleClass="selectonemenu" value="#{animalController.newAnimal.speciesId}">
-                                    <f:selectItem itemLabel = "Kérlek válassz!" />
+                                    
                                     <f:selectItems value="#{animalController.allSpecies}" var="sp"
                                                    itemLabel="#{sp.name}" itemValue="#{sp.id}" />
                                     <f:ajax execute = "species" render = "species" />
@@ -78,7 +77,6 @@
                             <td>Egyed fajta:</td>
                             <td>
                                 <h:selectOneMenu id="breed" styleClass="selectonemenu" value="#{animalController.newAnimal.breedId}">
-                                    <f:selectItem itemLabel = "Kérlek válassz!" />
                                     <f:selectItems value="#{animalController.allBreed}" var="br"
                                                    itemLabel="#{br.name}" itemValue="#{br.id}" />
                                     <f:ajax execute = "breed" render = "breed" />
@@ -89,7 +87,6 @@
                             <td>Egyed színe:</td>
                             <td>
                                 <h:selectOneMenu id="color" styleClass="selectonemenu" value="#{animalController.newAnimal.colorId}">
-                                    <f:selectItem itemLabel = "Kérlek válassz!" />
                                     <f:selectItems value="#{animalController.allColor}" var="cr"
                                                    itemLabel="#{cr.name}" itemValue="#{cr.id}" />
                                     <f:ajax execute = "color" render = "color" />
@@ -130,7 +127,7 @@
                             <td>Ikerellés:</td>
                             <td>
                                 <h:selectOneMenu id="twinning" styleClass="selectonemenu" value="#{animalController.newAnimal.twinning}">
-                                    <f:selectItem itemLabel = "Kérlek válassz!" />
+                                    
                                     <f:selectItem itemValue = "false" itemLabel = "Nem" /> 
                                     <f:selectItem itemValue = "true" itemLabel = "Igen" /> 
                                     <f:ajax execute = "twinning" render = "twinning" />
@@ -140,8 +137,8 @@
                         <tr id="animal_edit">
                             <td>Ellés módja:</td>
                             <td>
-                                <h:selectOneMenu id="calving" styleClass="selectonemenu" value="#{animalController.newAnimal.colorId}">
-                                    <f:selectItem itemLabel = "Kérlek válassz!" />
+                                <h:selectOneMenu id="calving" styleClass="selectonemenu" value="#{animalController.newAnimal.calvingId}">
+                                    
                                     <f:selectItems value="#{animalController.allCalving}" var="cv"
                                                    itemLabel="#{cv.name}" itemValue="#{cv.id}" />
                                     <f:ajax execute = "calving" render = "calving " />
@@ -229,7 +226,7 @@
                             <tr>
                                 <td colspan="1">
                                     <h:selectOneMenu id="animalDiseasesName_#{loop.index}" styleClass="selectonemenu" value="#{animalHasDiseases.animalDiseasesId}">
-                                        <f:selectItem itemLabel = "Kérlek válassz!" />
+                                        
                                         <f:selectItems value="#{animalController.allAnimalDiseases}" var="ad"
                                                        itemLabel="#{ad.name}" itemValue="#{ad.id}" />
                                         <f:ajax execute = "animalDiseasesName_#{loop.index}" render = "animalDiseasesName_#{loop.index}" />

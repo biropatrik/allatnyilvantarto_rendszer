@@ -85,16 +85,12 @@ public class AnimalHasDiseasesFacadeREST extends AbstractFacade<AnimalHasDisease
     }
     
     @GET
-    @Path("diseases_by_eartag/{id}")
+    @Path("diseases_by_eartag/{eartag}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public ArrayList<AnimalHasDiseases> findAllBreedingIdsByEarTag(@PathParam("id") String id){
-        List<AnimalHasDiseases> allDiseases = super.findAll();
-        ArrayList<AnimalHasDiseases> diseases = new ArrayList<>();
-        for(int i=0; i<allDiseases.size(); i++){
-            if(allDiseases.get(i).getAnimalEarTag().equals(id)){
-                diseases.add(allDiseases.get(i));
-            }
-        }
+    public ArrayList<AnimalHasDiseases> findByAnimalEarTag(@PathParam("eartag") String eartag){
+        ArrayList<AnimalHasDiseases> diseases = (ArrayList<AnimalHasDiseases>) em.createNamedQuery("AnimalHasDiseases.findByAnimalEarTag")
+                                        .setParameter("animalEarTag", eartag)
+                                        .getResultList();
         return diseases;
     }
 

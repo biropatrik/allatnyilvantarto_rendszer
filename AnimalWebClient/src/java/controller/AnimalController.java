@@ -129,9 +129,12 @@ public class AnimalController {
     
     public List<AnimalHasDiseasesModel> getAllAnimalHasDiseasesByEarTags(String earTag){
         animalHasDiseasesClient = new AnimalHasDiseasesClient();
-        List<AnimalHasDiseasesModel> list = (List<AnimalHasDiseasesModel>)animalHasDiseasesClient.findAllBreedingIdsByEarTag_JSON(List.class, earTag);
+        List<AnimalHasDiseasesModel> list = (List<AnimalHasDiseasesModel>)animalHasDiseasesClient.findByAnimalEarTag_JSON(List.class, earTag);
         animalHasDiseasesClient.close();
-        return list;
+        
+        ObjectMapper mapper = new ObjectMapper();
+        List<AnimalHasDiseasesModel> animalHasDiseasesList = mapper.convertValue(list, new TypeReference<List<AnimalHasDiseasesModel>>(){});
+        return animalHasDiseasesList;
     }
     
     private List<HoldingPlaceHasBreedingModel> getHoldingPlacesByBreedingId(){
@@ -440,11 +443,22 @@ public class AnimalController {
         animalHasDiseasesClient.close();
     }
     
+    public AnimalModel animalColor = new AnimalModel();
+
+    public AnimalModel getAnimalColor() {
+        return animalColor;
+    }
+
+    public void setAnimalColor(AnimalModel animalColor) {
+        this.animalColor = animalColor;
+    }
+    
     public void saveModifiedAnimal(){
         this.newAnimal.setIsAccepted(false);
         
         animalClient = new AnimalClient();
         String jsonAnimal = new JSONObject()
+                            .put("earTag", this.newAnimal.getEarTag())
                             .put("motherId", this.newAnimal.getMotherId())
                             .put("name", this.newAnimal.getName())
                             .put("sex", this.newAnimal.isSex())
@@ -467,6 +481,7 @@ public class AnimalController {
         for(int i=0; i < this.newBreedingHasAnimal.size(); i++){
             if(newBreedingHasAnimal.get(i).getStartDate()!=0){
                 String jsonString = new JSONObject()
+                                    .put("id", newBreedingHasAnimal.get(i).getId())
                                     .put("breedingId", newBreedingHasAnimal.get(i).getBreedingId())
                                     .put("animalEarTag", newAnimal.getEarTag())
                                     .put("startDate", newBreedingHasAnimal.get(i).getStartDate())
@@ -476,11 +491,12 @@ public class AnimalController {
             }
         }
         breedingHasAnimalClient.close();
-        
+
         animalHasDiseasesClient = new AnimalHasDiseasesClient();
         for(int i=0; i < this.newAnimalHasDiseases.size(); i++){
             if(newAnimalHasDiseases.get(i).getStartDate() != 0){
                 String jsonString = new JSONObject()
+                                    .put("id", newAnimalHasDiseases.get(i).getId())
                                     .put("animalDiseasesId", newAnimalHasDiseases.get(i).getAnimalDiseasesId())
                                     .put("animalEarTag", newAnimal.getEarTag())
                                     .put("startDate", newAnimalHasDiseases.get(i).getStartDate())
@@ -495,12 +511,21 @@ public class AnimalController {
     
     public String loadEditPage(String earTag){
         
-        this.newAnimal = searchedAnimal;
+        animalClient = new AnimalClient();
+        this.newAnimal = animalClient.find_JSON(AnimalModel.class, earTag);
+        animalClient.close();
+        ResetSearchedAnimal();
+        
         this.newBreedingHasAnimal = getAllBreedingsHasAnimalByEarTag(earTag);
         this.newAnimalHasDiseases = getAllAnimalHasDiseasesByEarTags(earTag);
         
         NavigationController c = new NavigationController();
         return c.animalEdit();
+    }
+    
+    private void ResetSearchedAnimal(){
+        this.searchedAnimal = null;
+        this.searchedEarTag = "";
     }
 
     public AnimalModel getNewAnimal() {

@@ -76,7 +76,7 @@ public class AccountController {
             FacesContext.getCurrentInstance().addMessage("modification:email", new FacesMessage("Nem megfelelő e-mail cím!"));
         }else if(!this.email.equals(this.user.getEmail())){
             UserClient userClient = new UserClient();
-            if(userClient.find_withEmail_JSON(UserModel.class, this.user.getEmail()) != null){
+            if(userClient.findByEmail_JSON(UserModel.class, this.user.getEmail()) != null){
                 userClient.close();
                 isOk = false;
                 FacesContext.getCurrentInstance().addMessage("modification:email", new FacesMessage("Ez az e-mail cím már foglalt!"));

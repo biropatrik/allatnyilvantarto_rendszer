@@ -89,7 +89,7 @@ public class LoginController {
     
     public int getRole(String email){
         UserClient userClient = new UserClient();
-        UserModel userModel = userClient.find_withEmail_JSON(UserModel.class, email);
+        UserModel userModel = userClient.findByEmail_JSON(UserModel.class, email);
         userClient.close();
         if(userModel != null){
             return userModel.getRoleId();
@@ -99,7 +99,7 @@ public class LoginController {
     
     public int getId(String email){
         UserClient userClient = new UserClient();
-        UserModel userModel = userClient.find_withEmail_JSON(UserModel.class, email);
+        UserModel userModel = userClient.findByEmail_JSON(UserModel.class, email);
         userClient.close();
         return userModel.getId();
     }

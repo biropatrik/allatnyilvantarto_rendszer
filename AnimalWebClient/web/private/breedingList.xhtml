@@ -101,7 +101,7 @@
                             <tr id="breeding_#{breeding.id}" class="#{breeding.id}">
                                 <th>
                                     <div class="button">
-                                        <h:commandButton value="Tenyészet módosítása" type="submit" action="#{navigationController.accountEdit()}" styleClass="add"/>
+                                        <h:commandButton value="Tenyészet módosítása" type="submit" action="#{breedingController.loadEditPage(breeding.id)}" styleClass="add"/>
                                     </div>
                                 </th>
                             </tr>

@@ -199,7 +199,7 @@ public class RegisterController {
             FacesContext.getCurrentInstance().addMessage("register:email", new FacesMessage("Nem megfelelő e-mail cím!"));
         }else{
             UserClient userClient = new UserClient();
-            if(userClient.find_withEmail_JSON(UserModel.class, email) != null){
+            if(userClient.findByEmail_JSON(UserModel.class, email) != null){
                 userClient.close();
                 setValidatePairs("email",false);
                 FacesContext.getCurrentInstance().addMessage("register:email", new FacesMessage("Ez az e-mail cím már foglalt!"));

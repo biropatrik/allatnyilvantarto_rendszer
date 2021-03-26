@@ -87,15 +87,21 @@ public class UserHasBreedingFacadeREST extends AbstractFacade<UserHasBreeding> {
     @GET
     @Path("breedings_by_id/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public ArrayList<String> findAllBreedingIdByUserId(@PathParam("id") Integer id){
-        List<UserHasBreeding> allBreedings = super.findAll();
-        ArrayList<String> breedings = new ArrayList<>();
-        for(int i=0; i<allBreedings.size(); i++){
-            if(allBreedings.get(i).getUserId() == id){
-                breedings.add(String.valueOf(allBreedings.get(i).getBreedingId()));
-            }
-        }
-        return breedings;
+    public ArrayList<Integer> findAllBreedingIdByUserId(@PathParam("id") Integer id){
+//        List<UserHasBreeding> allBreedings = super.findAll();
+//        ArrayList<String> breedings = new ArrayList<>();
+//        for(int i=0; i<allBreedings.size(); i++){
+//            if(allBreedings.get(i).getUserId() == id){
+//                breedings.add(String.valueOf(allBreedings.get(i).getBreedingId()));
+//            }
+//        }
+//        return breedings;
+
+        ArrayList<Integer> breedingIds = (ArrayList<Integer>) em.createNamedQuery("UserHasBreeding.findBreedingIdByUserId")
+                                        .setParameter("userId", id)
+                                        .getResultList();
+        
+        return breedingIds;
     }
     
     @GET
@@ -109,6 +115,16 @@ public class UserHasBreedingFacadeREST extends AbstractFacade<UserHasBreeding> {
             }
         }
         return -1;
+    }
+    
+    @GET
+    @Path("findByBreedingId/{id}")
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public ArrayList<UserHasBreeding> findByBreedingId(@PathParam("id") Integer id){
+        ArrayList<UserHasBreeding> breedings = (ArrayList<UserHasBreeding>) em.createNamedQuery("UserHasBreeding.findByBreedingId")
+                                        .setParameter("breedingId", id)
+                                        .getResultList();
+        return breedings;
     }
 
     @Override
