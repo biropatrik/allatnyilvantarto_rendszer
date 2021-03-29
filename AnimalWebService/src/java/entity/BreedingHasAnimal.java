@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "BreedingHasAnimal.findAll", query = "SELECT b FROM BreedingHasAnimal b"),
     @NamedQuery(name = "BreedingHasAnimal.findById", query = "SELECT b FROM BreedingHasAnimal b WHERE b.id = :id"),
-    @NamedQuery(name = "BreedingHasAnimal.findByBreedingId", query = "SELECT b FROM BreedingHasAnimal b WHERE b.breedingId = :breedingId"),
+    @NamedQuery(name = "BreedingHasAnimal.findByBreedingId", query = "SELECT b FROM BreedingHasAnimal b WHERE b.breedingId = :breedingId AND (b.endDate IS NULL OR b.endDate = 0)"),
     @NamedQuery(name = "BreedingHasAnimal.findByAnimalEarTag", query = "SELECT b FROM BreedingHasAnimal b WHERE b.animalEarTag = :animalEarTag"),
     @NamedQuery(name = "BreedingHasAnimal.findByStartDate", query = "SELECT b FROM BreedingHasAnimal b WHERE b.startDate = :startDate"),
     @NamedQuery(name = "BreedingHasAnimal.findByEndDate", query = "SELECT b FROM BreedingHasAnimal b WHERE b.endDate = :endDate")})

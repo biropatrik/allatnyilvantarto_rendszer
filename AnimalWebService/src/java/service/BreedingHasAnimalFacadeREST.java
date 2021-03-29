@@ -90,28 +90,20 @@ public class BreedingHasAnimalFacadeREST extends AbstractFacade<BreedingHasAnima
     @Path("eartags_by_breedingid/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public ArrayList<BreedingHasAnimal> findAllEarTagsByBreedingId(@PathParam("id") Integer id){
-        List<BreedingHasAnimal> allBreedings = super.findAll();
-        ArrayList<BreedingHasAnimal> breedings = new ArrayList<>();
-        for(int i=0; i<allBreedings.size(); i++){
-            BigInteger endDate = allBreedings.get(i).getEndDate();
-            if(allBreedings.get(i).getBreedingId() == id && endDate == null ){
-                breedings.add(allBreedings.get(i));
-            }
-        }
+        ArrayList<BreedingHasAnimal> breedings = (ArrayList<BreedingHasAnimal>) em.createNamedQuery("BreedingHasAnimal.findByBreedingId")
+                                     .setParameter("breedingId", id)
+                                     .getResultList();
         return breedings;
     }
     
     @GET
-    @Path("breedingids_by_eartag/{id}")
+    @Path("breedings_by_eartag/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public ArrayList<BreedingHasAnimal> findAllBreedingIdsByEarTag(@PathParam("id") String id){
-        List<BreedingHasAnimal> allBreedings = super.findAll();
-        ArrayList<BreedingHasAnimal> breedings = new ArrayList<>();
-        for(int i=0; i<allBreedings.size(); i++){
-            if(allBreedings.get(i).getAnimalEarTag().equals(id)){
-                breedings.add(allBreedings.get(i));
-            }
-        }
+    public ArrayList<BreedingHasAnimal> findAllBreedingsByEarTag(@PathParam("id") String id){
+        ArrayList<BreedingHasAnimal> breedings = (ArrayList<BreedingHasAnimal>) em.createNamedQuery("BreedingHasAnimal.findByAnimalEarTag")
+                                     .setParameter("animalEarTag", id)
+                                     .getResultList();
+        breedings.sort((d1,d2) -> Long.valueOf(d2.getStartDate()).compareTo(d1.getStartDate()));
         return breedings;
     }
 

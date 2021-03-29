@@ -166,14 +166,15 @@ public class UserFacadeREST extends AbstractFacade<User> {
         
         for(int i=0; i<animals.size(); i++){
             for(int j=0; j<species.size(); j++){
-                if(animals.get(i).getInseminationDate() != null && species.get(j).getDurationOfPregnancy() != null && !earTags.contains(animals.get(i).getEarTag())){
-                    if(BigInteger.valueOf(species.get(j).getDurationOfPregnancy()).subtract(BigInteger.valueOf(System.currentTimeMillis()).subtract(animals.get(i).getInseminationDate())).compareTo(BigInteger.TEN) == -1){
+                if((animals.get(i).getInseminationDate() != null && animals.get(i).getInseminationDate().compareTo(BigInteger.ONE) == 1)&& species.get(j).getDurationOfPregnancy() != null && !earTags.contains(animals.get(i).getEarTag())){
+                    BigInteger days = BigInteger.valueOf(species.get(j).getDurationOfPregnancy()).subtract(BigInteger.valueOf(System.currentTimeMillis() / 86400000).subtract(animals.get(i).getInseminationDate().divide(BigInteger.valueOf(86400000))));
+                    if(days.compareTo(BigInteger.ZERO) == 1 && days.compareTo(BigInteger.TEN) == -1){
                         
                         UserHasMail newMessage = new UserHasMail();
                         newMessage.setSenderUserId(0);
                         newMessage.setReceiverUserId(userId);
                         newMessage.setSubject("Tájékoztatás - "+animals.get(i).getEarTag());
-                        newMessage.setMailText("Tisztelt Felhasználó!\n\nTajékoztatjuk, hogy a "+ animals.get(i).getEarTag() + " azonosító számú" + (animals.get(i).getName().isEmpty() ? "" : ", és "+animals.get(i).getName().isEmpty()+" nevű") + " egyed körübelül 10 napon belül elleni fog!");
+                        newMessage.setMailText("Tisztelt Felhasználó!\n\nTajékoztatjuk, hogy a "+ animals.get(i).getEarTag() + " azonosító számú" + (animals.get(i).getName().isEmpty() ? "" : ", "+animals.get(i).getName()+" nevű") + " egyed körübelül 10 napon belül elleni fog!");
                         newMessage.setWhendate(System.currentTimeMillis());
                         newMessage.setIsNew(true);
                         

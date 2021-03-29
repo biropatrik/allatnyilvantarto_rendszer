@@ -91,6 +91,7 @@ public class AnimalHasDiseasesFacadeREST extends AbstractFacade<AnimalHasDisease
         ArrayList<AnimalHasDiseases> diseases = (ArrayList<AnimalHasDiseases>) em.createNamedQuery("AnimalHasDiseases.findByAnimalEarTag")
                                         .setParameter("animalEarTag", eartag)
                                         .getResultList();
+        diseases.sort((d1,d2) -> Long.valueOf(d2.getStartDate()).compareTo(d1.getStartDate()));
         return diseases;
     }
 

@@ -119,7 +119,7 @@ public class AnimalController {
     
     public List<BreedingHasAnimalModel> getAllBreedingsHasAnimalByEarTag(String earTag){
         breedingHasAnimalClient = new BreedingHasAnimalClient();
-        List<BreedingHasAnimalModel> list = (List<BreedingHasAnimalModel>)breedingHasAnimalClient.findAllBreedingIdsByEarTag_JSON(List.class, earTag);
+        List<BreedingHasAnimalModel> list = (List<BreedingHasAnimalModel>)breedingHasAnimalClient.findAllBreedingsByEarTag_JSON(List.class, earTag);
         breedingHasAnimalClient.close();
         
         ObjectMapper mapper = new ObjectMapper();
@@ -454,7 +454,11 @@ public class AnimalController {
                                     .put("startDate", newBreedingHasAnimal.get(i).getStartDate())
                                     .put("endDate", newBreedingHasAnimal.get(i).getEndDate())
                                     .toString();
-                breedingHasAnimalClient.edit_JSON(jsonString, String.valueOf(newBreedingHasAnimal.get(i).getId()));
+                if(newBreedingHasAnimal.get(i).getId() == null){
+                    breedingHasAnimalClient.create_JSON(jsonString);
+                }else{
+                    breedingHasAnimalClient.edit_JSON(jsonString, String.valueOf(newBreedingHasAnimal.get(i).getId()));
+                }
             }
         }
         breedingHasAnimalClient.close();
@@ -470,7 +474,12 @@ public class AnimalController {
                                     .put("endDate", newAnimalHasDiseases.get(i).getEndDate())
                                     .put("comment", newAnimalHasDiseases.get(i).getComment())
                                     .toString();
-                animalHasDiseasesClient.edit_JSON(jsonString, String.valueOf(newAnimalHasDiseases.get(i).getId()));
+                
+                if(newAnimalHasDiseases.get(i).getId() == null && newAnimalHasDiseases.get(i).getStartDate() != 0){
+                    animalHasDiseasesClient.create_JSON(jsonString);
+                }else if(newAnimalHasDiseases.get(i).getStartDate() != 0){
+                    animalHasDiseasesClient.edit_JSON(jsonString, String.valueOf(newAnimalHasDiseases.get(i).getId()));
+                }
             }
         }
         animalHasDiseasesClient.close();
