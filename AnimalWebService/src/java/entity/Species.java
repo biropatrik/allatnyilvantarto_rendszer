@@ -29,7 +29,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Species.findAll", query = "SELECT s FROM Species s"),
     @NamedQuery(name = "Species.findById", query = "SELECT s FROM Species s WHERE s.id = :id"),
-    @NamedQuery(name = "Species.findByName", query = "SELECT s FROM Species s WHERE s.name = :name")})
+    @NamedQuery(name = "Species.findByName", query = "SELECT s FROM Species s WHERE s.name = :name"),
+    @NamedQuery(name = "Species.findByDurationOfPregnancy", query = "SELECT s FROM Species s WHERE s.durationOfPregnancy = :durationOfPregnancy")})
 public class Species implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -43,6 +44,8 @@ public class Species implements Serializable {
     @Size(min = 1, max = 250)
     @Column(name = "name")
     private String name;
+    @Column(name = "durationOfPregnancy")
+    private Integer durationOfPregnancy;
 
     public Species() {
     }
@@ -70,6 +73,14 @@ public class Species implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getDurationOfPregnancy() {
+        return durationOfPregnancy;
+    }
+
+    public void setDurationOfPregnancy(Integer durationOfPregnancy) {
+        this.durationOfPregnancy = durationOfPregnancy;
     }
 
     @Override

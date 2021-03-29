@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1:3308
--- Létrehozás ideje: 2021. Feb 25. 13:00
+-- Létrehozás ideje: 2021. Már 29. 17:19
 -- Kiszolgáló verziója: 8.0.18
 -- PHP verzió: 7.3.12
 
@@ -56,9 +56,11 @@ CREATE TABLE IF NOT EXISTS `animal` (
 --
 
 INSERT INTO `animal` (`ear_tag`, `mother_id`, `name`, `sex`, `birthdate`, `deathdate`, `species_id`, `breed_id`, `color_id`, `twinning`, `calving_id`, `calving_weight`, `isAccepted`, `insemination_date`) VALUES
-('7001123450', '7000103050', 'Böske', 0, 1612789382187, NULL, 1, 1, 1, 0, 1, 30, 1, NULL),
+('7001123450', '7000103050', 'Böske', 0, 1617023460330, NULL, 1, 1, 1, 0, 1, 30, 1, NULL),
 ('7001123451', NULL, 'Bella', 0, 1612589370000, NULL, 1, 2, 1, 0, 2, 32, 1, NULL),
-('7001123466', NULL, 'Lucas', 1, 1412789370000, NULL, 1, 1, 1, 0, 2, 40, 1, NULL);
+('7001123466', NULL, 'Lucas', 1, 1412789370000, NULL, 1, 1, 1, 0, 2, 40, 1, NULL),
+('3333300000', '70610034012', '', 0, 1614553200000, 0, 1, 1, 1, 0, 0, 30, 0, 1616626800000),
+('3333300033', '70610034012', 'Kelta', 0, 1519513200000, 0, 1, 4, 4, 0, 2, 24, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -99,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `animal_has_diseases` (
   PRIMARY KEY (`id`),
   KEY `FK_animal_ear_tag` (`animal_ear_tag`),
   KEY `FK_animal_diseases_id` (`animal_diseases_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 --
 -- A tábla adatainak kiíratása `animal_has_diseases`
@@ -107,7 +109,9 @@ CREATE TABLE IF NOT EXISTS `animal_has_diseases` (
 
 INSERT INTO `animal_has_diseases` (`id`, `animal_ear_tag`, `animal_diseases_id`, `start_date`, `end_date`, `comment`) VALUES
 (1, '7001123450', 1, 1612789382187, 1613709080180, 'Ez egy nagyon hosszú megjegyzés lenne. Teszteljük a hosszú megjegyzéseket, ennél az oszlopnál.'),
-(2, '7001123450', 1, 1612709080180, 1613709080180, 'Gyorsan lefolyó betegség. Sikeresen felépült az egyed. ');
+(2, '7001123450', 1, 1612709080180, 1613709080180, 'Gyorsan lefolyó betegség. Sikeresen felépült az egyed. '),
+(13, '3333300033', 2, 1519513200000, 1613084400000, ''),
+(12, '3333300033', 1, 1612738800000, 1613689200000, '');
 
 -- --------------------------------------------------------
 
@@ -163,7 +167,10 @@ CREATE TABLE IF NOT EXISTS `breeding` (
 
 INSERT INTO `breeding` (`id`, `name`, `breeding_type`, `breeding_qualification`, `breeding_classification`, `isActive`) VALUES
 (476836, NULL, 1, 6, 1, 1),
-(490797, NULL, 2, 6, 1, 1);
+(490797, '', 1, 5, 2, 0),
+(460510, 'Hatvani vágóhíd 001. Kft.', 2, 6, 1, 0),
+(460520, 'Hatvani Keltető 1+1 ', 4, 6, 1, 0),
+(460530, 'Hatvani Állatvásár', 6, 5, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -202,7 +209,7 @@ CREATE TABLE IF NOT EXISTS `breeding_has_animal` (
   PRIMARY KEY (`id`),
   KEY `FK_breeding_has_animal_breeding_id` (`breeding_id`),
   KEY `FK_breeding_has_animal_animal_ear_tag` (`animal_ear_tag`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
 
 --
 -- A tábla adatainak kiíratása `breeding_has_animal`
@@ -212,7 +219,11 @@ INSERT INTO `breeding_has_animal` (`id`, `breeding_id`, `animal_ear_tag`, `start
 (1, 476836, '7001123450', 1612789382187, NULL),
 (2, 476836, '7001123451', 1612789382200, NULL),
 (3, 476836, '7001123466', 1412789382187, 1612709080180),
-(4, 490797, '7001123466', 1612709080180, NULL);
+(4, 490797, '7001123466', 1612709080180, NULL),
+(18, 476836, '3333300000', 1614553200000, 0),
+(26, 490797, '3333300033', 1614553200000, 0),
+(32, 460510, '3333300033', 1541458800000, 1614466800000),
+(33, 490797, '3333300033', 1519513200000, 1546642800000);
 
 -- --------------------------------------------------------
 
@@ -3932,7 +3943,7 @@ CREATE TABLE IF NOT EXISTS `color` (
 --
 
 INSERT INTO `color` (`id`, `name`) VALUES
-(0, 'Nem kategorizálható'),
+(0, 'Nincs információ'),
 (1, 'Feketetarka'),
 (2, 'Vöröstarka\r\n'),
 (3, 'Fekete-vörös\r\n'),
@@ -4005,7 +4016,7 @@ INSERT INTO `county` (`id`, `name`) VALUES
 
 DROP TABLE IF EXISTS `holding_place`;
 CREATE TABLE IF NOT EXISTS `holding_place` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `country_iso2` char(2) NOT NULL,
   `county_id` int(11) NOT NULL,
   `city_id` int(11) NOT NULL,
@@ -4019,15 +4030,16 @@ CREATE TABLE IF NOT EXISTS `holding_place` (
   KEY `FK_holding_place_city_id` (`city_id`),
   KEY `FK_holding_place_breeding_type_id` (`breeding_type`) USING BTREE,
   KEY `FK_user_user_vet_id` (`user_vet_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 --
 -- A tábla adatainak kiíratása `holding_place`
 --
 
 INSERT INTO `holding_place` (`id`, `country_iso2`, `county_id`, `city_id`, `street`, `breeding_type`, `user_vet_id`, `isActive`) VALUES
-(1, 'HU', 2, 868, 'Széchenyi út 15.', 1, 14, 1),
-(2, 'HU', 2, 868, 'XY út 5.', 1, 14, 1);
+(1, 'HU', 11, 3046, 'Széchenyi út 15.', 1, 14, 0),
+(2, 'HU', 2, 868, 'Széchenyi út 15.', 1, 14, 0),
+(4, 'HU', 2, 1227, 'Kenyer út 10', NULL, 14, 0);
 
 -- --------------------------------------------------------
 
@@ -4043,7 +4055,7 @@ CREATE TABLE IF NOT EXISTS `holding_place_has_breeding` (
   PRIMARY KEY (`id`),
   KEY `FK_holding_place_id` (`holding_place_id`),
   KEY `FK_breeding_id` (`breeding_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 --
 -- A tábla adatainak kiíratása `holding_place_has_breeding`
@@ -4051,7 +4063,10 @@ CREATE TABLE IF NOT EXISTS `holding_place_has_breeding` (
 
 INSERT INTO `holding_place_has_breeding` (`id`, `holding_place_id`, `breeding_id`) VALUES
 (1, 1, 476836),
-(2, 2, 490797);
+(2, 2, 490797),
+(3, 4, 460510),
+(4, 2, 460520),
+(5, 1, 460530);
 
 -- --------------------------------------------------------
 
@@ -4069,7 +4084,7 @@ CREATE TABLE IF NOT EXISTS `holding_place_has_capacity` (
   PRIMARY KEY (`id`),
   KEY `FK_holding_place_id` (`holding_place_id`),
   KEY `FK_capacity_type` (`capacity_type`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 --
 -- A tábla adatainak kiíratása `holding_place_has_capacity`
@@ -4077,7 +4092,8 @@ CREATE TABLE IF NOT EXISTS `holding_place_has_capacity` (
 
 INSERT INTO `holding_place_has_capacity` (`id`, `holding_place_id`, `capacity_type`, `size`, `start_date`) VALUES
 (1, 1, 3, 3, 1612789382200),
-(2, 1, 4, 5, 1612789382200);
+(2, 1, 4, 350, 1612789382200),
+(4, 2, 2, 300, 1614812400000);
 
 -- --------------------------------------------------------
 
@@ -4091,17 +4107,25 @@ CREATE TABLE IF NOT EXISTS `holding_place_has_parcel_number` (
   `holding_place_id` int(11) NOT NULL,
   `city_id` int(11) NOT NULL,
   `parcel_number` varchar(250) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`),
+  KEY `FK_holding_place_id` (`holding_place_id`),
+  KEY `FK_city_id` (`city_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 --
 -- A tábla adatainak kiíratása `holding_place_has_parcel_number`
 --
 
 INSERT INTO `holding_place_has_parcel_number` (`id`, `holding_place_id`, `city_id`, `parcel_number`) VALUES
-(1, 1, 868, '9880/1'),
-(2, 1, 868, '9880/2'),
-(3, 1, 868, '9880/3');
+(1, 1, 748, '9880/1'),
+(2, 1, 748, '9880/2'),
+(3, 1, 1227, '9880/3'),
+(9, 4, 1227, '1000/2'),
+(8, 4, 1227, '1000/1'),
+(7, 4, 1227, '1000/0'),
+(10, 1, 868, '5670/01'),
+(11, 2, 868, '5670/01'),
+(12, 2, 868, '5670/01');
 
 -- --------------------------------------------------------
 
@@ -4119,15 +4143,18 @@ CREATE TABLE IF NOT EXISTS `holding_place_has_species` (
   PRIMARY KEY (`id`),
   KEY `FK_holding_place_id` (`holding_place_id`),
   KEY `FK_species_id` (`species_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 --
 -- A tábla adatainak kiíratása `holding_place_has_species`
 --
 
 INSERT INTO `holding_place_has_species` (`id`, `holding_place_id`, `species_id`, `start_date`, `utilization`) VALUES
-(1, 1, 1, 1613160799712, NULL),
-(2, 1, 5, 1613150759712, 'Tojás');
+(1, 1, 1, 1613084400000, ''),
+(2, 1, 5, 1613084400000, 'Tojás'),
+(10, 2, 5, 1613084400000, 'Tojás'),
+(9, 2, 1, 1613084400000, ''),
+(8, 4, 1, 1614553200000, '');
 
 -- --------------------------------------------------------
 
@@ -4162,6 +4189,7 @@ DROP TABLE IF EXISTS `species`;
 CREATE TABLE IF NOT EXISTS `species` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(250) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `durationOfPregnancy` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`) USING BTREE
 ) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
@@ -4170,13 +4198,13 @@ CREATE TABLE IF NOT EXISTS `species` (
 -- A tábla adatainak kiíratása `species`
 --
 
-INSERT INTO `species` (`id`, `name`) VALUES
-(1, 'Szarvasmarha'),
-(2, 'Sertés'),
-(3, 'Juh'),
-(4, 'Kecske'),
-(5, 'Baromfi'),
-(6, 'Ló');
+INSERT INTO `species` (`id`, `name`, `durationOfPregnancy`) VALUES
+(1, 'Szarvasmarha', 285),
+(2, 'Sertés', 115),
+(3, 'Juh', 150),
+(4, 'Kecske', 150),
+(5, 'Baromfi', NULL),
+(6, 'Ló', 335);
 
 -- --------------------------------------------------------
 
@@ -4204,16 +4232,17 @@ CREATE TABLE IF NOT EXISTS `user` (
   KEY `FK_user_county_id` (`county_id`),
   KEY `FK_user_city_id` (`city_id`),
   KEY `FK_user_role_id` (`role_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 --
 -- A tábla adatainak kiíratása `user`
 --
 
 INSERT INTO `user` (`id`, `first_name`, `last_name`, `email`, `password`, `phone_number`, `country_iso2`, `county_id`, `city_id`, `street`, `role_id`, `isActive`, `isAccepted`) VALUES
-(1, 'Zsolt', 'Nagy', 'a@c.hu', 'YXNk', '06302001000', 'HU', 2, 868, 'Széchenyi út 15', 1, 1, NULL),
-(2, 'István', 'Kis', 'a@v.hu', 'YXNk', '0123', 'HU', 2, 2, 'Körte 2', 1, 1, NULL),
-(14, 'Ernő', 'Dr. Fügedi', 'drerno@praxis.hu', 'YXNk', '06304445555', 'HU', 2, 868, 'Ipar út 23', 3, 1, 1);
+(1, 'Zsolt', 'Nagy', 'a@c.hu', '7Xl4', '06302001000', 'HU', 2, 868, 'Széchenyi út 15', 1, 1, 0),
+(2, 'István', 'Kis', 'a@v.hu', '7Xl4', '0123', 'HU', 2, 2, 'Körte 2', 1, 1, 0),
+(14, 'Ernő', 'Dr. Fügedi', 'drerno@praxis.hu', 'YXNk', '06304445555', 'HU', 2, 868, 'Ipar út 23', 2, 1, 1),
+(0, 'Üzenet', 'Rendszer', '', '', NULL, '', 0, 0, '', 0, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -4229,7 +4258,7 @@ CREATE TABLE IF NOT EXISTS `user_has_breeding` (
   PRIMARY KEY (`id`),
   KEY `FK_user_has_breeding_user_id` (`user_id`),
   KEY `FK_user_has_breeding_breeding_id` (`breeding_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 --
 -- A tábla adatainak kiíratása `user_has_breeding`
@@ -4237,7 +4266,10 @@ CREATE TABLE IF NOT EXISTS `user_has_breeding` (
 
 INSERT INTO `user_has_breeding` (`id`, `user_id`, `breeding_id`) VALUES
 (1, 1, 476836),
-(2, 2, 490797);
+(2, 2, 490797),
+(3, 1, 460510),
+(4, 1, 460520),
+(5, 1, 460530);
 
 -- --------------------------------------------------------
 
@@ -4257,22 +4289,18 @@ CREATE TABLE IF NOT EXISTS `user_has_mail` (
   PRIMARY KEY (`id`),
   KEY `FK_user_has_mail_sender_user_id` (`sender_user_id`),
   KEY `FK_user_has_mail_receiver_user_id` (`receiver_user_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=81 DEFAULT CHARSET=utf8;
 
 --
 -- A tábla adatainak kiíratása `user_has_mail`
 --
 
 INSERT INTO `user_has_mail` (`id`, `sender_user_id`, `receiver_user_id`, `whendate`, `subject`, `mail_text`, `isNew`) VALUES
-(1, 1, 2, 20201109, 'Nagy körte', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop p', 0),
-(2, 1, 2, 20201109, 'Kis alma', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop p', 0),
-(35, 1, 1, 1613160799712, '2021.02.12 Üzenet', 'Kedves,\r\n\r\nEz egy teszt üzenet.\r\n\r\nÜdv.', 0),
 (28, 2, 1, 1612443893205, 'Teszt - 02', 'Teszt üzenet 2.', 0),
 (31, 1, 1, 1612789382187, 'Teszt - 03 ', 'Teszt üzenet.\r\n\r\n1. 2. 3. 4. 5.\r\n\r\nÜdv.', 0),
 (32, 1, 1, 1612864973983, 'Teszt üzenet - 02.09. - 01', 'Kedves, \r\n\r\nEz egy tesztüzenet.\r\n\r\nÜdv,\r\nXY', 0),
 (20, 1, 2, 1612271682232, '2021 - Teszt - 1', 'Ez egy új évi teszt üzenet!', 0),
-(23, 2, 1, 1612442195306, 'Alma', 'Nézd meg az almákat!', 0),
-(26, 2, 2, 1612442535934, 'Teszt - magam - 02.04', 'Teszt üzenet, Név teszt.', 1);
+(23, 2, 1, 1612442195306, 'Alma', 'Nézd meg az almákat!', 0);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -5,9 +5,14 @@
  */
 package service;
 
+import entity.Animal;
+import entity.Species;
 import entity.User;
+import entity.UserHasMail;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -28,6 +33,9 @@ import javax.ws.rs.core.MediaType;
 @Stateless
 @Path("entity.user")
 public class UserFacadeREST extends AbstractFacade<User> {
+
+    @EJB
+    private UserHasMailFacadeREST userHasMailFacadeREST;
 
     @PersistenceContext(unitName = "AnimalWebServicePU")
     private EntityManager em;
@@ -115,6 +123,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
             return "inactive";
         }
         else{
+            sendInseminationAlertMessage(users.get(0).getId());
             return "correct";
         }
     }
@@ -134,4 +143,45 @@ public class UserFacadeREST extends AbstractFacade<User> {
         return em;
     }
     
+    private void sendInseminationAlertMessage(Integer userId){
+        List<Animal> animals = (List<Animal>) em.createNamedQuery("Animal.findByUserId")
+                                    .setParameter("userId", userId)
+                                    .getResultList();
+        
+        List<Species> species = (List<Species>) em.createNamedQuery("Species.findAll")
+                                    .getResultList();
+        
+        List<UserHasMail> mails = (List<UserHasMail>) em.createNamedQuery("UserHasMail.findByReceiverUserId")
+                                    .setParameter("receiverUserId", userId)
+                                    .getResultList();
+        
+        List<String> earTags = new ArrayList<>();
+        
+        for(int i=0; i<mails.size(); i++){
+            String[] subject = mails.get(i).getSubject().split(" ", 3);
+            if(mails.get(i).getSenderUserId() == 0 && subject.length == 3){
+                earTags.add(subject[2]);
+            }
+        }
+        
+        for(int i=0; i<animals.size(); i++){
+            for(int j=0; j<species.size(); j++){
+                if(animals.get(i).getInseminationDate() != null && species.get(j).getDurationOfPregnancy() != null && !earTags.contains(animals.get(i).getEarTag())){
+                    if(BigInteger.valueOf(species.get(j).getDurationOfPregnancy()).subtract(BigInteger.valueOf(System.currentTimeMillis()).subtract(animals.get(i).getInseminationDate())).compareTo(BigInteger.TEN) == -1){
+                        
+                        UserHasMail newMessage = new UserHasMail();
+                        newMessage.setSenderUserId(0);
+                        newMessage.setReceiverUserId(userId);
+                        newMessage.setSubject("Tájékoztatás - "+animals.get(i).getEarTag());
+                        newMessage.setMailText("Tisztelt Felhasználó!\n\nTajékoztatjuk, hogy a "+ animals.get(i).getEarTag() + " azonosító számú" + (animals.get(i).getName().isEmpty() ? "" : ", és "+animals.get(i).getName().isEmpty()+" nevű") + " egyed körübelül 10 napon belül elleni fog!");
+                        newMessage.setWhendate(System.currentTimeMillis());
+                        newMessage.setIsNew(true);
+                        
+                        userHasMailFacadeREST.create(newMessage);
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }

@@ -88,9 +88,9 @@ public class AnimalFacadeREST extends AbstractFacade<Animal> {
     @Path("findAnimalsByUserId/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public ArrayList<Animal> findAnimalsByUserId(@PathParam("id") Integer id){
-           ArrayList<Animal> animals = (ArrayList<Animal>) em.createNamedQuery("Animal.findByUserId")
-                                        .setParameter("userId", id)
-                                        .getResultList();
+        ArrayList<Animal> animals = (ArrayList<Animal>) em.createNamedQuery("Animal.findByUserId")
+                                     .setParameter("userId", id)
+                                     .getResultList();
            
         return animals;
     }

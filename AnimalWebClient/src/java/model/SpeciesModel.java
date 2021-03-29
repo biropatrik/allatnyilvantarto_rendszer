@@ -12,13 +12,15 @@ package model;
 public class SpeciesModel {
     private Integer id;
     private String name;
+    private Integer durationOfPregnancy;
 
     public SpeciesModel() {
     }
 
-    public SpeciesModel(Integer id, String name) {
+    public SpeciesModel(Integer id, String name, Integer durationOfPregnancy) {
         this.id = id;
         this.name = name;
+        this.durationOfPregnancy = durationOfPregnancy;
     }
 
     public Integer getId() {
@@ -35,5 +37,13 @@ public class SpeciesModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getDurationOfPregnancy() {
+        return durationOfPregnancy;
+    }
+
+    public void setDurationOfPregnancy(Integer durationOfPregnancy) {
+        this.durationOfPregnancy = durationOfPregnancy;
     }
 }

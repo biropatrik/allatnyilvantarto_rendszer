@@ -40,7 +40,6 @@ public class UserHasMailFacadeREST extends AbstractFacade<UserHasMail> {
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(UserHasMail entity) {
-        System.out.println("FacadeREST: " + entity.getWhendate());
         super.create(entity);
     }
 
@@ -89,27 +88,22 @@ public class UserHasMailFacadeREST extends AbstractFacade<UserHasMail> {
     @Path("emails_with_id/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<UserHasMail> findAll_withRecId(@PathParam("id") Integer id) {
-        List<UserHasMail> mails = super.findAll();
-        List<UserHasMail> receivedMails = new ArrayList<>();
-        for(int i=0; i < mails.size(); i++){
-            if(mails.get(i).getReceiverUserId() == id){
-                receivedMails.add(mails.get(i));
-            }
-        }
+        ArrayList<UserHasMail> receivedMails = (ArrayList<UserHasMail>) em.createNamedQuery("UserHasMail.findByReceiverUserId")
+                                     .setParameter("receiverUserId", id)
+                                     .getResultList();
         receivedMails.sort((d1,d2) -> Long.valueOf(d2.getWhendate()).compareTo(d1.getWhendate()));
-        
         return receivedMails;
     }
     
     @GET
     @Path("new_mails_with_id/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-        public String count_newMails(@PathParam("id") Integer id) {
-        List<UserHasMail> mails = super.findAll();
+    public String count_newMails(@PathParam("id") Integer id) {
+        List<UserHasMail> mails = findAll_withRecId(id);
         
         int mail_count = 0;
         for(int i=0; i < mails.size(); i++){
-            if(mails.get(i).getReceiverUserId() == id && mails.get(i).getIsNew()){
+            if(mails.get(i).getIsNew()){
                 mail_count++;
             }
         }

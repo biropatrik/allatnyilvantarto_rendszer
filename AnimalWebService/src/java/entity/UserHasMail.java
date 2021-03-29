@@ -34,7 +34,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "UserHasMail.findByWhendate", query = "SELECT u FROM UserHasMail u WHERE u.whendate = :whendate"),
     @NamedQuery(name = "UserHasMail.findBySubject", query = "SELECT u FROM UserHasMail u WHERE u.subject = :subject"),
     @NamedQuery(name = "UserHasMail.findByMailText", query = "SELECT u FROM UserHasMail u WHERE u.mailText = :mailText"),
-    @NamedQuery(name = "UserHasMail.findByIsNew", query = "SELECT u FROM UserHasMail u WHERE u.isNew = :isNew")})
+    @NamedQuery(name = "UserHasMail.findByIsNew", query = "SELECT u FROM UserHasMail u WHERE u.isNew = :isNew")
+    })
 public class UserHasMail implements Serializable {
 
     private static final long serialVersionUID = 1L;
