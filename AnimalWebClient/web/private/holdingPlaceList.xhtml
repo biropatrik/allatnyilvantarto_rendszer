@@ -110,7 +110,7 @@
                             <tr id="holdingPlace_#{holdingPlace.id}" class="#{holdingPlace.id}">
                                 <th>
                                     <div class="button">
-                                        <h:commandButton value="Tartási hely módosítása" type="submit" action="#{navigationController.accountEdit()}" styleClass="add"/>
+                                        <h:commandButton value="Tartási hely módosítása" type="submit" action="#{holdingPlaceController.loadEditPage(holdingPlace.id)}" styleClass="add"/>
                                     </div>
                                 </th>
                             </tr>

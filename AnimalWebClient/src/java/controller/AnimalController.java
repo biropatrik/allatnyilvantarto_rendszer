@@ -157,18 +157,8 @@ public class AnimalController {
     }
     
     public List<AnimalModel> getAllAnimal(){
-        //this.breedingIds = getBreedingIdsByUserId();
-        //this.breedingHasAnimals = getAllBreedingsHasAnimalByBreedingIds();
-        ////this.holdingPlaceHasBreedings = getHoldingPlacesByBreedingId();
-        ////this.holdingPlaces = getHoldingPlaces();
         
         animalClient = new AnimalClient();
-//        List<AnimalModel> animals = new ArrayList<>();
-//        for(int i=0; i<this.breedingHasAnimals.size(); i++){
-//            AnimalModel animal = animalClient.find_JSON(AnimalModel.class, this.breedingHasAnimals.get(i).getAnimalEarTag());
-//            animals.add(animal);
-//        }
-//        return animals;
         this.id = Session.getUserId();
         List<AnimalModel> animals = animalClient.findAnimalsByUserId_JSON(List.class, this.id);
         animalClient.close();
@@ -181,7 +171,7 @@ public class AnimalController {
             return ("-");
         }
         
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd. HH:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd.");
         Date correctDate = new Date(date);
         return formatter.format(correctDate);
     }
@@ -242,29 +232,6 @@ public class AnimalController {
     }
     
     public String getBreedAddressByAnimal(String earTag){
-        /*int breedingId = -1;
-        for(int i=0; i<this.breedingHasAnimals.size(); i++){
-            if(this.breedingHasAnimals.get(i).getAnimalEarTag().equals(earTag)){
-                breedingId = this.breedingHasAnimals.get(i).getBreedingId();
-            }
-        }
-        int holdingplaceId = -1;
-        for(int i=0; i<this.holdingPlaceHasBreedings.size(); i++){
-            if(this.holdingPlaceHasBreedings.get(i).getBreedingId() == breedingId){
-                holdingplaceId = this.holdingPlaceHasBreedings.get(i).getHoldingPlaceId();
-            }
-        }*/
-        /*
-        String address = null;
-        for(int i=0; i<this.holdingPlaces.size(); i++){
-            if(this.holdingPlaces.get(i).getId().equals(holdingplaceId)){
-                address = "(" + this.holdingPlaces.get(i).getCountryIso2() + ") " +
-                          getCountyName(this.holdingPlaces.get(i).getCountyId()) + " " +
-                          getCityPostalCode(this.holdingPlaces.get(i).getCityId()) + " " +
-                          getCityName(this.holdingPlaces.get(i).getCityId()) + " " +
-                          this.holdingPlaces.get(i).getStreet();
-            }
-        }*/
         String address = null;
         holdingPlaceClient = new HoldingPlaceClient();
         List<HoldingPlaceModel> holdingPlaces = holdingPlaceClient.findByAnimalEarTag_JSON(List.class, earTag);

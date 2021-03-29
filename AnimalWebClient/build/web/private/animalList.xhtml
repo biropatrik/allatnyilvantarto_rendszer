@@ -91,6 +91,10 @@
                                 <td>Tenyészetbe érkezés dátuma:</td>
                                 <td colspan="3">#{animalController.getBreedingHasAnimalStartDate(animal.earTag)}</td>
                             </tr>
+                            <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
+                                <td>Legutóbbi inszemináció dátuma:</td>
+                                <td colspan="3">#{animalController.getDateFormat(animal.inseminationDate)}</td>
+                            </tr>
 
                             <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
                                 <th colspan="4" style="border: solid thin;">Az ellés adatai</th>

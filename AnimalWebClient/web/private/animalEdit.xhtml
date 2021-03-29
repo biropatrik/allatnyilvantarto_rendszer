@@ -110,6 +110,14 @@
                                 </h:inputText>
                             </td>
                         </tr>
+                        <tr id="animal_edit">
+                            <td>Legutóbbi inszemináció dátuma:</td>
+                            <td>
+                                <h:inputText id="breedingHasAnimal_inseminationDate_00" a:type="date" value="#{animalController.newAnimal.inseminationDateString}">
+                                    <f:ajax execute = "breedingHasAnimal_inseminationDate_00" render = "breedingHasAnimal_inseminationDate_00" />
+                                </h:inputText>
+                            </td>
+                        </tr>
                         
                         <tr id="animal_edit">
                             <th colspan="5" style="border: solid thin;">Az ellés adatai</th>

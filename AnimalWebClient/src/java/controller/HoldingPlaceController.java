@@ -17,6 +17,8 @@ import client.HoldingPlaceHasSpeciesClient;
 import client.SpeciesClient;
 import client.UserClient;
 import client.UserHasBreedingClient;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,6 +27,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import model.AnimalHasDiseasesModel;
 import model.CapacityTypeModel;
 import model.CityModel;
 import model.CountryModel;
@@ -173,7 +176,7 @@ public class HoldingPlaceController {
             return ("-");
         }
         
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd. HH:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd.");
         Date correctDate = new Date(date);
         return formatter.format(correctDate);
     }
@@ -405,5 +408,149 @@ public class HoldingPlaceController {
             holdingPlaceHasParcelNumberClient.create_JSON(jsonString);
         }
         holdingPlaceHasParcelNumberClient.close();
+        
+        holdingPlaceHasCapacityClient = new HoldingPlaceHasCapacityClient();
+        for(int i=0; i < newHoldingPlaceHasCapacity.size(); i++){
+            newHoldingPlaceHasCapacity.get(i).setHoldingPlaceId(this.newHoldingPlace.getId());
+
+            String jsonString = new JSONObject()
+                                .put("holdingPlaceId", newHoldingPlaceHasCapacity.get(i).getHoldingPlaceId())
+                                .put("capacityType", newHoldingPlaceHasCapacity.get(i).getCapacityType())
+                                .put("size", newHoldingPlaceHasCapacity.get(i).getSize())
+                                .put("startDate", newHoldingPlaceHasCapacity.get(i).getStartDate())
+                                .toString();
+
+            holdingPlaceHasCapacityClient.create_JSON(jsonString);
+        }
+        holdingPlaceHasCapacityClient.close();
+    }
+    
+    public void saveModifiedHoldingPlace(){
+        
+        //Ellenőrzés hiányzik!
+        
+        this.newHoldingPlace.setIsActive(false);
+        holdingPlaceClient = new HoldingPlaceClient();
+        holdingPlaceClient.edit_JSON(this.newHoldingPlace, String.valueOf(this.newHoldingPlace.getId()));
+        holdingPlaceClient.close();
+        
+        holdingPlaceHasSpeciesClient = new HoldingPlaceHasSpeciesClient();
+        for(int i=0; i < newHoldingPlaceHasSpecies.size(); i++){
+            newHoldingPlaceHasSpecies.get(i).setHoldingPlaceId(this.newHoldingPlace.getId());
+
+            String jsonString = new JSONObject()
+                                .put("id", newHoldingPlaceHasSpecies.get(i).getId())
+                                .put("holdingPlaceId", newHoldingPlaceHasSpecies.get(i).getHoldingPlaceId())
+                                .put("speciesId", newHoldingPlaceHasSpecies.get(i).getSpeciesId())
+                                .put("startDate", newHoldingPlaceHasSpecies.get(i).getStartDate())
+                                .put("utilization", newHoldingPlaceHasSpecies.get(i).getUtilization())
+                                .toString();
+
+            if(newHoldingPlaceHasSpecies.get(i).getId() == null){
+                holdingPlaceHasSpeciesClient.create_JSON(jsonString);
+            }else{
+                holdingPlaceHasSpeciesClient.edit_JSON(jsonString, String.valueOf(newHoldingPlaceHasSpecies.get(i).getId()));
+            }
+        }
+        holdingPlaceHasSpeciesClient.close();
+        
+        holdingPlaceHasParcelNumberClient = new HoldingPlaceHasParcelNumberClient();
+        for(int i=0; i < newHoldingPlaceHasParcelNumber.size(); i++){
+            newHoldingPlaceHasParcelNumber.get(i).setHoldingPlaceId(this.newHoldingPlace.getId());
+            
+            String jsonString = new JSONObject()
+                                .put("id", newHoldingPlaceHasParcelNumber.get(i).getId())
+                                .put("holdingPlaceId", newHoldingPlaceHasParcelNumber.get(i).getHoldingPlaceId())
+                                .put("cityId", newHoldingPlaceHasParcelNumber.get(i).getCityId())
+                                .put("parcelNumber", newHoldingPlaceHasParcelNumber.get(i).getParcelNumber())
+                                .toString();
+            
+            if(newHoldingPlaceHasParcelNumber.get(i).getId() == null){
+                holdingPlaceHasParcelNumberClient.create_JSON(jsonString);
+            }else{
+                holdingPlaceHasParcelNumberClient.edit_JSON(jsonString, String.valueOf(newHoldingPlaceHasParcelNumber.get(i).getId()));
+            }
+        }
+        holdingPlaceHasParcelNumberClient.close();
+        
+        holdingPlaceHasCapacityClient = new HoldingPlaceHasCapacityClient();
+        for(int i=0; i < newHoldingPlaceHasCapacity.size(); i++){
+            newHoldingPlaceHasCapacity.get(i).setHoldingPlaceId(this.newHoldingPlace.getId());
+
+            String jsonString = new JSONObject()
+                                .put("id", newHoldingPlaceHasCapacity.get(i).getId())
+                                .put("holdingPlaceId", newHoldingPlaceHasCapacity.get(i).getHoldingPlaceId())
+                                .put("capacityType", newHoldingPlaceHasCapacity.get(i).getCapacityType())
+                                .put("size", newHoldingPlaceHasCapacity.get(i).getSize())
+                                .put("startDate", newHoldingPlaceHasCapacity.get(i).getStartDate())
+                                .toString();
+
+            if(newHoldingPlaceHasCapacity.get(i).getId() == null && newHoldingPlaceHasCapacity.get(i).getStartDate() != 0){
+                holdingPlaceHasCapacityClient.create_JSON(jsonString);
+            }else if(newHoldingPlaceHasCapacity.get(i).getStartDate() != 0){
+                holdingPlaceHasCapacityClient.edit_JSON(jsonString, String.valueOf(newHoldingPlaceHasCapacity.get(i).getId()));
+            }
+        }
+        holdingPlaceHasCapacityClient.close();
+    }
+    
+    public String loadEditPage(String holdingPlaceId){
+        holdingPlaceClient = new HoldingPlaceClient();
+        this.newHoldingPlace = holdingPlaceClient.find_JSON(HoldingPlaceModel.class, holdingPlaceId);
+        holdingPlaceClient.close();
+        setPostal_code(getPostalCodeByCityId());
+        
+        ObjectMapper mapper = new ObjectMapper();
+        
+        holdingPlaceHasSpeciesClient = new HoldingPlaceHasSpeciesClient();
+        this.newHoldingPlaceHasSpecies = holdingPlaceHasSpeciesClient.findAllHoldingPlaceHasSpeciesById_JSON(List.class, holdingPlaceId);
+        this.newHoldingPlaceHasSpecies = mapper.convertValue(newHoldingPlaceHasSpecies, new TypeReference<List<HoldingPlaceHasSpeciesModel>>(){});
+        holdingPlaceHasSpeciesClient.close();
+        
+        holdingPlaceHasParcelNumberClient = new HoldingPlaceHasParcelNumberClient();
+        this.newHoldingPlaceHasParcelNumber = holdingPlaceHasParcelNumberClient.findAllHoldingPlaceHasParcelNumbersById_JSON(List.class, holdingPlaceId);
+        this.newHoldingPlaceHasParcelNumber = mapper.convertValue(newHoldingPlaceHasParcelNumber, new TypeReference<List<HoldingPlaceHasParcelNumberModel>>(){});
+        holdingPlaceHasParcelNumberClient.close();
+        setPostalCodesForParcelNumberModels(newHoldingPlaceHasParcelNumber);
+        
+        holdingPlaceHasCapacityClient = new HoldingPlaceHasCapacityClient();
+        this.newHoldingPlaceHasCapacity = holdingPlaceHasCapacityClient.findAllHoldingPlaceHasCapacityById_JSON(List.class, holdingPlaceId);
+        this.newHoldingPlaceHasCapacity = mapper.convertValue(newHoldingPlaceHasCapacity, new TypeReference<List<HoldingPlaceHasCapacityModel>>(){});
+        holdingPlaceHasCapacityClient.close();
+        
+        ResetSearchedHoldingPlace();
+        
+        NavigationController c = new NavigationController();
+        return c.holdingPlaceEdit();
+    }
+    
+    private void ResetSearchedHoldingPlace(){
+        this.searchedId =  "";
+        this.searchedHoldingPlace = null;
+    }
+    
+    public String getPostalCodeByCityId(){
+        if(this.newHoldingPlace == null){
+            return "";
+        }
+        
+        cityClient = new CityClient();
+        CityModel city = cityClient.find_JSON(CityModel.class, String.valueOf(newHoldingPlace.getCityId()));
+        cityClient.close();
+        
+        return city.getPostalCode();
+    }
+    
+    public void setPostalCodeByCityId(String postalCode){
+        setPostal_code(postalCode);
+    }
+    
+    private void setPostalCodesForParcelNumberModels(List<HoldingPlaceHasParcelNumberModel> list){
+        cityClient = new CityClient();
+        for(int i=0; i<list.size(); i++){
+            CityModel city = cityClient.find_JSON(CityModel.class, String.valueOf(list.get(i).getCityId()));
+            list.get(i).setPostalCode(city.getPostalCode());
+        }
+        cityClient.close();
     }
 }

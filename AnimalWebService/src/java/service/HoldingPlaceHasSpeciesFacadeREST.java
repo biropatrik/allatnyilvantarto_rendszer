@@ -88,13 +88,11 @@ public class HoldingPlaceHasSpeciesFacadeREST extends AbstractFacade<HoldingPlac
     @Path("holdingplacespecies_by_holdingplaceid/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public ArrayList<HoldingPlaceHasSpecies> findAllHoldingPlaceHasSpeciesById(@PathParam("id") int id){
-        List<HoldingPlaceHasSpecies> allSpecies = super.findAll();
-        ArrayList<HoldingPlaceHasSpecies> species = new ArrayList<>();
-        for(int i=0; i<allSpecies.size(); i++){
-            if(allSpecies.get(i).getHoldingPlaceId() == id){
-                species.add(allSpecies.get(i));
-            }
-        }
+        
+        ArrayList<HoldingPlaceHasSpecies> species = (ArrayList<HoldingPlaceHasSpecies>) em.createNamedQuery("HoldingPlaceHasSpecies.findByHoldingPlaceId")
+                                        .setParameter("holdingPlaceId", id)
+                                        .getResultList();
+        
         return species;
     }
 

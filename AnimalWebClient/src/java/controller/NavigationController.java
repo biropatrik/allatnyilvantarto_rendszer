@@ -82,6 +82,11 @@ public class NavigationController {
         return "holdingPlaceAdd.xhtml?faces-redirect=true";
     }
     
+    public String holdingPlaceEdit(){
+        this.activePageName = "holdingPlaceEdit";
+        return "holdingPlaceEdit.xhtml?faces-redirect=true";
+    }
+    
     public String animalSearch(){
         this.activePageName = "animalSearch";
         return "animalSearch.xhtml?faces-redirect=true";

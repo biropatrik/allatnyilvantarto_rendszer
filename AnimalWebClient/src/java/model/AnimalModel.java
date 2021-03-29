@@ -211,7 +211,7 @@ public class AnimalModel {
         }
     }
     
-    public String getInseminationdateString() {
+    public String getInseminationDateString() {
         if(inseminationDate == 0){
             return ("");
         }
@@ -221,7 +221,7 @@ public class AnimalModel {
         return formatter.format(correctDate);
     }
 
-    public void setInseminationdateString(String dateString) {
+    public void setInseminationDateString(String dateString) {
         
         if(dateString != null){
             long milliseconds = 0;
