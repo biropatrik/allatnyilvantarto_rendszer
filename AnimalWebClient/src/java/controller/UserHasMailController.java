@@ -43,8 +43,6 @@ public class UserHasMailController {
         validatePairs.add(new Pairs("receiver_email", false));
         validatePairs.add(new Pairs("subject", false));
         validatePairs.add(new Pairs("mail_text", false));
-        
-        
     }
     
     public List<UserHasMailModel> getAllMailsByReceiverId(){
@@ -118,7 +116,7 @@ public class UserHasMailController {
         return count;
     }
     
-    private void cleanData(){
+    public void cleanData(){
         this.receiver_email = "";
         this.subject = "";
         this.mail_text = "";

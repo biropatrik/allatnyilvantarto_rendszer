@@ -17,12 +17,13 @@ public class HoldingPlaceModel {
     private String street;
     private Integer breedingType;
     private Integer userVetId;
+    private Integer contactUserId;
     private boolean isActive;
 
     public HoldingPlaceModel() {
     }
 
-    public HoldingPlaceModel(Integer id, String countryIso2, int countyId, int cityId, String street, Integer breedingType, Integer userVetId, boolean isActive) {
+    public HoldingPlaceModel(Integer id, String countryIso2, int countyId, int cityId, String street, Integer breedingType, Integer userVetId, Integer contactUserId, boolean isActive) {
         this.id = id;
         this.countryIso2 = countryIso2;
         this.countyId = countyId;
@@ -30,6 +31,7 @@ public class HoldingPlaceModel {
         this.street = street;
         this.breedingType = breedingType;
         this.userVetId = userVetId;
+        this.contactUserId = contactUserId;
         this.isActive = isActive;
     }
 
@@ -87,6 +89,14 @@ public class HoldingPlaceModel {
 
     public void setUserVetId(Integer userVetId) {
         this.userVetId = userVetId;
+    }
+
+    public Integer getContactUserId() {
+        return contactUserId;
+    }
+
+    public void setContactUserId(Integer contactUserId) {
+        this.contactUserId = contactUserId;
     }
 
     public boolean isIsActive() {

@@ -137,6 +137,25 @@ public class UserFacadeREST extends AbstractFacade<User> {
                                 .getResultList();
         return ids;
     }
+    
+    @GET
+    @Path("validate/{e}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public int validateUser(@PathParam("e") String e){
+        String[] parts = e.split("_");
+        String ids = parts[0];
+        String password = parts[1];
+        
+        int id = Integer.parseInt(ids);
+        ArrayList<User> users = (ArrayList<User>) em.createNamedQuery("User.validate")
+                                .setParameter("id", id)
+                                .setParameter("password", password)
+                                .getResultList();
+        if(users.size() > 0){
+            return 1;
+        }
+        return 0;
+    }
 
     @Override
     protected EntityManager getEntityManager() {

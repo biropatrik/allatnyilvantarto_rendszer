@@ -14,9 +14,12 @@ import client.UserClient;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import model.CityModel;
 import model.CountryModel;
 import model.CountyModel;
@@ -41,6 +44,7 @@ public class RequestController {
     List<UserModel> registrations = new ArrayList<>();
     private String searchedId;
     private UserModel searchedUser;
+    private String password;
 
     private List<UserModel> findUsersByIsActive(boolean isActive){
         userClient = new UserClient();
@@ -77,6 +81,79 @@ public class RequestController {
         ObjectMapper mapper = new ObjectMapper();
         List<HoldingPlaceModel> holdingPlaceList = mapper.convertValue(list, new TypeReference<List<HoldingPlaceModel>>(){});
         return holdingPlaceList;
+    }
+    
+    public void acceptRegistration(String userId){
+        if(this.password == null || this.password.isEmpty()){
+            FacesContext.getCurrentInstance().addMessage("checkRegistrations:password", new FacesMessage("A mező kitöltése kötelező!"));
+            return;
+        }
+        
+        userClient = new UserClient();
+        int response = -1;
+        try{
+            response = userClient.validateUser_JSON(int.class, Session.getUserId()+"_"+password);
+        }catch(Exception e){
+            FacesContext.getCurrentInstance().addMessage("checkRegistrations:password", new FacesMessage("Hiba történt!"));
+            return;
+        }
+        
+        if(response == 0){
+            FacesContext.getCurrentInstance().addMessage("checkRegistrations:password", new FacesMessage("Hibás jelszó!"));
+            return;
+        }else if(userId != null && !userId.isEmpty() && response == 1){
+            UserModel user = userClient.find_JSON(UserModel.class, userId);
+            user.setIsActive(true);
+            user.setIsAccepted(true);
+            
+            userClient.edit_JSON(user, userId);
+            userClient.close();
+        }else{
+            FacesContext.getCurrentInstance().addMessage("checkRegistrations:password", new FacesMessage("Hiba történt! Nem azonosítható felhasználó!"));
+            return;
+        }
+        userClient.close();
+    }
+    
+    public void acceptHoldingPlace(String holdingPlaceId){
+        if(this.password == null || this.password.isEmpty()){
+            FacesContext.getCurrentInstance().addMessage("checkHoldingPlace:password", new FacesMessage("A mező kitöltése kötelező!"));
+            return;
+        }
+        
+        userClient = new UserClient();
+        int response = -1;
+        try{
+            response = userClient.validateUser_JSON(int.class, Session.getUserId()+"_"+password);
+        }catch(Exception e){
+            FacesContext.getCurrentInstance().addMessage("checkHoldingPlace:password", new FacesMessage("Hiba történt!"));
+            return;
+        }
+        
+        if(response == 0){
+            FacesContext.getCurrentInstance().addMessage("checkHoldingPlace:password", new FacesMessage("Hibás jelszó!"));
+            return;
+        }else if(holdingPlaceId != null && !holdingPlaceId.isEmpty() && response == 1){
+            holdingPlaceClient = new HoldingPlaceClient();
+            HoldingPlaceModel holdingPlace = holdingPlaceClient.find_JSON(HoldingPlaceModel.class, holdingPlaceId);
+            holdingPlace.setIsActive(true);
+            
+            holdingPlaceClient.edit_JSON(holdingPlace, holdingPlaceId);
+        }else{
+            FacesContext.getCurrentInstance().addMessage("checkHoldingPlace:password", new FacesMessage("Hiba történt! Nem azonosítható tartási hely!"));
+            return;
+        }
+        holdingPlaceClient.close();
+    }
+    
+    public UserModel getUserById(String id){
+        if(id == null || id.isEmpty()){
+            return new UserModel();
+        }
+        userClient = new UserClient();
+        UserModel model = userClient.find_JSON(UserModel.class, id);
+        userClient.close();
+        return model;
     }
     
     public String getCountryName(String iso2){
@@ -130,9 +207,7 @@ public class RequestController {
     }
     
     public List<UserModel> getRegistrations() {
-        if(registrations.isEmpty()){
-            registrations = findUsersByIsActive(false);
-        }
+        registrations = findUsersByIsActive(false);
         return registrations;
     }
 
@@ -146,5 +221,16 @@ public class RequestController {
 
     public UserModel getSearchedUser() {
         return searchedUser;
+    }
+
+    public void setPassword(String password) {
+        if(password != null || !password.isEmpty()){
+            byte[] encodedBytes = Base64.getEncoder().encode(password.getBytes());
+            this.password = new String(encodedBytes);
+        }
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

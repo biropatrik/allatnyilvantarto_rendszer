@@ -27,7 +27,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import model.AnimalHasDiseasesModel;
 import model.CapacityTypeModel;
 import model.CityModel;
 import model.CountryModel;
@@ -379,7 +378,7 @@ public class HoldingPlaceController {
     public void saveNewHoldingPlace(){
         
         //Ellenőrzés hiányzik!
-        
+        this.newHoldingPlace.setContactUserId(Integer.parseInt(Session.getUserId()));
         this.newHoldingPlace.setIsActive(false);
         holdingPlaceClient = new HoldingPlaceClient();
         holdingPlaceClient.create_JSON(this.newHoldingPlace);
@@ -432,7 +431,7 @@ public class HoldingPlaceController {
     public void saveModifiedHoldingPlace(){
         
         //Ellenőrzés hiányzik!
-        
+        this.newHoldingPlace.setContactUserId(Integer.parseInt(Session.getUserId()));
         this.newHoldingPlace.setIsActive(false);
         holdingPlaceClient = new HoldingPlaceClient();
         holdingPlaceClient.edit_JSON(this.newHoldingPlace, String.valueOf(this.newHoldingPlace.getId()));

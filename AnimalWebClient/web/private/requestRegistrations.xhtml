@@ -77,19 +77,19 @@
                                     <th colspan="3" style="border: solid thin;">Felhasználó elfogadása</th>
                                 </tr>
                                 <tr class="#{user.id}">
-                                    <td>Jelszó beírása:</td>
-                                    <td colspan="2">
-                                        <h:message for="password" style="color:red" />
-                                        <h:inputSecret id="password" label="Jelszó" required="false" a:placeholder="Jelszó" value="#{accountController.newPassword}" style="width: 40%"/>
-                                    </td>
+                                    <th>Jelszó beírása:</th>
+                                    <th colspan="2">
+                                        <h:message for="password" style="color:red" /><br></br>
+                                        <h:inputSecret id="password" label="Jelszó" required="false" a:placeholder="Jelszó" value="#{requestController.password}" style="width: 40%"/>
+                                    </th>
                                 </tr>
                                 <tr class="#{user.id}">
-                                    <td>Elfogadás:</td>
-                                    <td colspan="2">
+                                    <th>Elfogadás:</th>
+                                    <th colspan="2">
                                     <div class="button">
-                                        <h:commandButton value="Elfogadás" type="submit" action="#{accountController.saveAccountModification()}" styleClass="add"/>
+                                        <h:commandButton value="Elfogadás" type="submit" action="#{requestController.acceptRegistration(user.id)}" styleClass="add"/>
                                     </div>
-                                    </td>
+                                    </th>
                                 </tr>
                             </c:if>
                         </c:forEach>

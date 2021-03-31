@@ -33,15 +33,17 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "HoldingPlace.findByStreet", query = "SELECT h FROM HoldingPlace h WHERE h.street = :street"),
     @NamedQuery(name = "HoldingPlace.findByBreedingType", query = "SELECT h FROM HoldingPlace h WHERE h.breedingType = :breedingType"),
     @NamedQuery(name = "HoldingPlace.findByUserVetId", query = "SELECT h FROM HoldingPlace h WHERE h.userVetId = :userVetId"),
+    @NamedQuery(name = "HoldingPlace.findByContactUserId", query = "SELECT h FROM HoldingPlace h WHERE h.contactUserId = :contactUserId"),
     @NamedQuery(name = "HoldingPlace.findByIsActive", query = "SELECT h FROM HoldingPlace h WHERE h.isActive = :isActive"),
     @NamedQuery(name = "HoldingPlace.findByAnimalEarTag", query = "SELECT h FROM HoldingPlace h, BreedingHasAnimal b, HoldingPlaceHasBreeding hp "
                                                                 + "WHERE (b.animalEarTag = :animalEarTag AND (b.endDate < 1 OR b.endDate IS NULL)) "
                                                                 + "AND hp.breedingId = b.breedingId "
                                                                 + "AND h.id = hp.holdingPlaceId" ),
     @NamedQuery(name = "HoldingPlace.findByUserId", query = "SELECT DISTINCT h FROM HoldingPlace h, UserHasBreeding u, HoldingPlaceHasBreeding hb "
-                                                    + "WHERE h.id = hb.holdingPlaceId "
+                                                    + "WHERE (h.id = hb.holdingPlaceId "
                                                     + "AND hb.breedingId = u.breedingId "
-                                                    + "AND u.userId = :userId ")
+                                                    + "AND u.userId = :userId) "
+                                                    + "OR h.contactUserId = :userId ")
 })
 public class HoldingPlace implements Serializable {
 
@@ -73,6 +75,8 @@ public class HoldingPlace implements Serializable {
     private Integer breedingType;
     @Column(name = "user_vet_id")
     private Integer userVetId;
+    @Column(name = "contact_user_id")
+    private Integer contactUserId;
     @Basic(optional = false)
     @NotNull
     @Column(name = "isActive")
@@ -148,6 +152,14 @@ public class HoldingPlace implements Serializable {
 
     public void setUserVetId(Integer userVetId) {
         this.userVetId = userVetId;
+    }
+
+    public Integer getContactUserId() {
+        return contactUserId;
+    }
+
+    public void setContactUserId(Integer contactUserId) {
+        this.contactUserId = contactUserId;
     }
 
     public boolean getIsActive() {
