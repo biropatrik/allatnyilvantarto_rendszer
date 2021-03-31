@@ -23,7 +23,6 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import model.BreedingClassificationModel;
-import model.BreedingHasAnimalModel;
 import model.BreedingModel;
 import model.BreedingQualificationModel;
 import model.BreedingTypeModel;

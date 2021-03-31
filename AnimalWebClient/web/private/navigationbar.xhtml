@@ -1,7 +1,8 @@
 <ui:composition 
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
-    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     
     <link type="text/css" rel="stylesheet" href="../resources/css/navigationBar.css?v=${applicationInfoBean.projectVersion}" />
     
@@ -23,6 +24,20 @@
         </li>
 
         <li style="float:left"><h:commandLink value="Állatkereső" action="#{navigationController.animalSearch}" class="#{navigationController.activePageName == 'animalSearch' ? 'active' : ' '}"></h:commandLink></li>
+        
+        <c:if test="#{navigationController.roleId == '1'}" >
+            <li class="dropdown" style="float:left">
+                <h:commandLink value="Engedélykérések" action="#{navigationController.requestRegistrations}" class="#{navigationController.activePageName == 'requestRegistrations' ? 'active' : ' '}"></h:commandLink>
+                <div class="dropdown-content">
+                    <h:commandLink style="text-align: left" value="Regisztrációk" action="#{navigationController.requestRegistrations}"></h:commandLink>
+                    <h:commandLink style="text-align: left" value="Tartási helyek" action="#{navigationController.requestHoldingPlaces}"></h:commandLink>
+                    <h:commandLink style="text-align: left" value="Tenyészetek" action="#{navigationController.holdingPlaceList}"></h:commandLink>
+                    <h:commandLink style="text-align: left" value="Egyedek" action="#{navigationController.holdingPlaceList}"></h:commandLink>
+                </div>
+            </li>
+        
+        </c:if>
+        
         <li style="float:right"><h:commandLink value="Kilépés" action="#{loginController.logout}" ></h:commandLink></li>
         <li style="float:right"><h:commandLink value="Fiók" action="#{navigationController.account}" class="#{navigationController.activePageName == 'account' || navigationController.activePageName == 'accountEdit' ? 'active' : ' '}"></h:commandLink></li>
         </h:form>

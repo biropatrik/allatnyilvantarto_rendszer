@@ -37,8 +37,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "HoldingPlace.findByAnimalEarTag", query = "SELECT h FROM HoldingPlace h, BreedingHasAnimal b, HoldingPlaceHasBreeding hp "
                                                                 + "WHERE (b.animalEarTag = :animalEarTag AND (b.endDate < 1 OR b.endDate IS NULL)) "
                                                                 + "AND hp.breedingId = b.breedingId "
-                                                                + "AND h.id = hp.holdingPlaceId"
-                )
+                                                                + "AND h.id = hp.holdingPlaceId" ),
+    @NamedQuery(name = "HoldingPlace.findByUserId", query = "SELECT DISTINCT h FROM HoldingPlace h, UserHasBreeding u, HoldingPlaceHasBreeding hb "
+                                                    + "WHERE h.id = hb.holdingPlaceId "
+                                                    + "AND hb.breedingId = u.breedingId "
+                                                    + "AND u.userId = :userId ")
 })
 public class HoldingPlace implements Serializable {
 

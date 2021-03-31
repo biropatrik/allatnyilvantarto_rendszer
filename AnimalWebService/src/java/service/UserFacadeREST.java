@@ -185,4 +185,15 @@ public class UserFacadeREST extends AbstractFacade<User> {
             }
         }
     }
+    
+    @GET
+    @Path("findByIsActive/{isActive}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public ArrayList<User> findByIsActive(@PathParam("isActive") boolean isActive){
+        ArrayList<User> users = (ArrayList<User>) em.createNamedQuery("User.findByIsActive")
+                                        .setParameter("isActive", isActive)
+                                        .getResultList();
+
+        return users;
+    }
 }

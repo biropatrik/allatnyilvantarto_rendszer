@@ -73,6 +73,7 @@ public class HoldingPlaceController {
     private CapacityTypeClient capacityTypeClient;
     
     public List<HoldingPlaceModel> getAllHoldingPlacesByBreedingIds(){
+        /*
         this.breedingIds = new ArrayList<>();
         this.breedingIds = getBreedingIdsByUserId();
         
@@ -89,7 +90,10 @@ public class HoldingPlaceController {
         for(int i=0; i<holdingPlaceIds.size(); i++){
            HoldingPlaceModel model = holdingPlaceClient.find_JSON(HoldingPlaceModel.class, holdingPlaceIds.get(i));
            holdingPlaces.add(model);
-        }
+        }*/
+        holdingPlaceClient = new HoldingPlaceClient();
+        List<HoldingPlaceModel> holdingPlaces = holdingPlaceClient.findByUserId_JSON(List.class, Session.getUserId());
+        holdingPlaceClient.close();
         
         return holdingPlaces;
     }

@@ -105,6 +105,26 @@ public class HoldingPlaceFacadeREST extends AbstractFacade<HoldingPlace> {
                                     .getResultList();
         return holdingPlaces;
     }
+    
+    @GET
+    @Path("findByUserId/{userId}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public ArrayList<HoldingPlace> findByUserId(@PathParam("userId") Integer userId) {
+        ArrayList<HoldingPlace> holdingPlaces = (ArrayList<HoldingPlace>) em.createNamedQuery("HoldingPlace.findByUserId")
+                                    .setParameter("userId", userId)
+                                    .getResultList();
+        return holdingPlaces;
+    }
+    
+    @GET
+    @Path("findByIsActive/{isActive}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public ArrayList<HoldingPlace> findByIsActive(@PathParam("isActive") boolean isActive) {
+        ArrayList<HoldingPlace> holdingPlaces = (ArrayList<HoldingPlace>) em.createNamedQuery("HoldingPlace.findByIsActive")
+                                    .setParameter("isActive", isActive)
+                                    .getResultList();
+        return holdingPlaces;
+    }
 
     @Override
     protected EntityManager getEntityManager() {

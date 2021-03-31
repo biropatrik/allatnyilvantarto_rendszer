@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+    <h:head>
+        <title>Engedélykérések</title>
+    </h:head>
+    <h:body>
+        <link type="text/css" rel="stylesheet" href="../resources/css/animal.css?v=${applicationInfoBean.projectVersion}" />
+        
+        <div class="content">
+            <f:metadata>
+                <f:viewAction action="#{loginController.checkLogin('requestRegistrations.xhtml',1)}" />
+            </f:metadata>
+
+            <ui:include src="navigationbar.xhtml" />
+        
+        <h:form id="checkRegistrations">
+            
+            <div class="content-block">
+                <table>
+                    <tbody class="hover">
+                        <tr>
+                            <th>Azonosító</th>
+                            <th>Név</th>
+                            <th>Telefonszám</th>
+                        </tr>
+                        <c:forEach items="#{requestController.registrations}" var="details">
+                            <tr class="reg_#{details.id}" style="background-color:#B5B5B5;">
+                                <td>#{details.id}</td>
+                                <td>#{details.lastName.concat(" ").concat(details.firstName)}</td>
+                                <td>#{details.phoneNumber}</td>
+                                <h:commandButton id="details_#{details.id}" actionListener="#{requestController.searchUserWithId(details.id)}" style="display: none;" />
+                            </tr>
+                            
+                            <c:if test="#{requestController.searchedId != null &amp;&amp; requestController.searchedId == details.id}">
+                            <c:set var="user" value="#{requestController.searchedUser}" />
+                                <tr class="#{user.id}">
+                                    <td>Teljes név:</td>
+                                    <td colspan="2">#{user.lastName.concat(" ").concat(user.firstName)}</td>
+                                </tr>
+                                <tr class="#{user.id}">
+                                    <td>E-mail:</td>
+                                    <td colspan="2">#{user.email}</td>
+                                </tr>
+                                <tr class="#{user.id}">
+                                    <td>Telefonszám:</td>
+                                    <td colspan="2">#{user.phoneNumber}</td>
+                                </tr>
+                                <tr class="#{user.id}">
+                                    <td>Ország:</td>
+                                    <td colspan="2">#{requestController.getCountryName(user.countryIso2)}</td>
+                                </tr>
+                                <tr class="#{user.id}">
+                                    <td>Megye:</td>
+                                    <td colspan="2">#{requestController.getCountyName(user.countyId)}</td>
+                                </tr>
+                                <tr class="#{user.id}">
+                                    <td>Város:</td>
+                                    <td>#{requestController.getCityPostalCode(user.cityId)}</td>
+                                    <td>#{requestController.getCityName(user.cityId)}</td>
+                                </tr>
+                                <tr class="#{user.id}">
+                                    <td>Utca:</td>
+                                    <td colspan="2">#{user.street}</td>
+                                </tr>
+                                <tr class="#{user.id}">
+                                    <td>Szerepkör:</td>
+                                    <td colspan="2">#{requestController.getRoleName(user.roleId)}</td>
+                                </tr>
+                            
+                                <tr class="#{user.id}">
+                                    <th colspan="3" style="border: solid thin;">Felhasználó elfogadása</th>
+                                </tr>
+                                <tr class="#{user.id}">
+                                    <td>Jelszó beírása:</td>
+                                    <td colspan="2">
+                                        <h:message for="password" style="color:red" />
+                                        <h:inputSecret id="password" label="Jelszó" required="false" a:placeholder="Jelszó" value="#{accountController.newPassword}" style="width: 40%"/>
+                                    </td>
+                                </tr>
+                                <tr class="#{user.id}">
+                                    <td>Elfogadás:</td>
+                                    <td colspan="2">
+                                    <div class="button">
+                                        <h:commandButton value="Elfogadás" type="submit" action="#{accountController.saveAccountModification()}" styleClass="add"/>
+                                    </div>
+                                    </td>
+                                </tr>
+                            </c:if>
+                        </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+        </h:form>
+        </div>
+        <script src="jquery-3.5.1.js"></script>
+        <c:forEach items="#{requestController.registrations}" var="details">
+            <script>
+                $('body').on('click', '.reg_#{details.id}', function(){
+                    $('.#{details.id}').toggle();
+                    if('#{details.id}' !== '#{requestController.searchedId}'){
+                        document.getElementById('checkRegistrations:details_#{details.id}').click();
+                    }
+                });
+            </script>
+        </c:forEach>
+    </h:body>
+</html>
+

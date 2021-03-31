@@ -17,7 +17,15 @@ import javax.faces.bean.SessionScoped;
 @SessionScoped
 public class NavigationController {
     private String activePageName;
+    private String roleId;
 
+    public String getRoleId() {
+        if(roleId == null || roleId.isEmpty()){
+            roleId = Session.getUserRole();
+        }
+        return roleId;
+    }
+    
     public String getActivePageName() {
         return activePageName;
     }
@@ -90,5 +98,15 @@ public class NavigationController {
     public String animalSearch(){
         this.activePageName = "animalSearch";
         return "animalSearch.xhtml?faces-redirect=true";
+    }
+    
+    public String requestRegistrations(){
+        this.activePageName = "requestRegistrations";
+        return "requestRegistrations.xhtml?faces-redirect=true";
+    }
+    
+    public String requestHoldingPlaces(){
+        this.activePageName = "requestHoldingPlaces";
+        return "requestHoldingPlaces.xhtml?faces-redirect=true";
     }
 }
