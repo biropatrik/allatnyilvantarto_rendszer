@@ -31,7 +31,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Breeding.findByBreedingType", query = "SELECT b FROM Breeding b WHERE b.breedingType = :breedingType"),
     @NamedQuery(name = "Breeding.findByBreedingQualification", query = "SELECT b FROM Breeding b WHERE b.breedingQualification = :breedingQualification"),
     @NamedQuery(name = "Breeding.findByBreedingClassification", query = "SELECT b FROM Breeding b WHERE b.breedingClassification = :breedingClassification"),
-    @NamedQuery(name = "Breeding.findByIsActive", query = "SELECT b FROM Breeding b WHERE b.isActive = :isActive")})
+    @NamedQuery(name = "Breeding.findByIsActive", query = "SELECT b FROM Breeding b WHERE b.isActive = :isActive"),
+    @NamedQuery(name = "Breeding.findByUserId", query = "SELECT b FROM Breeding b, UserHasBreeding u "
+                                                       +"WHERE b.id = u.breedingId "
+                                                       +"AND u.userId = :userId")
+})
 public class Breeding implements Serializable {
 
     private static final long serialVersionUID = 1L;

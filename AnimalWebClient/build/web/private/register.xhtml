@@ -41,9 +41,11 @@
             <br></br>
             
             <h:message for="postal_code" style="color:red" />
-            <h:inputText id="postal_code" label="Irányítószám" requiredMessage="A mező kitöltése kötelező!" a:placeholder="Irányítószám" required="false" value="#{registerController.postal_code}" onchange="submit()"/>
+            <h:inputText id="postal_code" label="Irányítószám" a:placeholder="Irányítószám" required="false" value="#{registerController.postal_code}">
+                <f:ajax execute = "postal_code" render = "cities" />
+            </h:inputText>
             
-            <h:selectOneMenu styleClass="selectonemenu" value="#{registerController.cityId}">
+            <h:selectOneMenu id="cities" styleClass="selectonemenu" value="#{registerController.cityId}">
                 <f:selectItems value="#{registerController.cities}" var="ci"
                                itemLabel="#{ci.name}" itemValue="#{ci.id}" />
             </h:selectOneMenu>

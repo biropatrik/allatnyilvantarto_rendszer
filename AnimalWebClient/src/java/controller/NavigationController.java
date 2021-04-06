@@ -109,4 +109,14 @@ public class NavigationController {
         this.activePageName = "requestHoldingPlaces";
         return "requestHoldingPlaces.xhtml?faces-redirect=true";
     }
+    
+    public String requestBreedings(){
+        this.activePageName = "requestBreedings";
+        return "requestBreedings.xhtml?faces-redirect=true";
+    }
+    
+    public String requestAnimals(){
+        this.activePageName = "requestAnimals";
+        return "requestAnimals.xhtml?faces-redirect=true";
+    }
 }

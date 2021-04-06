@@ -72,24 +72,6 @@ public class HoldingPlaceController {
     private CapacityTypeClient capacityTypeClient;
     
     public List<HoldingPlaceModel> getAllHoldingPlacesByBreedingIds(){
-        /*
-        this.breedingIds = new ArrayList<>();
-        this.breedingIds = getBreedingIdsByUserId();
-        
-        List<String> holdingPlaceIds = new ArrayList<>();
-        for(int i=0; i<this.breedingIds.size(); i++){
-            String id = String.valueOf(getHoldingPlaceHasBreedingByBreedingId(String.valueOf(this.breedingIds.get(i))).getHoldingPlaceId());
-            if(!holdingPlaceIds.contains(id)){
-                holdingPlaceIds.add(id);
-            }
-        }
-        
-        holdingPlaceClient = new HoldingPlaceClient();
-        List<HoldingPlaceModel> holdingPlaces = new ArrayList<>();
-        for(int i=0; i<holdingPlaceIds.size(); i++){
-           HoldingPlaceModel model = holdingPlaceClient.find_JSON(HoldingPlaceModel.class, holdingPlaceIds.get(i));
-           holdingPlaces.add(model);
-        }*/
         holdingPlaceClient = new HoldingPlaceClient();
         List<HoldingPlaceModel> holdingPlaces = holdingPlaceClient.findByUserId_JSON(List.class, Session.getUserId());
         holdingPlaceClient.close();

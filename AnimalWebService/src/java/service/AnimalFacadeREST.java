@@ -94,6 +94,17 @@ public class AnimalFacadeREST extends AbstractFacade<Animal> {
            
         return animals;
     }
+    
+    @GET
+    @Path("findAnimalsByIsAccepted/{isAccepted}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public ArrayList<Animal> findAnimalsByIsAccepted(@PathParam("isAccepted") boolean isAccepted){
+        ArrayList<Animal> animals = (ArrayList<Animal>) em.createNamedQuery("Animal.findByIsAccepted")
+                                     .setParameter("isAccepted", isAccepted)
+                                     .getResultList();
+           
+        return animals;
+    }
 
     @Override
     protected EntityManager getEntityManager() {

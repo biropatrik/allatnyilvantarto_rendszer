@@ -79,15 +79,8 @@ public class BreedingController {
     }
     
     public List<BreedingModel> getAllBreedingByBreedingIds(){
-        this.breedingIds.clear();
-        this.breedingIds = getBreedingIdsByUserId();
-        
         breedingClient = new BreedingClient();
-        List<BreedingModel> breedings = new ArrayList<>();
-        for(int i=0; i<this.breedingIds.size(); i++){
-            BreedingModel model = breedingClient.find_JSON(BreedingModel.class, String.valueOf(this.breedingIds.get(i)));
-            breedings.add(model);
-        }
+        List<BreedingModel> breedings = breedingClient.findBreedingByUserId_JSON(List.class, Session.getUserId());
         breedingClient.close();
         return breedings;
     }

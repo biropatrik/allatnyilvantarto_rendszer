@@ -46,7 +46,10 @@ import javax.xml.bind.annotation.XmlRootElement;
                                                     + "AND b.breedingId = u.breedingId "
                                                     + "AND u.userId = :userId "
                                                     + "AND ( b.endDate < 1 "
-                                                    + "OR b.endDate IS NULL)" )})
+                                                    + "OR b.endDate IS NULL)" )
+    
+
+})
 public class Animal implements Serializable {
 
     private static final long serialVersionUID = 1L;

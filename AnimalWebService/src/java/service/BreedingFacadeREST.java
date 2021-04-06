@@ -6,6 +6,7 @@
 package service;
 
 import entity.Breeding;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -81,6 +82,28 @@ public class BreedingFacadeREST extends AbstractFacade<Breeding> {
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
         return String.valueOf(super.count());
+    }
+    
+    @GET
+    @Path("findBreedingByUserId/{id}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public ArrayList<Breeding> findBreedingByUserId(@PathParam("id") Integer id){
+        ArrayList<Breeding> breedings = (ArrayList<Breeding>) em.createNamedQuery("Breeding.findByUserId")
+                                     .setParameter("userId", id)
+                                     .getResultList();
+           
+        return breedings;
+    }
+    
+    @GET
+    @Path("findByIsActive/{isActive}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public ArrayList<Breeding> findByIsActive(@PathParam("isActive") boolean isActive){
+        ArrayList<Breeding> breedings = (ArrayList<Breeding>) em.createNamedQuery("Breeding.findByIsActive")
+                                     .setParameter("isActive", isActive)
+                                     .getResultList();
+           
+        return breedings;
     }
 
     @Override

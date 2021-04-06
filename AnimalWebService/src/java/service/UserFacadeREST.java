@@ -78,7 +78,9 @@ public class UserFacadeREST extends AbstractFacade<User> {
          ArrayList<User> users = (ArrayList<User>) em.createNamedQuery("User.findByEmail")
                                 .setParameter("email", email)
                                 .getResultList();
-         
+         if(users.size() < 1){
+             return null;
+         }
          return users.get(0);
     }
 

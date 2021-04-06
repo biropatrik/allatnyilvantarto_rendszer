@@ -33,6 +33,18 @@ public class AnimalClient {
         webTarget = client.target(BASE_URI).path("entity.animal");
     }
 
+    public <T> T findAnimalsByIsAccepted_XML(Class<T> responseType, String isAccepted) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("findAnimalsByIsAccepted/{0}", new Object[]{isAccepted}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
+    }
+
+    public <T> T findAnimalsByIsAccepted_JSON(Class<T> responseType, String isAccepted) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("findAnimalsByIsAccepted/{0}", new Object[]{isAccepted}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
     public String countREST() throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path("count");

@@ -30,8 +30,12 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "UserHasBreeding.findById", query = "SELECT u FROM UserHasBreeding u WHERE u.id = :id"),
     @NamedQuery(name = "UserHasBreeding.findByUserId", query = "SELECT u FROM UserHasBreeding u WHERE u.userId = :userId"),
     @NamedQuery(name = "UserHasBreeding.findByBreedingId", query = "SELECT u FROM UserHasBreeding u WHERE u.breedingId = :breedingId"),
-    @NamedQuery(name = "UserHasBreeding.findBreedingIdByUserId", query = "SELECT u.breedingId FROM UserHasBreeding u WHERE u.userId = :userId")
-    })
+    @NamedQuery(name = "UserHasBreeding.findBreedingIdByUserId", query = "SELECT u.breedingId FROM UserHasBreeding u WHERE u.userId = :userId"),
+    @NamedQuery(name = "UserHasBreeding.findUserIdByEarTag", query = "SELECT u FROM BreedingHasAnimal b, UserHasBreeding u "
+                                                    + "WHERE u.breedingId = b.breedingId "
+                                                    + "AND b.animalEarTag = :earTag "
+                                                    + "AND (b.endDate IS NULL OR b.endDate = 0)")
+})
 public class UserHasBreeding implements Serializable {
 
     private static final long serialVersionUID = 1L;

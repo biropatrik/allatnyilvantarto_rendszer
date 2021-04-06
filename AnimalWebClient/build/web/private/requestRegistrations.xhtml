@@ -70,7 +70,12 @@
                                 </tr>
                                 <tr class="#{user.id}">
                                     <td>Szerepkör:</td>
-                                    <td colspan="2">#{requestController.getRoleName(user.roleId)}</td>
+                                    <td colspan="2">
+                                    <h:selectOneMenu styleClass="selectonemenu" value="#{user.roleId}">
+                                        <f:selectItems value="#{requestController.allRoles}" var="rs"
+                                                       itemLabel="#{rs.name}" itemValue="#{rs.id}" />
+                                    </h:selectOneMenu>
+                                    </td>
                                 </tr>
                             
                                 <tr class="#{user.id}">

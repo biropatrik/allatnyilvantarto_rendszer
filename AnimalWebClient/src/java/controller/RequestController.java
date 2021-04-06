@@ -5,12 +5,15 @@
  */
 package controller;
 
+import client.AnimalClient;
+import client.BreedingClient;
 import client.CityClient;
 import client.CountryClient;
 import client.CountyClient;
 import client.HoldingPlaceClient;
 import client.RoleClient;
 import client.UserClient;
+import client.UserHasBreedingClient;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
@@ -20,12 +23,15 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import model.AnimalModel;
+import model.BreedingModel;
 import model.CityModel;
 import model.CountryModel;
 import model.CountyModel;
 import model.HoldingPlaceModel;
 import model.RoleModel;
 import model.UserModel;
+import org.json.JSONObject;
 
 /**
  *
@@ -40,6 +46,9 @@ public class RequestController {
     CountyClient countyClient;
     CityClient cityClient;
     HoldingPlaceClient holdingPlaceClient;
+    BreedingClient breedingClient;
+    UserHasBreedingClient userHasBreedingClient;
+    AnimalClient animalClient;
     
     List<UserModel> registrations = new ArrayList<>();
     private String searchedId;
@@ -83,6 +92,31 @@ public class RequestController {
         return holdingPlaceList;
     }
     
+    public List<BreedingModel> getBreedingsByIsActive(boolean isActive){
+        breedingClient = new BreedingClient();
+        List<BreedingModel> list = breedingClient.findByIsActive_JSON(List.class, String.valueOf(isActive));
+        breedingClient.close();
+        ObjectMapper mapper = new ObjectMapper();
+        List<BreedingModel> breedings = mapper.convertValue(list, new TypeReference<List<BreedingModel>>(){});
+        return breedings;
+    }
+    
+    public List<AnimalModel> getAnimalsByIsAccepted(boolean isAccepted){
+        animalClient = new AnimalClient();
+        List<AnimalModel> list = animalClient.findAnimalsByIsAccepted_JSON(List.class, String.valueOf(isAccepted));
+        animalClient.close();
+        ObjectMapper mapper = new ObjectMapper();
+        List<AnimalModel> animalList = mapper.convertValue(list, new TypeReference<List<AnimalModel>>(){});
+        return animalList;
+    }
+    
+    public List<RoleModel> getAllRoles(){
+        roleClient = new RoleClient();
+        List<RoleModel> roles = roleClient.findAll_JSON(List.class);
+        roleClient.close();
+        return roles;
+    }
+    
     public void acceptRegistration(String userId){
         if(this.password == null || this.password.isEmpty()){
             FacesContext.getCurrentInstance().addMessage("checkRegistrations:password", new FacesMessage("A mező kitöltése kötelező!"));
@@ -105,6 +139,7 @@ public class RequestController {
             UserModel user = userClient.find_JSON(UserModel.class, userId);
             user.setIsActive(true);
             user.setIsAccepted(true);
+            user.setRoleId(searchedUser.getRoleId());
             
             userClient.edit_JSON(user, userId);
             userClient.close();
@@ -133,7 +168,8 @@ public class RequestController {
         if(response == 0){
             FacesContext.getCurrentInstance().addMessage("checkHoldingPlace:password", new FacesMessage("Hibás jelszó!"));
             return;
-        }else if(holdingPlaceId != null && !holdingPlaceId.isEmpty() && response == 1){
+        }
+        if(holdingPlaceId != null && !holdingPlaceId.isEmpty() && response == 1){
             holdingPlaceClient = new HoldingPlaceClient();
             HoldingPlaceModel holdingPlace = holdingPlaceClient.find_JSON(HoldingPlaceModel.class, holdingPlaceId);
             holdingPlace.setIsActive(true);
@@ -144,6 +180,101 @@ public class RequestController {
             return;
         }
         holdingPlaceClient.close();
+    }
+    
+    public void acceptBreeding(String breedingId){
+        if(this.password == null || this.password.isEmpty()){
+            FacesContext.getCurrentInstance().addMessage("checkBreeding:password", new FacesMessage("A mező kitöltése kötelező!"));
+            return;
+        }
+        
+        userClient = new UserClient();
+        int response = -1;
+        try{
+            response = userClient.validateUser_JSON(int.class, Session.getUserId()+"_"+password);
+        }catch(Exception e){
+            FacesContext.getCurrentInstance().addMessage("checkBreeding:password", new FacesMessage("Hiba történt!"));
+            return;
+        }
+        
+        if(response == 0){
+            FacesContext.getCurrentInstance().addMessage("checkBreeding:password", new FacesMessage("Hibás jelszó!"));
+            return;
+        }
+        if(breedingId != null && !breedingId.isEmpty() && response == 1){
+            breedingClient = new BreedingClient();
+            BreedingModel breeding = breedingClient.find_JSON(BreedingModel.class, breedingId);
+            breeding.setIsActive(true);
+            
+            breedingClient.edit_JSON(breeding, breedingId);
+        }else{
+            FacesContext.getCurrentInstance().addMessage("checkBreeding:password", new FacesMessage("Hiba történt! Nem azonosítható tenyészet!"));
+            return;
+        }
+        breedingClient.close();
+    }
+    
+    public void acceptAnimal(String earTag){
+        if(this.password == null || this.password.isEmpty()){
+            FacesContext.getCurrentInstance().addMessage("checkAnimal:password", new FacesMessage("A mező kitöltése kötelező!"));
+            return;
+        }
+        
+        userClient = new UserClient();
+        int response = -1;
+        try{
+            response = userClient.validateUser_JSON(int.class, Session.getUserId()+"_"+password);
+        }catch(Exception e){
+            FacesContext.getCurrentInstance().addMessage("checkAnimal:password", new FacesMessage("Hiba történt!"));
+            return;
+        }
+        
+        if(response == 0){
+            FacesContext.getCurrentInstance().addMessage("checkAnimal:password", new FacesMessage("Hibás jelszó!"));
+            return;
+        }
+        if(earTag != null && !earTag.isEmpty() && response == 1){
+            animalClient = new AnimalClient();
+            AnimalModel animal = animalClient.find_JSON(AnimalModel.class, earTag);
+            animal.setIsAccepted(true);
+            String jsonAnimal = new JSONObject()
+                            .put("earTag", animal.getEarTag())
+                            .put("motherId", animal.getMotherId())
+                            .put("name", animal.getName())
+                            .put("sex", animal.isSex())
+                            .put("birthdate", animal.getBirthdate())
+                            .put("deathdate", animal.getDeathdate())
+                            .put("speciesId", animal.getSpeciesId())
+                            .put("breedId", animal.getBreedId())
+                            .put("colorId", animal.getColorId())
+                            .put("twinning", animal.isTwinning())
+                            .put("calvingId", animal.getCalvingId())
+                            .put("calvingWeight", animal.getCalvingWeight())
+                            .put("isAccepted", animal.isIsAccepted())
+                            .put("inseminationDate", animal.getInseminationDate())
+                            .toString();
+                
+            animalClient.edit_JSON(jsonAnimal, String.valueOf(animal.getEarTag()));
+            
+        }else{
+            FacesContext.getCurrentInstance().addMessage("checkAnimal:password", new FacesMessage("Hiba történt! Nem azonosítható egyed!"));
+            return;
+        }
+        animalClient.close();
+    }
+    
+    public int getUserIdByBreedingId(String breedingId){
+        userHasBreedingClient = new UserHasBreedingClient();
+        int userId = userHasBreedingClient.findUserIdByBreedingId_JSON(Integer.class, breedingId);
+        userHasBreedingClient.close();
+        return userId;
+    }
+    
+    public int getUserIdByEarTag(String earTag){
+        userHasBreedingClient = new UserHasBreedingClient();
+        int userId = userHasBreedingClient.findUserIdByEarTag_JSON(Integer.class, earTag);
+        userHasBreedingClient.close();
+        return userId;
     }
     
     public UserModel getUserById(String id){

@@ -88,15 +88,6 @@ public class UserHasBreedingFacadeREST extends AbstractFacade<UserHasBreeding> {
     @Path("breedings_by_id/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public ArrayList<Integer> findAllBreedingIdByUserId(@PathParam("id") Integer id){
-//        List<UserHasBreeding> allBreedings = super.findAll();
-//        ArrayList<String> breedings = new ArrayList<>();
-//        for(int i=0; i<allBreedings.size(); i++){
-//            if(allBreedings.get(i).getUserId() == id){
-//                breedings.add(String.valueOf(allBreedings.get(i).getBreedingId()));
-//            }
-//        }
-//        return breedings;
-
         ArrayList<Integer> breedingIds = (ArrayList<Integer>) em.createNamedQuery("UserHasBreeding.findBreedingIdByUserId")
                                         .setParameter("userId", id)
                                         .getResultList();
@@ -124,8 +115,23 @@ public class UserHasBreedingFacadeREST extends AbstractFacade<UserHasBreeding> {
         ArrayList<UserHasBreeding> breedings = (ArrayList<UserHasBreeding>) em.createNamedQuery("UserHasBreeding.findByBreedingId")
                                         .setParameter("breedingId", id)
                                         .getResultList();
+        
         return breedings;
     }
+    
+    @GET
+    @Path("findUserIdByEarTag/{earTag}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public int findUserIdByEarTag(@PathParam("earTag") String earTag){
+        ArrayList<UserHasBreeding> breedings = (ArrayList<UserHasBreeding>) em.createNamedQuery("UserHasBreeding.findUserIdByEarTag")
+                                     .setParameter("earTag", earTag)
+                                     .getResultList();
+        if(breedings.size() < 1){
+            return -1;
+        }   
+        return breedings.get(0).getUserId();
+    }
+
 
     @Override
     protected EntityManager getEntityManager() {
