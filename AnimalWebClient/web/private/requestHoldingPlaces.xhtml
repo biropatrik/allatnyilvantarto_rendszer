@@ -32,10 +32,10 @@
                             <tr class="holdingPlace_#{details.id}" style="background-color:#B5B5B5;">
                                 <td>#{details.id}</td>
                                 <td colspan="4">#{holdingPlaceController.getAddressByHoldingPlaceId(details.id)}</td>
-                                <h:commandButton id="details_#{details.id}" actionListener="#{holdingPlaceController.searchHoldingPlaceWithId(details.id)}" style="display: none;" />
+                                <h:commandButton id="details_#{details.id}" actionListener="#{requestController.searchHoldingPlaceWithId(details.id)}" style="display: none;" />
                             </tr>
-                            <c:if test="#{holdingPlaceController.searchedId != null &amp;&amp; holdingPlaceController.searchedId == details.id}">
-                            <c:set var="holdingPlace" value="#{holdingPlaceController.searchedHoldingPlace}" />
+                            <c:if test="#{requestController.searchedId != null &amp;&amp; requestController.searchedId == details.id}">
+                            <c:set var="holdingPlace" value="#{requestController.searchedHoldingPlace}" />
                             
                             <tr id="holdingPlace_#{holdingPlace.id}" class="#{holdingPlace.id}">
                                 <th colspan="5" style="border: solid thin;">Kapcsolattartó személy azonosítása</th>
@@ -112,11 +112,19 @@
                             </tr>
                             <tr id="holdingPlace_#{holdingPlace.id}" class="#{holdingPlace.id}">
                                 <td>Illetékes áeü. hat. azonosítója:</td>
-                                <td colspan="4">#{holdingPlace.userVetId}</td>
+                                <td colspan="4">
+                                    <h:selectOneMenu id="vetIds" styleClass="selectonemenu" value="#{requestController.searchedHoldingPlace.userVetId}">
+                                        <f:selectItems value="#{requestController.allUserIdByVetRole}" var="vr"
+                                                       itemLabel="#{vr}" itemValue="#{vr}" />
+                                        <f:ajax execute="vetIds" render="vetName" />
+                                    </h:selectOneMenu>
+                                </td>
                             </tr>
                             <tr id="holdingPlace_#{holdingPlace.id}" class="#{holdingPlace.id}">
                                 <td>Illetékes áeü. hat. neve:</td>
-                                <td colspan="4">#{holdingPlaceController.getUserNameByUserId(holdingPlace.userVetId)}</td>
+                                <td colspan="4">
+                                    <h:outputText id="vetName" value="#{holdingPlaceController.getUserNameByUserId(requestController.searchedHoldingPlace.userVetId)}"></h:outputText>
+                                </td>
                             </tr>
                                 
                             <tr id="holdingPlace_#{holdingPlace.id}" class="#{holdingPlace.id}">
@@ -148,7 +156,6 @@
                                 </th>
                             </tr>
                             
-                            
                             </c:if>
                         </c:forEach>
                     </tbody>
@@ -157,12 +164,12 @@
         </h:form>
         </div>
         <script src="jquery-3.5.1.js"></script>
-        <c:forEach items="#{requestController.getHoldingPlacesByIsActive(false)}" var="holdingPlace">
+        <c:forEach items="#{requestController.getHoldingPlacesByIsActive(false)}" var="details">
             <script>
-                $('body').on('click', '.holdingPlace_#{holdingPlace.id}', function(){
-                    $('.#{holdingPlace.id}').toggle();
-                    if('#{holdingPlace.id}' !== '#{holdingPlaceController.searchedId}'){
-                        document.getElementById('checkHoldingPlace:details_#{holdingPlace.id}').click();
+                $('body').on('click', '.holdingPlace_#{details.id}', function(){
+                    $('.#{details.id}').toggle();
+                    if('#{details.id}' !== '#{requestController.searchedId}'){
+                        document.getElementById('checkHoldingPlace:details_#{details.id}').click();
                     }
                 });
             </script>

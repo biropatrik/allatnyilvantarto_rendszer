@@ -5,7 +5,7 @@
  */
 package service;
 
-import entity.BreedingHasAnimal;
+import entity.VetHasCounty;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -26,27 +26,27 @@ import javax.ws.rs.core.MediaType;
  * @author Patrik
  */
 @Stateless
-@Path("entity.breedinghasanimal")
-public class BreedingHasAnimalFacadeREST extends AbstractFacade<BreedingHasAnimal> {
+@Path("entity.vethascounty")
+public class VetHasCountyFacadeREST extends AbstractFacade<VetHasCounty> {
 
     @PersistenceContext(unitName = "AnimalWebServicePU")
     private EntityManager em;
 
-    public BreedingHasAnimalFacadeREST() {
-        super(BreedingHasAnimal.class);
+    public VetHasCountyFacadeREST() {
+        super(VetHasCounty.class);
     }
 
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(BreedingHasAnimal entity) {
+    public void create(VetHasCounty entity) {
         super.create(entity);
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, BreedingHasAnimal entity) {
+    public void edit(@PathParam("id") Integer id, VetHasCounty entity) {
         super.edit(entity);
     }
 
@@ -59,21 +59,21 @@ public class BreedingHasAnimalFacadeREST extends AbstractFacade<BreedingHasAnima
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public BreedingHasAnimal find(@PathParam("id") Integer id) {
+    public VetHasCounty find(@PathParam("id") Integer id) {
         return super.find(id);
     }
 
     @GET
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<BreedingHasAnimal> findAll() {
+    public List<VetHasCounty> findAll() {
         return super.findAll();
     }
 
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<BreedingHasAnimal> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+    public List<VetHasCounty> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
     }
 
@@ -84,26 +84,15 @@ public class BreedingHasAnimalFacadeREST extends AbstractFacade<BreedingHasAnima
         return String.valueOf(super.count());
     }
     
-    
     @GET
-    @Path("eartags_by_breedingid/{id}")
+    @Path("findByUserId/{userId}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public ArrayList<BreedingHasAnimal> findAllEarTagsByBreedingId(@PathParam("id") Integer id){
-        ArrayList<BreedingHasAnimal> breedings = (ArrayList<BreedingHasAnimal>) em.createNamedQuery("BreedingHasAnimal.findByBreedingId")
-                                     .setParameter("breedingId", id)
+    public ArrayList<VetHasCounty> findByUserId(@PathParam("userId") Integer id){
+        ArrayList<VetHasCounty> counties = (ArrayList<VetHasCounty>) em.createNamedQuery("VetHasCounty.findByUserId")
+                                     .setParameter("userId", id)
                                      .getResultList();
-        return breedings;
-    }
-    
-    @GET
-    @Path("breedings_by_eartag/{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public ArrayList<BreedingHasAnimal> findAllBreedingsByEarTag(@PathParam("id") String id){
-        ArrayList<BreedingHasAnimal> breedings = (ArrayList<BreedingHasAnimal>) em.createNamedQuery("BreedingHasAnimal.findByAnimalEarTag")
-                                     .setParameter("animalEarTag", id)
-                                     .getResultList();
-        breedings.sort((d1,d2) -> Long.valueOf(d2.getStartDate()).compareTo(d1.getStartDate()));
-        return breedings;
+           
+        return counties;
     }
 
     @Override

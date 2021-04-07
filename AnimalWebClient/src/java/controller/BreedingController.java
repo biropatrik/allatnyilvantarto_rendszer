@@ -339,10 +339,10 @@ public class BreedingController {
     }
     
     public String loadEditPage(int breedingId){
+        resetSearchedBreeding();
         breedingClient = new BreedingClient();
         this.newBreeding = breedingClient.find_JSON(BreedingModel.class, String.valueOf(breedingId));
         breedingClient.close();
-        resetSearchedBreeding();
         
         this.newUserHasBreeding = getUserHasBreedingByBreedingId(breedingId);
         this.newHoldingPlaceHasBreeding = getHoldingPlaceHasBreedingByBreedingId(breedingId);
@@ -351,8 +351,17 @@ public class BreedingController {
         return c.breedingEdit();
     }
     
+    public String loadAddPage(){
+        resetSearchedBreeding();
+        NavigationController c = new NavigationController();
+        return c.breedingAdd();
+    }
+    
     private void resetSearchedBreeding(){
         this.searchedId = "";
         this.searchedBreeding = null;
+        this.newBreeding = new BreedingModel();
+        this.newUserHasBreeding = new UserHasBreedingModel();
+        this.newHoldingPlaceHasBreeding = new HoldingPlaceHasBreedingModel();
     }
 }

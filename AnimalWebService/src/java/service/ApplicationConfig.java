@@ -54,6 +54,7 @@ public class ApplicationConfig extends Application {
         resources.add(service.UserFacadeREST.class);
         resources.add(service.UserHasBreedingFacadeREST.class);
         resources.add(service.UserHasMailFacadeREST.class);
+        resources.add(service.VetHasCountyFacadeREST.class);
     }
     
 }

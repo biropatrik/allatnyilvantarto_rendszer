@@ -79,6 +79,38 @@
                                 </tr>
                             
                                 <tr class="#{user.id}">
+                                <th colspan="3" style="border: solid thin;">Állatorvoshoz tartozó megyék</th>
+                                </tr>
+                                <c:forEach items="#{requestController.vetHasCounties}" var="vetHasCounty" varStatus="loop">
+                                    <tr class="#{user.id}">
+                                        <td>Megye:</td>
+                                        <td>
+                                            <h:selectOneMenu id="vetHasCounty_#{loop.index}" styleClass="selectonemenu" value="#{vetHasCounty.countyId}">
+                                                <f:selectItems value="#{requestController.allCounties}" var="ci"
+                                                               itemLabel="#{ci.name}" itemValue="#{ci.id}" />
+                                                <f:ajax execute="vetHasCounty_#{loop.index}" render="vetHasCounty_#{loop.index}" />
+                                            </h:selectOneMenu>
+                                        </td>
+                                        <td>
+                                            <div class="button">
+                                                <h:commandButton id="removeVetHasCountiesRowButton" action="#{requestController.removeVetHasCounties(vetHasCounty)}" styleClass="remove" value = "X">
+                                                    <f:ajax execute = "removeVetHasCountiesRowButton" render = "checkRegistrations" />
+                                                </h:commandButton>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                                <tr class="#{user.id}">
+                                    <th>
+                                        <div class="button">
+                                            <h:commandButton id="addVetHasCountiesRowButton" action="#{requestController.addVetHasCounties()}" styleClass="add" value = " + ">
+                                                <f:ajax execute = "addVetHasCountiesRowButton" render = "checkRegistrations" />
+                                            </h:commandButton>
+                                        </div>
+                                    </th>
+                                </tr>
+                            
+                                <tr class="#{user.id}">
                                     <th colspan="3" style="border: solid thin;">Felhasználó elfogadása</th>
                                 </tr>
                                 <tr class="#{user.id}">
@@ -100,6 +132,7 @@
                         </c:forEach>
                     </tbody>
                 </table>
+                
             </div>
         </h:form>
         </div>

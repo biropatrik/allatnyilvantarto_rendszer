@@ -216,12 +216,19 @@
                             <th colspan="5" style="border: solid thin;">Hatósági állatorvos</th>
                         </tr>
                         <tr>
-                            <td>Azonosítója:</td>
+                            <td colspan="4">Illetékes áeü. hat. azonosítója:</td>
                             <td>
-                                <h:selectOneMenu styleClass="selectonemenu" value="#{holdingPlaceController.newHoldingPlace.userVetId}">
+                                <h:selectOneMenu id="vetIds" styleClass="selectonemenu" value="#{holdingPlaceController.newHoldingPlace.userVetId}">
                                     <f:selectItems value="#{holdingPlaceController.allUserIdByVetRole}" var="ur"
                                                    itemLabel="#{ur}" itemValue="#{ur}" />
+                                    <f:ajax execute="vetIds" render="vetName" />
                                 </h:selectOneMenu>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">Illetékes áeü. hat. neve:</td>
+                            <td>
+                                <h:outputText id="vetName" value="#{holdingPlaceController.getUserNameByUserId(holdingPlaceController.newHoldingPlace.userVetId)}"></h:outputText>
                             </td>
                         </tr>
                     </tbody>

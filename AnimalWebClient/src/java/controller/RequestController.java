@@ -14,6 +14,7 @@ import client.HoldingPlaceClient;
 import client.RoleClient;
 import client.UserClient;
 import client.UserHasBreedingClient;
+import client.VetHasCountyClient;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import model.CountyModel;
 import model.HoldingPlaceModel;
 import model.RoleModel;
 import model.UserModel;
+import model.VetHasCountyModel;
 import org.json.JSONObject;
 
 /**
@@ -49,10 +51,14 @@ public class RequestController {
     BreedingClient breedingClient;
     UserHasBreedingClient userHasBreedingClient;
     AnimalClient animalClient;
+    VetHasCountyClient vetHasCountyClient;
     
     List<UserModel> registrations = new ArrayList<>();
+    List<VetHasCountyModel> vetHasCounties = new ArrayList<>();
+    List<Integer> deletedVetHasCounties = new ArrayList<>();
     private String searchedId;
     private UserModel searchedUser;
+    private HoldingPlaceModel searchedHoldingPlace;
     private String password;
 
     private List<UserModel> findUsersByIsActive(boolean isActive){
@@ -72,6 +78,23 @@ public class RequestController {
         }
     }
     
+    public void searchHoldingPlaceWithId(String id){
+        if(id != null){
+            this.searchedId = id;
+            searchHoldingPlace();
+        }
+    }
+    
+    public void searchHoldingPlace(){
+        if(this.searchedId == null){
+            return;
+        }
+        
+        holdingPlaceClient = new HoldingPlaceClient();
+        this.searchedHoldingPlace = holdingPlaceClient.find_JSON(HoldingPlaceModel.class, this.searchedId);
+        holdingPlaceClient.close();
+    }
+    
     public void searchUser(){
         if(this.searchedId == null){
             return;
@@ -79,13 +102,27 @@ public class RequestController {
         for(int i=0; i<registrations.size(); i++){
             if(String.valueOf(registrations.get(i).getId()).equals(searchedId)){
                 this.searchedUser = registrations.get(i);
+                vetHasCountyClient = new VetHasCountyClient();
+                this.vetHasCounties = vetHasCountyClient.findByUserId_JSON(List.class, String.valueOf(searchedUser.getId()));
+                vetHasCountyClient.close();
+                ObjectMapper mapper = new ObjectMapper();
+                this.vetHasCounties = mapper.convertValue(this.vetHasCounties, new TypeReference<List<VetHasCountyModel>>(){});
+        
             }
         }
     }
     
+    public List<String> getAllUserIdByVetRole(){
+        userClient = new UserClient();
+        List<String> ids = userClient.getAllUserIdByRole_JSON(List.class, "2");
+        ids.addAll(userClient.getAllUserIdByRole_JSON(List.class, "1"));
+        userClient.close();
+        return ids;
+    }
+    
     public List<HoldingPlaceModel> getHoldingPlacesByIsActive(boolean isActive){
         holdingPlaceClient = new HoldingPlaceClient();
-        List<HoldingPlaceModel> list = holdingPlaceClient.findByIsActive_JSON(List.class, String.valueOf(isActive));
+        List<HoldingPlaceModel> list = holdingPlaceClient.findByIsNotActive_JSON(List.class, Session.getUserId());
         holdingPlaceClient.close();
         ObjectMapper mapper = new ObjectMapper();
         List<HoldingPlaceModel> holdingPlaceList = mapper.convertValue(list, new TypeReference<List<HoldingPlaceModel>>(){});
@@ -143,11 +180,27 @@ public class RequestController {
             
             userClient.edit_JSON(user, userId);
             userClient.close();
+            
+            vetHasCountyClient = new VetHasCountyClient();
+            for(int i=0; i<this.vetHasCounties.size(); i++){
+                vetHasCounties.get(i).setUserId(user.getId());
+                if(vetHasCounties.get(i).getId() == null){
+                    vetHasCountyClient.create_JSON(vetHasCounties.get(i));
+                }else{
+                    vetHasCountyClient.edit_JSON(vetHasCounties.get(i), String.valueOf(vetHasCounties.get(i).getId()));
+                }
+            }
+            for(int i=0; i<this.deletedVetHasCounties.size(); i++){
+                vetHasCountyClient.remove(String.valueOf(deletedVetHasCounties.get(i)));
+            }
+            vetHasCountyClient.close();
+            
         }else{
             FacesContext.getCurrentInstance().addMessage("checkRegistrations:password", new FacesMessage("Hiba történt! Nem azonosítható felhasználó!"));
             return;
         }
         userClient.close();
+        resetFields();
     }
     
     public void acceptHoldingPlace(String holdingPlaceId){
@@ -180,6 +233,7 @@ public class RequestController {
             return;
         }
         holdingPlaceClient.close();
+        resetFields();
     }
     
     public void acceptBreeding(String breedingId){
@@ -212,6 +266,7 @@ public class RequestController {
             return;
         }
         breedingClient.close();
+        resetFields();
     }
     
     public void acceptAnimal(String earTag){
@@ -261,6 +316,26 @@ public class RequestController {
             return;
         }
         animalClient.close();
+        resetFields();
+    }
+
+    public List<VetHasCountyModel> getVetHasCounties() {
+        if(vetHasCounties.isEmpty()){
+            addVetHasCounties();
+        }
+        return vetHasCounties;
+    }
+    
+    public void addVetHasCounties(){
+        VetHasCountyModel model = new VetHasCountyModel();
+        vetHasCounties.add(model);
+    }
+    
+    public void removeVetHasCounties(VetHasCountyModel model){
+        vetHasCounties.remove(model);
+        if(model.getId() != null){
+            deletedVetHasCounties.add(model.getId());
+        }
     }
     
     public int getUserIdByBreedingId(String breedingId){
@@ -268,6 +343,16 @@ public class RequestController {
         int userId = userHasBreedingClient.findUserIdByBreedingId_JSON(Integer.class, breedingId);
         userHasBreedingClient.close();
         return userId;
+    }
+    
+    private void resetFields(){
+        registrations = new ArrayList<>();
+        vetHasCounties = new ArrayList<>();
+        deletedVetHasCounties = new ArrayList<>();
+        searchedId = null;
+        searchedUser = null;
+        searchedHoldingPlace = null;
+        password = null;
     }
     
     public int getUserIdByEarTag(String earTag){
@@ -337,6 +422,15 @@ public class RequestController {
         return role.getName();
     }
     
+    public List<CountyModel> getAllCounties(){
+        countyClient = new CountyClient();
+        List<CountyModel> list = countyClient.findAll_JSON(List.class);
+        countyClient.close();
+        ObjectMapper mapper = new ObjectMapper();
+        List<CountyModel> counties = mapper.convertValue(list, new TypeReference<List<CountyModel>>(){});
+        return counties;
+    }
+    
     public List<UserModel> getRegistrations() {
         registrations = findUsersByIsActive(false);
         return registrations;
@@ -364,4 +458,13 @@ public class RequestController {
     public String getPassword() {
         return password;
     }
+
+    public HoldingPlaceModel getSearchedHoldingPlace() {
+        return searchedHoldingPlace;
+    }
+
+    public void setSearchedHoldingPlace(HoldingPlaceModel searchedHoldingPlace) {
+        this.searchedHoldingPlace = searchedHoldingPlace;
+    }
+    
 }

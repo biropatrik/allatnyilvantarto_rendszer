@@ -57,6 +57,9 @@ public class HoldingPlaceController {
     private List<HoldingPlaceHasParcelNumberModel> newHoldingPlaceHasParcelNumber = new ArrayList<>();
     private List<HoldingPlaceHasSpeciesModel> newHoldingPlaceHasSpecies = new ArrayList<>();
     private String postal_code;
+    private List<Integer> deletedHoldingPlaceHasCapacity = new ArrayList<>();
+    private List<Integer> deletedHoldingPlaceHasParcelNumber = new ArrayList<>();
+    private List<Integer> deletedHoldingPlaceHasSpecies = new ArrayList<>();
     
     private UserHasBreedingClient userHasBreedingClient;
     private UserClient userClient;
@@ -149,6 +152,9 @@ public class HoldingPlaceController {
     }
     
     public String getUserNameByUserId(String userId){
+        if(userId == null || userId.isEmpty()){
+            return "";
+        }
         userClient = new UserClient();
         UserModel model = userClient.find_JSON(UserModel.class, userId);
         userClient.close();
@@ -308,6 +314,9 @@ public class HoldingPlaceController {
     
     public void removeNewHoldingPlaceHasCapacity(HoldingPlaceHasCapacityModel model){
         this.newHoldingPlaceHasCapacity.remove(model);
+        if(model.getId() != null){
+            this.deletedHoldingPlaceHasCapacity.add(model.getId());
+        }
     }
 
     public List<HoldingPlaceHasParcelNumberModel> getNewHoldingPlaceHasParcelNumber() {
@@ -324,6 +333,9 @@ public class HoldingPlaceController {
     
     public void removeNewHoldingPlaceHasParcelNumber(HoldingPlaceHasParcelNumberModel model){
         this.newHoldingPlaceHasParcelNumber.remove(model);
+        if(model.getId() != null){
+            this.deletedHoldingPlaceHasParcelNumber.add(model.getId());
+        }
     }
 
     public List<HoldingPlaceHasSpeciesModel> getNewHoldingPlaceHasSpecies() {
@@ -340,6 +352,9 @@ public class HoldingPlaceController {
     
     public void removeNewHoldingPlaceHasSpecies(HoldingPlaceHasSpeciesModel model){
         this.newHoldingPlaceHasSpecies.remove(model);
+        if(model.getId() != null){
+            this.deletedHoldingPlaceHasSpecies.add(model.getId());
+        }
     }
 
     public String getPostal_code() {
@@ -437,6 +452,9 @@ public class HoldingPlaceController {
                 holdingPlaceHasSpeciesClient.edit_JSON(jsonString, String.valueOf(newHoldingPlaceHasSpecies.get(i).getId()));
             }
         }
+        for(int i=0; i<deletedHoldingPlaceHasSpecies.size(); i++){
+            holdingPlaceHasSpeciesClient.remove(String.valueOf(deletedHoldingPlaceHasSpecies.get(i)));
+        }
         holdingPlaceHasSpeciesClient.close();
         
         holdingPlaceHasParcelNumberClient = new HoldingPlaceHasParcelNumberClient();
@@ -455,6 +473,9 @@ public class HoldingPlaceController {
             }else{
                 holdingPlaceHasParcelNumberClient.edit_JSON(jsonString, String.valueOf(newHoldingPlaceHasParcelNumber.get(i).getId()));
             }
+        }
+        for(int i=0; i<deletedHoldingPlaceHasParcelNumber.size(); i++){
+            holdingPlaceHasParcelNumberClient.remove(String.valueOf(deletedHoldingPlaceHasParcelNumber.get(i)));
         }
         holdingPlaceHasParcelNumberClient.close();
         
@@ -476,10 +497,15 @@ public class HoldingPlaceController {
                 holdingPlaceHasCapacityClient.edit_JSON(jsonString, String.valueOf(newHoldingPlaceHasCapacity.get(i).getId()));
             }
         }
+        for(int i=0; i<deletedHoldingPlaceHasCapacity.size(); i++){
+            holdingPlaceHasCapacityClient.remove(String.valueOf(deletedHoldingPlaceHasCapacity.get(i)));
+        }
         holdingPlaceHasCapacityClient.close();
     }
     
     public String loadEditPage(String holdingPlaceId){
+        resetSearchedHoldingPlace();
+        
         holdingPlaceClient = new HoldingPlaceClient();
         this.newHoldingPlace = holdingPlaceClient.find_JSON(HoldingPlaceModel.class, holdingPlaceId);
         holdingPlaceClient.close();
@@ -503,15 +529,25 @@ public class HoldingPlaceController {
         this.newHoldingPlaceHasCapacity = mapper.convertValue(newHoldingPlaceHasCapacity, new TypeReference<List<HoldingPlaceHasCapacityModel>>(){});
         holdingPlaceHasCapacityClient.close();
         
-        ResetSearchedHoldingPlace();
-        
         NavigationController c = new NavigationController();
         return c.holdingPlaceEdit();
     }
     
-    private void ResetSearchedHoldingPlace(){
+    public String loadAddPage(){
+        resetSearchedHoldingPlace();
+        NavigationController c = new NavigationController();
+        return c.holdingPlaceAdd();
+    }
+    
+    private void resetSearchedHoldingPlace(){
         this.searchedId =  "";
         this.searchedHoldingPlace = null;
+        this.newHoldingPlaceHasCapacity = new ArrayList<>();
+        this.newHoldingPlaceHasParcelNumber = new ArrayList<>();
+        this.newHoldingPlaceHasSpecies = new ArrayList<>();
+        this.deletedHoldingPlaceHasCapacity = new ArrayList<>();
+        this.deletedHoldingPlaceHasParcelNumber = new ArrayList<>();
+        this.deletedHoldingPlaceHasSpecies = new ArrayList<>();
     }
     
     public String getPostalCodeByCityId(){

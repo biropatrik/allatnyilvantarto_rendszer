@@ -67,6 +67,8 @@ public class AnimalController {
     private AnimalModel newAnimal = new AnimalModel();
     private List<BreedingHasAnimalModel> newBreedingHasAnimal = new ArrayList<>();
     private List<AnimalHasDiseasesModel> newAnimalHasDiseases = new ArrayList<>();
+    private List<Integer> deletedBreedingHasAnimal = new ArrayList<>();
+    private List<Integer> deletedAnimalHasDiseases = new ArrayList<>();
     
     private UserHasBreedingClient userHasBreedingClient;
     private BreedingHasAnimalClient breedingHasAnimalClient;
@@ -461,6 +463,9 @@ public class AnimalController {
                 }
             }
         }
+        for(int i=0; i<deletedBreedingHasAnimal.size(); i++){
+            breedingHasAnimalClient.remove(String.valueOf(deletedBreedingHasAnimal.get(i)));
+        }
         breedingHasAnimalClient.close();
 
         animalHasDiseasesClient = new AnimalHasDiseasesClient();
@@ -482,15 +487,18 @@ public class AnimalController {
                 }
             }
         }
+        for(int i=0; i<deletedAnimalHasDiseases.size(); i++){
+            animalHasDiseasesClient.remove(String.valueOf(deletedAnimalHasDiseases.get(i)));
+        }
         animalHasDiseasesClient.close();
     }
     
     public String loadEditPage(String earTag){
+        resetSearchedAnimal();
         
         animalClient = new AnimalClient();
         this.newAnimal = animalClient.find_JSON(AnimalModel.class, earTag);
         animalClient.close();
-        ResetSearchedAnimal();
         
         this.newBreedingHasAnimal = getAllBreedingsHasAnimalByEarTag(earTag);
         this.newAnimalHasDiseases = getAllAnimalHasDiseasesByEarTags(earTag);
@@ -499,9 +507,20 @@ public class AnimalController {
         return c.animalEdit();
     }
     
-    private void ResetSearchedAnimal(){
+    public String loadAddPage(){
+        resetSearchedAnimal();
+        NavigationController c = new NavigationController();
+        return c.animalAdd();
+    }
+    
+    private void resetSearchedAnimal(){
         this.searchedAnimal = null;
         this.searchedEarTag = "";
+        this.newAnimal = new AnimalModel();
+        this.newBreedingHasAnimal = new ArrayList<>();
+        this.newAnimalHasDiseases = new ArrayList<>();
+        this.deletedBreedingHasAnimal = new ArrayList<>();
+        this.deletedAnimalHasDiseases = new ArrayList<>();
     }
 
     public AnimalModel getNewAnimal() {
@@ -526,6 +545,9 @@ public class AnimalController {
     
     public void removeNewBreedingHasAnimal(BreedingHasAnimalModel model){
         this.newBreedingHasAnimal.remove(model);
+        if(model.getId() != null){
+            this.deletedBreedingHasAnimal.add(model.getId());
+        }
     }
 
     public List<AnimalHasDiseasesModel> getNewAnimalHasDiseases() {
@@ -542,6 +564,9 @@ public class AnimalController {
     
     public void removeNewAnimalHasDiseases(AnimalHasDiseasesModel model){
         this.newAnimalHasDiseases.remove(model);
+        if(model.getId() != null){
+            this.deletedAnimalHasDiseases.add(model.getId());
+        }
     }
     
     public List<SpeciesModel> getAllSpecies(){

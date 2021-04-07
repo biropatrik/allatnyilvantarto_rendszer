@@ -6,6 +6,7 @@
 package service;
 
 import entity.HoldingPlace;
+import entity.User;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -117,12 +118,27 @@ public class HoldingPlaceFacadeREST extends AbstractFacade<HoldingPlace> {
     }
     
     @GET
-    @Path("findByIsActive/{isActive}")
+    @Path("findByIsNotActive/{userId}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public ArrayList<HoldingPlace> findByIsActive(@PathParam("isActive") boolean isActive) {
-        ArrayList<HoldingPlace> holdingPlaces = (ArrayList<HoldingPlace>) em.createNamedQuery("HoldingPlace.findByIsActive")
-                                    .setParameter("isActive", isActive)
+    public ArrayList<HoldingPlace> findByIsNotActive(@PathParam("userId") Integer userId) {
+        ArrayList<HoldingPlace> holdingPlaces = new ArrayList<>();
+        
+        ArrayList<Integer> roles = (ArrayList<Integer>) em.createNamedQuery("User.findRoleIdByUserId")
+                                    .setParameter("id", userId)
                                     .getResultList();
+        if(roles.size() < 1){
+            return holdingPlaces;
+        }
+        
+        if(roles.get(0) == 2){
+            holdingPlaces = (ArrayList<HoldingPlace>) em.createNamedQuery("HoldingPlace.findByIsNotActiveAndVetCountyId")
+                                        .setParameter("userId", userId)
+                                        .getResultList();
+        }else if(roles.get(0) == 1){
+            holdingPlaces = (ArrayList<HoldingPlace>) em.createNamedQuery("HoldingPlace.findByIsActive")
+                                        .setParameter("isActive", false)
+                                        .getResultList();
+        }
         return holdingPlaces;
     }
 

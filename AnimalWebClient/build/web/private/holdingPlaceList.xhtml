@@ -22,7 +22,7 @@
             
             <div class="content-block">
                 <div class="button">
-                    <h:commandButton value="Új tartási hely felvétele" type="submit" action="#{navigationController.holdingPlaceAdd()}" styleClass="add"/>
+                    <h:commandButton value="Új tartási hely felvétele" type="submit" action="#{holdingPlaceController.loadAddPage()}" styleClass="add"/>
                 </div>
             </div>
             
@@ -41,7 +41,7 @@
                                 <h:commandButton id="details_#{details.id}" actionListener="#{holdingPlaceController.searchHoldingPlaceWithId(details.id)}" style="display: none;" />
                             </tr>
                             <c:if test="#{holdingPlaceController.searchedId != null &amp;&amp; holdingPlaceController.searchedId == details.id}">
-                                <c:set var="holdingPlace" value="#{holdingPlaceController.searchedHoldingPlace}" />
+                            <c:set var="holdingPlace" value="#{holdingPlaceController.searchedHoldingPlace}" />
                             
                             <tr id="holdingPlace_#{holdingPlace.id}" class="#{holdingPlace.id}">
                                 <th colspan="5" style="border: solid thin;">Tartási hely azonosítása</th>

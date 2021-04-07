@@ -28,12 +28,14 @@
 
         <li style="float:left"><h:commandLink value="Állatkereső" action="#{navigationController.animalSearch}" class="#{navigationController.activePageName == 'animalSearch' ? 'active' : ' '}"></h:commandLink></li>
         
-        <c:if test="#{navigationController.roleId == '1'}" >
+        <c:if test="#{navigationController.roleId == '2' || navigationController.roleId == '1'}" >
             <li class="dropdown" style="float:left">
-                <h:commandLink value="Engedélykérések" action="#{navigationController.requestRegistrations}" 
+                <h:commandLink value="Engedélykérések" action="#{navigationController.requestAnimals}" 
                                class="#{navigationController.activePageName == 'requestRegistrations' || navigationController.activePageName == 'requestHoldingPlaces' || navigationController.activePageName == 'requestBreedings' || navigationController.activePageName == 'requestAnimals' ? 'active' : ' '}"></h:commandLink>
                 <div class="dropdown-content">
-                    <h:commandLink style="text-align: left" value="Regisztrációk" action="#{navigationController.requestRegistrations}"></h:commandLink>
+                    <c:if test="#{navigationController.roleId == '1'}" >
+                        <h:commandLink style="text-align: left" value="Regisztrációk" action="#{navigationController.requestRegistrations}"></h:commandLink>
+                    </c:if>
                     <h:commandLink style="text-align: left" value="Tartási helyek" action="#{navigationController.requestHoldingPlaces}"></h:commandLink>
                     <h:commandLink style="text-align: left" value="Tenyészetek" action="#{navigationController.requestBreedings}"></h:commandLink>
                     <h:commandLink style="text-align: left" value="Egyedek" action="#{navigationController.requestAnimals}"></h:commandLink>

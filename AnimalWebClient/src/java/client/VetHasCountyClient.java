@@ -10,11 +10,11 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 
 /**
- * Jersey REST client generated for REST resource:HoldingPlaceFacadeREST
- * [entity.holdingplace]<br>
+ * Jersey REST client generated for REST resource:VetHasCountyFacadeREST
+ * [entity.vethascounty]<br>
  * USAGE:
  * <pre>
- *        HoldingPlaceClient client = new HoldingPlaceClient();
+ *        VetHasCountyClient client = new VetHasCountyClient();
  *        Object response = client.XXX(...);
  *        // do whatever with response
  *        client.close();
@@ -22,33 +22,21 @@ import javax.ws.rs.client.WebTarget;
  *
  * @author Patrik
  */
-public class HoldingPlaceClient {
+public class VetHasCountyClient {
 
     private WebTarget webTarget;
     private Client client;
     private static final String BASE_URI = "http://localhost:8080/AnimalWebService/webresources";
 
-    public HoldingPlaceClient() {
+    public VetHasCountyClient() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
-        webTarget = client.target(BASE_URI).path("entity.holdingplace");
+        webTarget = client.target(BASE_URI).path("entity.vethascounty");
     }
 
     public String countREST() throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path("count");
         return resource.request(javax.ws.rs.core.MediaType.TEXT_PLAIN).get(String.class);
-    }
-
-    public <T> T getAllHoldingPlaceIds_XML(Class<T> responseType) throws ClientErrorException {
-        WebTarget resource = webTarget;
-        resource = resource.path("get_all_holding_place_ids");
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
-    }
-
-    public <T> T getAllHoldingPlaceIds_JSON(Class<T> responseType) throws ClientErrorException {
-        WebTarget resource = webTarget;
-        resource = resource.path("get_all_holding_place_ids");
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
     public void edit_XML(Object requestEntity, String id) throws ClientErrorException {
@@ -101,30 +89,6 @@ public class HoldingPlaceClient {
 
     public void create_JSON(Object requestEntity) throws ClientErrorException {
         webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON));
-    }
-
-    public <T> T findByAnimalEarTag_XML(Class<T> responseType, String earTag) throws ClientErrorException {
-        WebTarget resource = webTarget;
-        resource = resource.path(java.text.MessageFormat.format("findByAnimalEarTag/{0}", new Object[]{earTag}));
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
-    }
-
-    public <T> T findByAnimalEarTag_JSON(Class<T> responseType, String earTag) throws ClientErrorException {
-        WebTarget resource = webTarget;
-        resource = resource.path(java.text.MessageFormat.format("findByAnimalEarTag/{0}", new Object[]{earTag}));
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
-    }
-
-    public <T> T findByIsNotActive_XML(Class<T> responseType, String userId) throws ClientErrorException {
-        WebTarget resource = webTarget;
-        resource = resource.path(java.text.MessageFormat.format("findByIsNotActive/{0}", new Object[]{userId}));
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
-    }
-
-    public <T> T findByIsNotActive_JSON(Class<T> responseType, String userId) throws ClientErrorException {
-        WebTarget resource = webTarget;
-        resource = resource.path(java.text.MessageFormat.format("findByIsNotActive/{0}", new Object[]{userId}));
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
     public <T> T findAll_XML(Class<T> responseType) throws ClientErrorException {
