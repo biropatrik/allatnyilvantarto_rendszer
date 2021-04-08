@@ -32,6 +32,20 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Breeding.findByBreedingQualification", query = "SELECT b FROM Breeding b WHERE b.breedingQualification = :breedingQualification"),
     @NamedQuery(name = "Breeding.findByBreedingClassification", query = "SELECT b FROM Breeding b WHERE b.breedingClassification = :breedingClassification"),
     @NamedQuery(name = "Breeding.findByIsActive", query = "SELECT b FROM Breeding b WHERE b.isActive = :isActive"),
+    
+    @NamedQuery(name = "Breeding.findByIsNotActiveAndVetCountyId", query = "SELECT b FROM Breeding b, HoldingPlaceHasBreeding hb, HoldingPlace h, VetHasCounty v "
+                                                                          +"WHERE b.isActive = FALSE "
+                                                                          +"AND b.id = hb.breedingId "
+                                                                          +"AND hb.holdingPlaceId = h.id "
+                                                                          +"AND h.countyId = v.countyId "
+                                                                          +"AND v.userId = :userId" ),
+    
+    @NamedQuery(name = "Breeding.findByVetCountyId", query = "SELECT b FROM Breeding b, HoldingPlaceHasBreeding hb, HoldingPlace h, VetHasCounty v "
+                                                                          +"WHERE b.id = hb.breedingId "
+                                                                          +"AND hb.holdingPlaceId = h.id "
+                                                                          +"AND h.countyId = v.countyId "
+                                                                          +"AND v.userId = :userId" ),
+    
     @NamedQuery(name = "Breeding.findByUserId", query = "SELECT b FROM Breeding b, UserHasBreeding u "
                                                        +"WHERE b.id = u.breedingId "
                                                        +"AND u.userId = :userId")

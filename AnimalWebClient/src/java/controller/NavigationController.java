@@ -119,4 +119,24 @@ public class NavigationController {
         this.activePageName = "requestAnimals";
         return "requestAnimals.xhtml?faces-redirect=true";
     }
+    
+    public String listAllAnimals(){
+        this.activePageName = "listAllAnimals";
+        return "listAllAnimals.xhtml?faces-redirect=true";
+    }
+    
+    public String listAllBreedings(){
+        this.activePageName = "listAllBreedings";
+        return "listAllBreedings.xhtml?faces-redirect=true";
+    }
+    
+    public String listAllHoldingPlaces(){
+        this.activePageName = "listAllHoldingPlaces";
+        return "listAllHoldingPlaces.xhtml?faces-redirect=true";
+    }
+    
+    public String listAllUsers(){
+        this.activePageName = "listAllUsers";
+        return "listAllUsers.xhtml?faces-redirect=true";
+    }
 }

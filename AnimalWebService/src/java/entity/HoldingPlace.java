@@ -35,14 +35,21 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "HoldingPlace.findByUserVetId", query = "SELECT h FROM HoldingPlace h WHERE h.userVetId = :userVetId"),
     @NamedQuery(name = "HoldingPlace.findByContactUserId", query = "SELECT h FROM HoldingPlace h WHERE h.contactUserId = :contactUserId"),
     @NamedQuery(name = "HoldingPlace.findByIsActive", query = "SELECT h FROM HoldingPlace h WHERE h.isActive = :isActive"),
+    
     @NamedQuery(name = "HoldingPlace.findByIsNotActiveAndVetCountyId", query = "SELECT h FROM HoldingPlace h, VetHasCounty v "
                                                                 +"WHERE h.isActive = FALSE "
                                                                 +"AND h.countyId = v.countyId "
                                                                 +"AND v.userId = :userId"),
+    
+    @NamedQuery(name = "HoldingPlace.findByVetCountyId", query = "SELECT h FROM HoldingPlace h, VetHasCounty v "
+                                                                +"WHERE h.countyId = v.countyId "
+                                                                +"AND v.userId = :userId"),
+    
     @NamedQuery(name = "HoldingPlace.findByAnimalEarTag", query = "SELECT h FROM HoldingPlace h, BreedingHasAnimal b, HoldingPlaceHasBreeding hp "
                                                                 + "WHERE (b.animalEarTag = :animalEarTag AND (b.endDate < 1 OR b.endDate IS NULL)) "
                                                                 + "AND hp.breedingId = b.breedingId "
                                                                 + "AND h.id = hp.holdingPlaceId" ),
+    
     @NamedQuery(name = "HoldingPlace.findByUserId", query = "SELECT DISTINCT h FROM HoldingPlace h, UserHasBreeding u, HoldingPlaceHasBreeding hb "
                                                     + "WHERE (h.id = hb.holdingPlaceId "
                                                     + "AND hb.breedingId = u.breedingId "

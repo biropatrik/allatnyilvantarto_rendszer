@@ -30,7 +30,7 @@
                             <th>Faj</th>
                             <th>Születési dátum</th>
                         </tr>
-                        <c:forEach items="#{requestController.getAnimalsByIsAccepted(false)}" var="details" >
+                        <c:forEach items="#{requestController.getAnimalsByIsAccepted()}" var="details" >
                             <tr class="animal_#{details.earTag}" style="background-color:#B5B5B5;">
                                 <td>#{details.earTag}</td>
                                 <td>#{details.name}</td>
@@ -188,7 +188,7 @@
             </div>
         
         <script src="jquery-3.5.1.js"></script>
-        <c:forEach items="#{requestController.getAnimalsByIsAccepted(false)}" var="animal">
+        <c:forEach items="#{requestController.getAnimalsByIsAccepted()}" var="animal">
             <script>
                 $('body').on('click', '.animal_#{animal.earTag}', function(){
                     $('.#{animal.earTag}').toggle();

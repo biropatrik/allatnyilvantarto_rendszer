@@ -105,6 +105,53 @@ public class AnimalFacadeREST extends AbstractFacade<Animal> {
            
         return animals;
     }
+    
+    @GET
+    @Path("findByIsNotActive/{userId}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public ArrayList<Animal> findByIsNotActive(@PathParam("userId") Integer userId){
+        ArrayList<Animal> animals = new ArrayList<>();
+        ArrayList<Integer> roles = (ArrayList<Integer>) em.createNamedQuery("User.findRoleIdByUserId")
+                                    .setParameter("id", userId)
+                                    .getResultList();
+        if(roles.size() < 1){
+            return animals;
+        }
+        
+        if(roles.get(0) == 2){
+            animals = (ArrayList<Animal>) em.createNamedQuery("Animal.findByIsNotActiveAndVetCountyId")
+                                .setParameter("userId", userId)
+                                .getResultList();
+        }else if(roles.get(0) == 1){
+            animals = (ArrayList<Animal>) em.createNamedQuery("Animal.findByIsAccepted")
+                                .setParameter("isAccepted", false)
+                                .getResultList();
+        }
+        return animals;
+    }
+    
+    @GET
+    @Path("findByVetUserId/{userId}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public ArrayList<Animal> findByVetUserId(@PathParam("userId") Integer userId){
+        ArrayList<Animal> animals = new ArrayList<>();
+        ArrayList<Integer> roles = (ArrayList<Integer>) em.createNamedQuery("User.findRoleIdByUserId")
+                                    .setParameter("id", userId)
+                                    .getResultList();
+        if(roles.size() < 1){
+            return animals;
+        }
+        
+        if(roles.get(0) == 2){
+            animals = (ArrayList<Animal>) em.createNamedQuery("Animal.findByVetCountyId")
+                                .setParameter("userId", userId)
+                                .getResultList();
+        }else if(roles.get(0) == 1){
+            animals = (ArrayList<Animal>) em.createNamedQuery("Animal.findAll")
+                                .getResultList();
+        }
+        return animals;
+    }
 
     @Override
     protected EntityManager getEntityManager() {

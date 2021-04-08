@@ -14,7 +14,7 @@
         
         <div class="content">
             <f:metadata>
-                <f:viewAction action="#{loginController.checkLogin('requestAnimals.xhtml',2)}" />
+                <f:viewAction action="#{loginController.checkLogin('listAllAnimals.xhtml',2)}" />
             </f:metadata>
 
             <ui:include src="navigationbar.xhtml" />
@@ -30,88 +30,89 @@
                             <th>Faj</th>
                             <th>Születési dátum</th>
                         </tr>
-                        <c:forEach items="#{requestController.getAnimalsByIsAccepted()}" var="details" >
+                        <c:forEach items="#{requestController.getAllAnimalsByVetUserId()}" var="details" >
                             <tr class="animal_#{details.earTag}" style="background-color:#B5B5B5;">
                                 <td>#{details.earTag}</td>
                                 <td>#{details.name}</td>
                                 <td>#{animalController.getSpeciesName(details.speciesId)}</td>
-                                <td>#{animalController.getDateFormat(details.birthdate)}</td>
-                                <h:commandButton id="details_#{details.earTag}" actionListener="#{animalController.searchAnimalWithEarTag(details.earTag)}" style="display: none;" />
+                                <td colspan="2">#{animalController.getDateFormat(details.birthdate)}</td>
+                                <h:commandButton id="details_#{details.earTag}" actionListener="#{animalController.searchAnimalWithEarTag(details.earTag)}" style="display: none;">
+                                    <f:actionListener binding="#{requestController.loadAllAnimalHasDiseasesByEarTags(details.earTag)}" />
+                                </h:commandButton>
                             </tr>
-                        
                 
                             <c:if test="#{animalController.searchedAnimal != null &amp;&amp; animalController.searchedEarTag == details.earTag}">
                             <c:set var="animal" value="#{animalController.searchedAnimal}" />
                         
                             <tr id="details_#{animal.earTag}" class="#{animal.earTag}">
-                                <th colspan="4" style="border: solid thin;">Az egyed adatai</th>
+                                <th colspan="5" style="border: solid thin;">Az egyed adatai</th>
                             </tr>
                             <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
                                 <td>Egyed azonosítója:</td>
-                                <td colspan="3">#{animal.earTag}</td>
+                                <td colspan="4">#{animal.earTag}</td>
                             </tr>
                             <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
                                 <td>Születési dátum:</td>
-                                <td colspan="3">#{animalController.getDateFormat(animal.birthdate)}</td>
+                                <td colspan="4">#{animalController.getDateFormat(animal.birthdate)}</td>
                             </tr>
                             <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
                                 <td>Neme:</td>
-                                <td colspan="3">#{animalController.getSexName(animal.sex)}</td>
+                                <td colspan="4">#{animalController.getSexName(animal.sex)}</td>
                             </tr>
                             <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
                                 <td>Egyed faj (kód):</td>
-                                <td colspan="3">(#{animal.speciesId}) #{animalController.getSpeciesName(animal.speciesId)}</td>
+                                <td colspan="4">(#{animal.speciesId}) #{animalController.getSpeciesName(animal.speciesId)}</td>
                             </tr>
                             <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
                                 <td>Egyed fajta (kód):</td>
-                                <td colspan="3">(#{animal.breedId}) #{animalController.getBreedName(animal.breedId)}</td>
+                                <td colspan="4">(#{animal.breedId}) #{animalController.getBreedName(animal.breedId)}</td>
                             </tr>
                             <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
                                 <td>Egyed színe (kód):</td>
-                                <td colspan="3">(#{animal.colorId}) #{animalController.getColorName(animal.colorId)}</td>
+                                <td colspan="4">(#{animal.colorId}) #{animalController.getColorName(animal.colorId)}</td>
                             </tr>
                             <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
                                 <td>Tenyészetkód:</td>
-                                <td colspan="3">#{animalController.getBreedingIdByAnimal(animal.earTag)}</td>
+                                <td colspan="4">#{animalController.getBreedingIdByAnimal(animal.earTag)}</td>
                             </tr>
                             <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
                                 <td>Tartó neve:</td>
-                                <td colspan="3">#{animalController.getUserNameByAnimalEarTag(animal.earTag)}</td>
+                                <td colspan="4">#{animalController.getUserNameByAnimalEarTag(animal.earTag)}</td>
                             </tr>
                             <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
                                 <td>Tenyészet címe:</td>
-                                <td colspan="3">#{animalController.getBreedAddressByAnimal(animal.earTag)}</td>
+                                <td colspan="4">#{animalController.getBreedAddressByAnimal(animal.earTag)}</td>
                             </tr>
                             <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
                                 <td>Tenyészetbe érkezés dátuma:</td>
-                                <td colspan="3">#{animalController.getBreedingHasAnimalStartDate(animal.earTag)}</td>
+                                <td colspan="4">#{animalController.getBreedingHasAnimalStartDate(animal.earTag)}</td>
                             </tr>
                             <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
                                 <td>Legutóbbi inszemináció dátuma:</td>
-                                <td colspan="3">#{animalController.getDateFormat(animal.inseminationDate)}</td>
+                                <td colspan="4">#{animalController.getDateFormat(animal.inseminationDate)}</td>
                             </tr>
 
                             <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
-                                <th colspan="4" style="border: solid thin;">Az ellés adatai</th>
+                                <th colspan="5" style="border: solid thin;">Az ellés adatai</th>
                             </tr>
                             <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
                                 <td>Anya(recipiens) azonosítója:</td>
-                                <td colspan="3">#{animal.motherId}</td>
+                                <td colspan="4">#{animal.motherId}</td>
                             </tr>
                             <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
                                 <td>Ikerellés:</td>
-                                <td colspan="3">#{animalController.getTwinningName(animal.twinning)}</td>
+                                <td colspan="4">#{animalController.getTwinningName(animal.twinning)}</td>
                             </tr>
                             <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
                                 <td>Ellés módja (kód):</td>
-                                <td colspan="3">(#{animal.calvingId}) #{animalController.getCalvingName(animal.calvingId)}</td>
+                                <td colspan="4">(#{animal.calvingId}) #{animalController.getCalvingName(animal.calvingId)}</td>
                             </tr>
                             <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
                                 <td>Borjú tömege:</td>
-                                <td colspan="3">#{animal.calvingWeight} kg</td>
+                                <td colspan="4">#{animal.calvingWeight} kg</td>
                             </tr>
                             <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
-                                <th colspan="4" style="border: solid thin;">Az egyed előző tenyészetei</th>
+                                <th colspan="5" style="border: solid thin;">Az egyed előző tenyészetei</th>
                             </tr>
                             <c:if test="#{animalController.getAllBreedingsHasAnimalByEarTag(animal.earTag).size() > 0}">
                                 <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
@@ -124,12 +125,12 @@
                                 <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
                                     <td>#{breeding.breedingId}</td>
                                     <td>#{animalController.getDateFormat(breeding.startDate)}</td>
-                                    <td colspan="2">#{animalController.getDateFormat(breeding.endDate)}</td>
+                                    <td colspan="3">#{animalController.getDateFormat(breeding.endDate)}</td>
                                 </tr>
                             </c:forEach>
 
                             <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
-                                <th colspan="4" style="border: solid thin;">Az egyed betegségei</th>
+                                <th colspan="5" style="border: solid thin;">Az egyed betegségei</th>
                             </tr>
                             <c:if test="#{animalController.getAllAnimalHasDiseasesByEarTags(animal.earTag).size() > 0}">
                                 <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
@@ -138,18 +139,55 @@
                                     <th>Betegség vége</th>
                                     <th>Megjegyzés</th>
                                 </tr> 
-                            </c:if>
-                            <c:forEach items="#{animalController.getAllAnimalHasDiseasesByEarTags(animal.earTag)}" var="diseases">
-                                <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
-                                    <td>#{animalController.getAnimalDiseasesName(diseases.animalDiseasesId)}</td>
-                                    <td>#{animalController.getDateFormat(diseases.startDate)}</td>
-                                    <td>#{animalController.getDateFormat(diseases.endDate)}</td>
-                                    <td>#{diseases.comment}</td>
-                                </tr>
-                            </c:forEach>
-
+                            
+                            <c:forEach items="#{requestController.newAnimalHasDiseases}" var="animalHasDiseases" varStatus="loop">
                             <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
-                                <th colspan="5" style="border: solid thin;">Egyed elfogadása</th>
+                                <td colspan="1">
+                                    <h:selectOneMenu id="animalDiseasesName_#{loop.index}" styleClass="selectonemenu" value="#{animalHasDiseases.animalDiseasesId}">
+                                        
+                                        <f:selectItems value="#{animalController.allAnimalDiseases}" var="ad"
+                                                       itemLabel="#{ad.name}" itemValue="#{ad.id}" />
+                                        <f:ajax execute = "animalDiseasesName_#{loop.index}" render = "animalDiseasesName_#{loop.index}" />
+                                    </h:selectOneMenu>
+                                </td>
+                                <td>
+                                    <h:inputText id="animalHasDiseases_startDate_#{loop.index}" a:type="date" value="#{animalHasDiseases.startDateString}">
+                                        <f:ajax execute = "animalHasDiseases_startDate_#{loop.index}" render = "animalHasDiseases_startDate_#{loop.index}" />
+                                    </h:inputText>
+                                </td>
+                                
+                                <td>
+                                    <h:inputText id="animalHasDiseases_endDate_#{loop.index}" a:type="date" value="#{animalHasDiseases.endDateString}">
+                                        <f:ajax execute = "animalHasDiseases_endDate_#{loop.index}" render = "animalHasDiseases_endDate_#{loop.index}" />
+                                    </h:inputText>
+                                </td>
+                                
+                                <td>
+                                    <h:inputText id="comment_#{loop.index}" label="Komment" a:placeholder="Komment" required="false" value="#{animalHasDiseases.comment}">
+                                        <f:ajax execute = "comment_#{loop.index}" render = "comment_#{loop.index}" />
+                                    </h:inputText>
+                                </td>
+                                <td>
+                                    <div class="button" style="#{requestController.newAnimalHasDiseases.size() > 1 ? '' : 'display: none;'}">
+                                        <h:commandButton id="removeAnimalHasDiseasesButton" action="#{requestController.removeNewAnimalHasDiseases(animalHasDiseases)}" styleClass="remove" value = "X">
+                                            <f:ajax execute = "removeAnimalHasDiseasesButton" render = "checkAnimal" />
+                                        </h:commandButton>
+                                    </div>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                        <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
+                        <th>
+                        <div class="button">
+                            <h:commandButton id="addAnimalHasDiseasesButton" action="#{requestController.addNewAnimalHasDiseases()}" styleClass="add" value = " + ">
+                                <f:ajax execute = "addAnimalHasDiseasesButton" render = "checkAnimal" />
+                            </h:commandButton>
+                        </div>
+                        </th>
+                        </tr>
+                    </c:if>
+                            <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
+                                <th colspan="5" style="border: solid thin;">Egyed módosítása</th>
                             </tr>
                             <c:set var="contactUser" value="#{requestController.getUserById(requestController.getUserIdByEarTag(animal.earTag))}" />
                             <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
@@ -170,10 +208,10 @@
                                 </th>
                             </tr>
                             <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
-                                <th>Elfogadás:</th>
+                                <th>Módosítás:</th>
                                 <th colspan="2">
                                 <div class="button">
-                                    <h:commandButton value="Elfogadás" type="submit" action="#{requestController.acceptAnimal(animal.earTag)}" styleClass="add"/>
+                                    <h:commandButton value="Mentés" type="submit" action="#{requestController.saveAnimal(animal.earTag)}" styleClass="add"/>
                                 </div>
                                 </th>
                             </tr>
@@ -188,7 +226,7 @@
             </div>
         
         <script src="jquery-3.5.1.js"></script>
-        <c:forEach items="#{requestController.getAnimalsByIsAccepted()}" var="animal">
+        <c:forEach items="#{requestController.getAllAnimalsByVetUserId()}" var="animal">
             <script>
                 $('body').on('click', '.animal_#{animal.earTag}', function(){
                     $('.#{animal.earTag}').toggle();

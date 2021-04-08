@@ -30,7 +30,7 @@
                             <th>Típus</th>
                             <th>Besorolás</th>
                         </tr>
-                        <c:forEach items="#{requestController.getBreedingsByIsActive()}" var="details">
+                        <c:forEach items="#{requestController.getAllBreedingsByVetUserId()}" var="details">
                             <tr class="breeding_#{details.id}" style="background-color:#B5B5B5;">
                                 <td>#{details.id}</td>
                                 <td>#{details.name == null ? "-" : details.name}</td>
@@ -91,7 +91,7 @@
                             </tr>
                             
                             <tr id="breeding_#{breeding.id}" class="#{breeding.id}">
-                                <th colspan="5" style="border: solid thin;">Tenyészet módosítása</th>
+                                <th colspan="5" style="border: solid thin;">Tenyészet elfogadása</th>
                             </tr>
                             <c:set var="contactUser" value="#{requestController.getUserById(requestController.getUserIdByBreedingId(breeding.id))}" />
                             <tr id="breeding_#{breeding.id}" class="#{breeding.id}">
@@ -104,21 +104,6 @@
                                 </div>
                                 </th>
                             </tr>
-                            <tr id="breeding_#{breeding.id}" class="#{breeding.id}">
-                                <th>Jelszó beírása:</th>
-                                <th colspan="2">
-                                    <h:message for="password" style="color:red" /><br></br>
-                                    <h:inputSecret id="password" label="Jelszó" required="false" a:placeholder="Jelszó" value="#{requestController.password}" style="width: 40%"/>
-                                </th>
-                            </tr>
-                            <tr id="breeding_#{breeding.id}" class="#{breeding.id}">
-                                <th>Elfogadás:</th>
-                                <th colspan="2">
-                                <div class="button">
-                                    <h:commandButton value="Elfogadás" type="submit" action="#{requestController.acceptBreeding(breeding.id)}" styleClass="add"/>
-                                </div>
-                                </th>
-                            </tr>
                             
                             </c:if>
                         </c:forEach>
@@ -128,7 +113,7 @@
         </h:form>
         </div>
         <script src="jquery-3.5.1.js"></script>
-        <c:forEach items="#{requestController.getBreedingsByIsActive()}" var="breeding">
+        <c:forEach items="#{requestController.getAllBreedingsByVetUserId()}" var="breeding">
             <script>
                 $('body').on('click', '.breeding_#{breeding.id}', function(){
                     $('.#{breeding.id}').toggle();

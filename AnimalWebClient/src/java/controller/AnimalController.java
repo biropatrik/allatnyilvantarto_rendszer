@@ -354,7 +354,6 @@ public class AnimalController {
         
         this.holdingPlaceHasBreedings = getHoldingPlacesByBreedingId();
         this.holdingPlaces = getHoldingPlaces();
-        
     }
     
     public void saveNewAnimal(){

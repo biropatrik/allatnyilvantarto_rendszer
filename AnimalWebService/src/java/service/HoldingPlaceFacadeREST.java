@@ -141,6 +141,30 @@ public class HoldingPlaceFacadeREST extends AbstractFacade<HoldingPlace> {
         }
         return holdingPlaces;
     }
+    
+    @GET
+    @Path("findByVetUserId/{userId}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public ArrayList<HoldingPlace> findByVetUserId(@PathParam("userId") Integer userId) {
+        ArrayList<HoldingPlace> holdingPlaces = new ArrayList<>();
+        
+        ArrayList<Integer> roles = (ArrayList<Integer>) em.createNamedQuery("User.findRoleIdByUserId")
+                                    .setParameter("id", userId)
+                                    .getResultList();
+        if(roles.size() < 1){
+            return holdingPlaces;
+        }
+        
+        if(roles.get(0) == 2){
+            holdingPlaces = (ArrayList<HoldingPlace>) em.createNamedQuery("HoldingPlace.findByVetCountyId")
+                                        .setParameter("userId", userId)
+                                        .getResultList();
+        }else if(roles.get(0) == 1){
+            holdingPlaces = (ArrayList<HoldingPlace>) em.createNamedQuery("HoldingPlace.findAll")
+                                        .getResultList();
+        }
+        return holdingPlaces;
+    }
 
     @Override
     protected EntityManager getEntityManager() {

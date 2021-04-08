@@ -41,7 +41,21 @@
                     <h:commandLink style="text-align: left" value="Egyedek" action="#{navigationController.requestAnimals}"></h:commandLink>
                 </div>
             </li>
+        </c:if>
         
+        <c:if test="#{navigationController.roleId == '2' || navigationController.roleId == '1'}" >
+            <li class="dropdown" style="float:left">
+                <h:commandLink value="Listázás" action="#{navigationController.listAllAnimals}" 
+                               class="#{navigationController.activePageName == 'listAllAnimals' || navigationController.activePageName == 'listAllBreedings' || navigationController.activePageName == 'listAllHoldingPlaces' || navigationController.activePageName == 'listAllUsers' ? 'active' : ' '}"></h:commandLink>
+                <div class="dropdown-content">
+                    <c:if test="#{navigationController.roleId == '1'}" >
+                        <h:commandLink style="text-align: left" value="Felhasználók" action="#{navigationController.listAllUsers}"></h:commandLink>
+                    </c:if>
+                    <h:commandLink style="text-align: left" value="Tartási helyek" action="#{navigationController.listAllHoldingPlaces}"></h:commandLink>
+                    <h:commandLink style="text-align: left" value="Tenyészetek" action="#{navigationController.listAllBreedings}"></h:commandLink>
+                    <h:commandLink style="text-align: left" value="Egyedek" action="#{navigationController.listAllAnimals}"></h:commandLink>
+                </div>
+            </li>
         </c:if>
         
         <li style="float:right"><h:commandLink value="Kilépés" action="#{loginController.logout}" ></h:commandLink></li>

@@ -30,7 +30,7 @@
                             <th>Típus</th>
                             <th>Besorolás</th>
                         </tr>
-                        <c:forEach items="#{requestController.getBreedingsByIsActive(false)}" var="details">
+                        <c:forEach items="#{requestController.getBreedingsByIsActive()}" var="details">
                             <tr class="breeding_#{details.id}" style="background-color:#B5B5B5;">
                                 <td>#{details.id}</td>
                                 <td>#{details.name == null ? "-" : details.name}</td>
@@ -91,7 +91,7 @@
                             </tr>
                             
                             <tr id="breeding_#{breeding.id}" class="#{breeding.id}">
-                                <th colspan="5" style="border: solid thin;">Tenyészet elfogadása</th>
+                                <th colspan="5" style="border: solid thin;">Tenyészet módosítása</th>
                             </tr>
                             <c:set var="contactUser" value="#{requestController.getUserById(requestController.getUserIdByBreedingId(breeding.id))}" />
                             <tr id="breeding_#{breeding.id}" class="#{breeding.id}">
@@ -128,7 +128,7 @@
         </h:form>
         </div>
         <script src="jquery-3.5.1.js"></script>
-        <c:forEach items="#{requestController.getBreedingsByIsActive(false)}" var="breeding">
+        <c:forEach items="#{requestController.getBreedingsByIsActive()}" var="breeding">
             <script>
                 $('body').on('click', '.breeding_#{breeding.id}', function(){
                     $('.#{breeding.id}').toggle();

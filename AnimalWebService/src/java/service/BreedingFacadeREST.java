@@ -96,13 +96,49 @@ public class BreedingFacadeREST extends AbstractFacade<Breeding> {
     }
     
     @GET
-    @Path("findByIsActive/{isActive}")
+    @Path("findByIsNotActive/{userId}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public ArrayList<Breeding> findByIsActive(@PathParam("isActive") boolean isActive){
-        ArrayList<Breeding> breedings = (ArrayList<Breeding>) em.createNamedQuery("Breeding.findByIsActive")
-                                     .setParameter("isActive", isActive)
-                                     .getResultList();
-           
+    public ArrayList<Breeding> findByIsNotActive(@PathParam("userId") Integer userId){
+        ArrayList<Breeding> breedings = new ArrayList<>();
+        ArrayList<Integer> roles = (ArrayList<Integer>) em.createNamedQuery("User.findRoleIdByUserId")
+                                    .setParameter("id", userId)
+                                    .getResultList();
+        if(roles.size() < 1){
+            return breedings;
+        }
+        
+        if(roles.get(0) == 2){
+            breedings = (ArrayList<Breeding>) em.createNamedQuery("Breeding.findByIsNotActiveAndVetCountyId")
+                                .setParameter("userId", userId)
+                                .getResultList();
+        }else if(roles.get(0) == 1){
+            breedings = (ArrayList<Breeding>) em.createNamedQuery("Breeding.findByIsActive")
+                                .setParameter("isActive", false)
+                                .getResultList();
+        }
+        return breedings;
+    }
+    
+    @GET
+    @Path("findByVetUserId/{userId}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public ArrayList<Breeding> findByVetUserId(@PathParam("userId") Integer userId){
+        ArrayList<Breeding> breedings = new ArrayList<>();
+        ArrayList<Integer> roles = (ArrayList<Integer>) em.createNamedQuery("User.findRoleIdByUserId")
+                                    .setParameter("id", userId)
+                                    .getResultList();
+        if(roles.size() < 1){
+            return breedings;
+        }
+        
+        if(roles.get(0) == 2){
+            breedings = (ArrayList<Breeding>) em.createNamedQuery("Breeding.findByVetCountyId")
+                                .setParameter("userId", userId)
+                                .getResultList();
+        }else if(roles.get(0) == 1){
+            breedings = (ArrayList<Breeding>) em.createNamedQuery("Breeding.findAll")
+                                .getResultList();
+        }
         return breedings;
     }
 
