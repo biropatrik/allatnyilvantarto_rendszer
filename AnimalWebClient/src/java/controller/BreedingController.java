@@ -20,8 +20,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import model.BreedingClassificationModel;
 import model.BreedingModel;
 import model.BreedingQualificationModel;
@@ -294,8 +296,6 @@ public class BreedingController {
         holdingPlaceHasBreedingClient = new HoldingPlaceHasBreedingClient();
         List<HoldingPlaceHasBreedingModel> list = holdingPlaceHasBreedingClient.findByBreedingId_JSON(List.class, String.valueOf(breedingId));
         holdingPlaceHasBreedingClient.close();
-        //java.lang.ClassCastException: java.util.LinkedHashMap cannot be cast to model.UserHasBreedingModel
-        //Hiba ellen: ObjectMapper!
         ObjectMapper mapper = new ObjectMapper();
         List<HoldingPlaceHasBreedingModel> holdingPlaceHasBreedingList = mapper.convertValue(list, new TypeReference<List<HoldingPlaceHasBreedingModel>>(){});
         return holdingPlaceHasBreedingList.get(0);
@@ -303,7 +303,112 @@ public class BreedingController {
     
     public void saveNewBreeding(){
         
-        //Ellenőrzés!
+        int mistake_count = 0;
+        if(this.newUserHasBreeding.getUserId() == -1){
+            FacesContext.getCurrentInstance().addMessage("addBreeding:user_id", new FacesMessage("Azonosító kiválasztása kötelező!"));
+            mistake_count++;
+        }
+        if(this.newBreeding.getId() == null){
+            FacesContext.getCurrentInstance().addMessage("addBreeding:breeding_id", new FacesMessage("Tenyészetkód megadása kötelező!"));
+            mistake_count++;
+        }
+        if(this.newBreeding.getBreedingType() == -1){
+            FacesContext.getCurrentInstance().addMessage("addBreeding:type", new FacesMessage("Típus kiválasztása kötelező!"));
+            mistake_count++;
+        }
+        if(this.newBreeding.getBreedingQualification() == -1){
+            FacesContext.getCurrentInstance().addMessage("addBreeding:qualification", new FacesMessage("Minősítés kiválasztása kötelező!"));
+            mistake_count++;
+        }
+        if(this.newBreeding.getBreedingClassification() == -1){
+            FacesContext.getCurrentInstance().addMessage("addBreeding:classification", new FacesMessage("Besorolás kiválasztása kötelező!"));
+            mistake_count++;
+        }
+        if(this.newHoldingPlaceHasBreeding.getHoldingPlaceId() == -1){
+            FacesContext.getCurrentInstance().addMessage("addBreeding:holdingplace_id", new FacesMessage("Tartási hely kiválasztása kötelező!"));
+            mistake_count++;
+        }
+        if(this.newBreeding.getBreedingType() != -1 && this.newHoldingPlaceHasBreeding.getHoldingPlaceId() != -1){
+            holdingPlaceClient = new HoldingPlaceClient();
+            Integer breedingType = holdingPlaceClient.getBreedingTypeById_JSON(Integer.class, String.valueOf(this.newHoldingPlaceHasBreeding.getHoldingPlaceId()));
+            holdingPlaceClient.close();
+            
+            if(breedingType != null){
+                
+                switch(breedingType){
+                    case 1:
+                        if(this.newBreeding.getBreedingType() != 1 && this.newBreeding.getBreedingType() != 4){
+                            FacesContext.getCurrentInstance().addMessage("addBreeding:type", new FacesMessage("Tartási helyhez nem megfelelő típus!"));
+                            mistake_count++;
+                        }
+                        break;
+                        
+                    case 4:
+                        if(this.newBreeding.getBreedingType() != 1 && this.newBreeding.getBreedingType() != 4){
+                            FacesContext.getCurrentInstance().addMessage("addBreeding:type", new FacesMessage("Tartási helyhez nem megfelelő típus!"));
+                            mistake_count++;
+                        }
+                        break;
+
+                    case 6:
+                        if(this.newBreeding.getBreedingType() != 6 && this.newBreeding.getBreedingType() != 7){
+                            FacesContext.getCurrentInstance().addMessage("addBreeding:type", new FacesMessage("Tartási helyhez nem megfelelő típus!"));
+                            mistake_count++;
+                        }
+                        break;
+                        
+                    case 7:
+                        if(this.newBreeding.getBreedingType() != 6 && this.newBreeding.getBreedingType() != 7){
+                            FacesContext.getCurrentInstance().addMessage("addBreeding:type", new FacesMessage("Tartási helyhez nem megfelelő típus!"));
+                            mistake_count++;
+                        }
+                        break;
+
+                    case 12:
+                        if(this.newBreeding.getBreedingType() != 12 && this.newBreeding.getBreedingType() != 13){
+                            FacesContext.getCurrentInstance().addMessage("addBreeding:type", new FacesMessage("Tartási helyhez nem megfelelő típus!"));
+                            mistake_count++;
+                        }
+                        break;
+                        
+                    
+                    case 13:
+                        if(this.newBreeding.getBreedingType() != 12 && this.newBreeding.getBreedingType() != 13){
+                            FacesContext.getCurrentInstance().addMessage("editBreeding:type", new FacesMessage("Tartási helyhez nem megfelelő típus!"));
+                            mistake_count++;
+                        }
+                        break;
+
+                    default:
+                        if(this.newBreeding.getBreedingType() != breedingType){
+                            FacesContext.getCurrentInstance().addMessage("addBreeding:type", new FacesMessage("Tartási helyhez nem megfelelő típus!"));
+                            mistake_count++;
+                        }
+                        break;
+                }
+            } else if(mistake_count == 0){
+                holdingPlaceClient = new HoldingPlaceClient();
+                HoldingPlaceModel holdingPlace = holdingPlaceClient.find_JSON(HoldingPlaceModel.class, String.valueOf(this.newHoldingPlaceHasBreeding.getHoldingPlaceId()));
+                holdingPlace.setBreedingType(this.newBreeding.getBreedingType());
+                holdingPlaceClient.edit_JSON(holdingPlace, String.valueOf(holdingPlace.getId()));
+                holdingPlaceClient.close();
+            }
+        }
+        if(this.newHoldingPlaceHasBreeding.getHoldingPlaceId() != -1 && this.newUserHasBreeding.getUserId() != -1){
+            String id = String.valueOf(this.newHoldingPlaceHasBreeding.getHoldingPlaceId()) + "_" + Session.getUserId();
+            userHasBreedingClient = new UserHasBreedingClient();
+            Integer userHasBreedingCount = userHasBreedingClient.getCountByHoldingPlaceIdAndUserId_JSON(Integer.class, id);
+            userHasBreedingClient.close();
+            
+            if(userHasBreedingCount > 0){
+                FacesContext.getCurrentInstance().addMessage("addBreeding:user_id", new FacesMessage("Az adott felhasználónak már van tenyészete a kijelölt tartási helyen!"));
+                mistake_count++;
+            }
+        }
+        
+        if(mistake_count != 0){
+            return;
+        }
         
         this.newBreeding.setIsActive(false);
         breedingClient = new BreedingClient();
@@ -322,6 +427,91 @@ public class BreedingController {
     }
     
     public void saveModifiedBreeding(){
+        int mistake_count = 0;
+        if(this.newBreeding.getBreedingType() != -1 && this.newHoldingPlaceHasBreeding.getHoldingPlaceId() != -1){
+            holdingPlaceClient = new HoldingPlaceClient();
+            Integer breedingType = holdingPlaceClient.getBreedingTypeById_JSON(Integer.class, String.valueOf(this.newHoldingPlaceHasBreeding.getHoldingPlaceId()));
+            holdingPlaceClient.close();
+            
+            if(breedingType != null){
+                
+                switch(breedingType){
+                    case 1:
+                        if(this.newBreeding.getBreedingType() != 1 && this.newBreeding.getBreedingType() != 4){
+                            FacesContext.getCurrentInstance().addMessage("editBreeding:type", new FacesMessage("Tartási helyhez nem megfelelő típus!"));
+                            mistake_count++;
+                        }
+                        break;
+                        
+                    case 4:
+                        if(this.newBreeding.getBreedingType() != 1 && this.newBreeding.getBreedingType() != 4){
+                            FacesContext.getCurrentInstance().addMessage("editBreeding:type", new FacesMessage("Tartási helyhez nem megfelelő típus!"));
+                            mistake_count++;
+                        }
+                        break;
+
+                    case 6:
+                        if(this.newBreeding.getBreedingType() != 6 && this.newBreeding.getBreedingType() != 7){
+                            FacesContext.getCurrentInstance().addMessage("editBreeding:type", new FacesMessage("Tartási helyhez nem megfelelő típus!"));
+                            mistake_count++;
+                        }
+                        break;
+                        
+                    case 7:
+                        if(this.newBreeding.getBreedingType() != 6 && this.newBreeding.getBreedingType() != 7){
+                            FacesContext.getCurrentInstance().addMessage("editBreeding:type", new FacesMessage("Tartási helyhez nem megfelelő típus!"));
+                            mistake_count++;
+                        }
+                        break;
+
+                    case 12:
+                        if(this.newBreeding.getBreedingType() != 12 && this.newBreeding.getBreedingType() != 13){
+                            FacesContext.getCurrentInstance().addMessage("editBreeding:type", new FacesMessage("Tartási helyhez nem megfelelő típus!"));
+                            mistake_count++;
+                        }
+                        break;
+                        
+                    case 13:
+                        if(this.newBreeding.getBreedingType() != 12 && this.newBreeding.getBreedingType() != 13){
+                            FacesContext.getCurrentInstance().addMessage("editBreeding:type", new FacesMessage("Tartási helyhez nem megfelelő típus!"));
+                            mistake_count++;
+                        }
+                        break; 
+
+                    default:
+                        if(this.newBreeding.getBreedingType() != breedingType){
+                            FacesContext.getCurrentInstance().addMessage("editBreeding:type", new FacesMessage("Tartási helyhez nem megfelelő típus!"));
+                            mistake_count++;
+                        }
+                        break;
+                }
+            } else {
+                holdingPlaceClient = new HoldingPlaceClient();
+                HoldingPlaceModel holdingPlace = holdingPlaceClient.find_JSON(HoldingPlaceModel.class, String.valueOf(this.newHoldingPlaceHasBreeding.getHoldingPlaceId()));
+                holdingPlace.setBreedingType(this.newBreeding.getBreedingType());
+                holdingPlaceClient.edit_JSON(holdingPlace, String.valueOf(holdingPlace.getId()));
+                holdingPlaceClient.close();
+            }
+        }
+        if(this.newHoldingPlaceHasBreeding.getHoldingPlaceId() != -1 && this.newUserHasBreeding.getUserId() != -1){
+            userHasBreedingClient = new UserHasBreedingClient();
+            UserHasBreedingModel breeding = userHasBreedingClient.find_JSON(UserHasBreedingModel.class, String.valueOf(this.newUserHasBreeding.getId()));
+            userHasBreedingClient.close();
+            
+            String id = String.valueOf(this.newHoldingPlaceHasBreeding.getHoldingPlaceId()) + "_" + Session.getUserId();
+            userHasBreedingClient = new UserHasBreedingClient();
+            Integer userHasBreedingCount = userHasBreedingClient.getCountByHoldingPlaceIdAndUserId_JSON(Integer.class, id);
+            userHasBreedingClient.close();
+            
+            if(breeding.getUserId() != this.newUserHasBreeding.getUserId() && userHasBreedingCount > 0){
+                FacesContext.getCurrentInstance().addMessage("editBreeding:user_id", new FacesMessage("Az adott felhasználónak már van tenyészete a kijelölt tartási helyen!"));
+                mistake_count++;
+            }
+        }
+        if(mistake_count != 0){
+            return;
+        }
+        
         this.newBreeding.setIsActive(false);
         breedingClient = new BreedingClient();
         breedingClient.edit_JSON(this.newBreeding, String.valueOf(this.newBreeding.getId()));

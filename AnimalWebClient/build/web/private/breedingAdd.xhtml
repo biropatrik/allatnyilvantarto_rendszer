@@ -28,7 +28,9 @@
                         <tr id="breeding_add" class="breeding_add">
                             <td>Azonosítója:</td>
                             <td>
-                                <h:selectOneMenu styleClass="selectonemenu" value="#{breedingController.newUserHasBreeding.userId}">
+                                <h:message for="user_id" style="color:red" /><br></br>
+                                <h:selectOneMenu id="user_id" styleClass="selectonemenu" value="#{breedingController.newUserHasBreeding.userId}">
+                                    <f:selectItem itemLabel="Kérlek válassz!" itemValue="${-1}" />
                                     <f:selectItems value="#{breedingController.allUserIdByRole}" var="ur"
                                                    itemLabel="#{ur}" itemValue="#{ur}" />
                                 </h:selectOneMenu>
@@ -41,8 +43,8 @@
                         <tr id="breeding_add" class="breeding_add">
                             <td>Tenyészetkód:</td>
                             <td>
-                                <h:message for="breeding_id" style="color:red" />
-                                <h:inputText id="breeding_id" label="Kód" requiredMessage="A mező kitöltése kötelező!" a:placeholder="Kód" required="false" value="#{breedingController.newBreeding.id}"/>
+                                <h:message for="breeding_id" style="color:red" /><br></br>
+                                <h:inputText id="breeding_id" label="Kód" a:placeholder="Kód" required="false" value="#{breedingController.newBreeding.id}"/>
                             </td>
                         </tr>
                         <tr id="breeding_add" class="breeding_add">
@@ -54,7 +56,9 @@
                         <tr id="breeding_add" class="breeding_add">
                             <td>Típus:</td>
                             <td>
-                                <h:selectOneMenu styleClass="selectonemenu" value="#{breedingController.newBreeding.breedingType}">
+                                <h:message for="type" style="color:red" /><br></br>
+                                <h:selectOneMenu id="type" styleClass="selectonemenu" value="#{breedingController.newBreeding.breedingType}">
+                                    <f:selectItem itemLabel="Kérlek válassz!" itemValue="${-1}" />
                                     <f:selectItems value="#{breedingController.allBreedingTypes}" var="bt"
                                                    itemLabel="#{bt.name}" itemValue="#{bt.id}" />
                                 </h:selectOneMenu>
@@ -63,9 +67,11 @@
                         <tr id="breeding_add" class="breeding_add">
                             <td>Minősítés:</td>
                             <td>
-                                <h:selectOneMenu styleClass="selectonemenu" value="#{breedingController.newBreeding.breedingClassification}">
-                                    <f:selectItems value="#{breedingController.allBreedingClassification}" var="bc"
-                                                   itemLabel="#{bc.name}" itemValue="#{bc.id}" />
+                                <h:message for="qualification" style="color:red" /><br></br>
+                                <h:selectOneMenu id="qualification" styleClass="selectonemenu" value="#{breedingController.newBreeding.breedingQualification}">
+                                    <f:selectItem itemLabel="Kérlek válassz!" itemValue="${-1}" />
+                                    <f:selectItems value="#{breedingController.allBreedingQualification}" var="bq"
+                                                   itemLabel="#{bq.name}" itemValue="#{bq.id}" />
                                 </h:selectOneMenu>
                             </td>
                         </tr>
@@ -76,9 +82,11 @@
                         <tr id="breeding_add" class="breeding_add">
                             <td>Besorolás:</td>
                             <td>
-                                <h:selectOneMenu styleClass="selectonemenu" value="#{breedingController.newBreeding.breedingQualification}">
-                                    <f:selectItems value="#{breedingController.allBreedingQualification}" var="bq"
-                                                   itemLabel="#{bq.name}" itemValue="#{bq.id}" />
+                                <h:message for="classification" style="color:red" /><br></br>
+                                <h:selectOneMenu id="classification" styleClass="selectonemenu" value="#{breedingController.newBreeding.breedingClassification}">
+                                    <f:selectItem itemLabel="Kérlek válassz!" itemValue="${-1}" />
+                                    <f:selectItems value="#{breedingController.allBreedingClassification}" var="bc"
+                                                   itemLabel="#{bc.name}" itemValue="#{bc.id}" />
                                 </h:selectOneMenu>
                             </td>
                         </tr>
@@ -89,7 +97,9 @@
                         <tr id="breeding_add" class="breeding_add">
                             <td>Azonosítója:</td>
                             <td>
-                                <h:selectOneMenu styleClass="selectonemenu" value="#{breedingController.newHoldingPlaceHasBreeding.holdingPlaceId}">
+                                <h:message for="holdingplace_id" style="color:red" /><br></br>
+                                <h:selectOneMenu id="holdingplace_id" styleClass="selectonemenu" value="#{breedingController.newHoldingPlaceHasBreeding.holdingPlaceId}">
+                                    <f:selectItem itemLabel="Kérlek válassz!" itemValue="${-1}" />
                                     <f:selectItems value="#{breedingController.allHoldingPlaceIds}" var="hp"
                                                    itemLabel="#{hp}" itemValue="#{hp}" />
                                 </h:selectOneMenu>

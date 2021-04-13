@@ -27,7 +27,8 @@
                         <tr id="breeding_edit">
                             <td>Azonosítója:</td>
                             <td>
-                                <h:selectOneMenu styleClass="selectonemenu" value="#{breedingController.newUserHasBreeding.userId}">
+                                <h:message for="user_id" style="color:red" /><br></br>
+                                <h:selectOneMenu id="user_id" styleClass="selectonemenu" value="#{breedingController.newUserHasBreeding.userId}">
                                     <f:selectItems value="#{breedingController.allUserIdByRole}" var="ur"
                                                    itemLabel="#{ur}" itemValue="#{ur}" />
                                 </h:selectOneMenu>
@@ -52,7 +53,8 @@
                         <tr id="breeding_edit">
                             <td>Típus:</td>
                             <td>
-                                <h:selectOneMenu styleClass="selectonemenu" value="#{breedingController.newBreeding.breedingType}">
+                                <h:message for="type" style="color:red" /><br></br>
+                                <h:selectOneMenu id="type" styleClass="selectonemenu" value="#{breedingController.newBreeding.breedingType}">
                                     <f:selectItems value="#{breedingController.allBreedingTypes}" var="bt"
                                                    itemLabel="#{bt.name}" itemValue="#{bt.id}" />
                                 </h:selectOneMenu>

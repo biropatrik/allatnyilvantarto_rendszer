@@ -292,6 +292,7 @@ public class RequestController {
         resetFields();
     }
     
+    
     public void acceptHoldingPlace(String holdingPlaceId){
         if(this.password == null || this.password.isEmpty()){
             FacesContext.getCurrentInstance().addMessage("checkHoldingPlace:password", new FacesMessage("A mező kitöltése kötelező!"));

@@ -33,6 +33,18 @@ public class UserHasBreedingClient {
         webTarget = client.target(BASE_URI).path("entity.userhasbreeding");
     }
 
+    public <T> T getCountByHoldingPlaceIdAndUserId_XML(Class<T> responseType, String id) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("getCountByHoldingPlaceIdAndUserId/{0}", new Object[]{id}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
+    }
+
+    public <T> T getCountByHoldingPlaceIdAndUserId_JSON(Class<T> responseType, String id) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("getCountByHoldingPlaceIdAndUserId/{0}", new Object[]{id}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
     public String countREST() throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path("count");

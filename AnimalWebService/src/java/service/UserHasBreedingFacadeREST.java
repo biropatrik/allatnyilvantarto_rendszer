@@ -120,6 +120,22 @@ public class UserHasBreedingFacadeREST extends AbstractFacade<UserHasBreeding> {
     }
     
     @GET
+    @Path("getCountByHoldingPlaceIdAndUserId/{id}")
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Integer getCountByHoldingPlaceIdAndUserId(@PathParam("id") String id){
+        String[] parts = id.split("_");
+        String holdingPlaceId = parts[0];
+        String userId = parts[1];
+        
+        ArrayList<UserHasBreeding> breedings = (ArrayList<UserHasBreeding>) em.createNamedQuery("UserHasBreeding.findByHoldingPlaceIdAndUserId")
+                                        .setParameter("holdingPlaceId", Integer.parseInt(holdingPlaceId))
+                                        .setParameter("userId", Integer.parseInt(userId))
+                                        .getResultList();
+        
+        return breedings.size();
+    }
+    
+    @GET
     @Path("findUserIdByEarTag/{earTag}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public int findUserIdByEarTag(@PathParam("earTag") String earTag){

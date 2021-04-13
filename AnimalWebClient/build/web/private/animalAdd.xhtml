@@ -53,6 +53,14 @@
                             </td>
                         </tr>
                         <tr id="animal_add" class="animal_add">
+                            <td>Halál dátuma:</td>
+                            <td>
+                                <h:inputText id="deathdate" a:type="date" value="#{animalController.newAnimal.deathdateString}">
+                                    <f:ajax execute = "deathdate" render = "deathdate" />
+                                </h:inputText>
+                            </td>
+                        </tr>
+                        <tr id="animal_add" class="animal_add">
                             <td>Neme:</td>
                             <td>
                                 <h:selectOneMenu id="sex" styleClass="selectonemenu" value="#{animalController.newAnimal.sex}">

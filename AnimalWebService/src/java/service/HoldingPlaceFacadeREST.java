@@ -108,6 +108,16 @@ public class HoldingPlaceFacadeREST extends AbstractFacade<HoldingPlace> {
     }
     
     @GET
+    @Path("getBreedingTypeById/{id}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Integer getBreedingTypeById(@PathParam("id") Integer id) {
+        ArrayList<HoldingPlace> holdingPlaces = (ArrayList<HoldingPlace>) em.createNamedQuery("HoldingPlace.findById")
+                                    .setParameter("id", id)
+                                    .getResultList();
+        return holdingPlaces.get(0).getBreedingType();
+    }
+    
+    @GET
     @Path("findByUserId/{userId}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public ArrayList<HoldingPlace> findByUserId(@PathParam("userId") Integer userId) {

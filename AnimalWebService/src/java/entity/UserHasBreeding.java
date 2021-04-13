@@ -31,6 +31,12 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "UserHasBreeding.findByUserId", query = "SELECT u FROM UserHasBreeding u WHERE u.userId = :userId"),
     @NamedQuery(name = "UserHasBreeding.findByBreedingId", query = "SELECT u FROM UserHasBreeding u WHERE u.breedingId = :breedingId"),
     @NamedQuery(name = "UserHasBreeding.findBreedingIdByUserId", query = "SELECT u.breedingId FROM UserHasBreeding u WHERE u.userId = :userId"),
+    
+    @NamedQuery(name = "UserHasBreeding.findByHoldingPlaceIdAndUserId", query = "SELECT u FROM UserHasBreeding u, HoldingPlaceHasBreeding hp "
+                                                                               +"WHERE hp.holdingPlaceId = :holdingPlaceId "
+                                                                               +"AND u.breedingId = hp.breedingId "
+                                                                               +"AND u.userId = :userId"),
+    
     @NamedQuery(name = "UserHasBreeding.findUserIdByEarTag", query = "SELECT u FROM BreedingHasAnimal b, UserHasBreeding u "
                                                     + "WHERE u.breedingId = b.breedingId "
                                                     + "AND b.animalEarTag = :earTag "
