@@ -48,7 +48,7 @@
                     <tr>
                         <td>Ország:</td>
                         <td colspan="2">
-                            <h:selectOneMenu styleClass="selectonemenu" value="#{accountController.user.countryIso2}">
+                            <h:selectOneMenu style="min-width: 188px" styleClass="selectonemenu" value="#{accountController.user.countryIso2}">
                                 <f:selectItems value="#{accountController.countries}" var="co"
                                                itemLabel="#{co.name}" itemValue="#{co.iso2}" />
                             </h:selectOneMenu>
@@ -58,7 +58,7 @@
                     <tr>
                         <td>Megye:</td>
                         <td colspan="2">
-                            <h:selectOneMenu styleClass="selectonemenu" value="#{accountController.user.countyId}">
+                            <h:selectOneMenu style="min-width: 188px" styleClass="selectonemenu" value="#{accountController.user.countyId}">
                                 <f:selectItems value="#{accountController.counties}" var="cn"
                                                itemLabel="#{cn.name}" itemValue="#{cn.id}" />
                             </h:selectOneMenu>
@@ -70,7 +70,7 @@
                             <h:inputText id="postal_code" label="Irányítószám" a:placeholder="Irányítószám" required="false" value="#{accountController.cityPostalCode}" onchange="submit()"/>
                         <br></br>
                         <br></br>
-                            <h:selectOneMenu styleClass="selectonemenu" value="#{accountController.user.cityId}">
+                            <h:selectOneMenu style="min-width: 188px" styleClass="selectonemenu" value="#{accountController.user.cityId}">
                                 <f:selectItems value="#{accountController.cities}" var="ci"
                                                itemLabel="#{ci.name}" itemValue="#{ci.id}" />
                             </h:selectOneMenu>

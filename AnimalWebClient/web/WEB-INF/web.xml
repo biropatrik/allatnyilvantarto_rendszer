@@ -11,11 +11,11 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
-        <url-pattern>/faces/*</url-pattern>
+        <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Private Servlet</servlet-name>
-        <url-pattern>/faces/private/*</url-pattern>
+        <url-pattern>/private/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
@@ -23,6 +23,6 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>/faces/private/index.xhtml</welcome-file>
+        <welcome-file>/private/index.xhtml</welcome-file>
     </welcome-file-list>
 </web-app>

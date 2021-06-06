@@ -671,7 +671,7 @@ public class RequestController {
     }
     
     public List<AnimalHasDiseasesModel> getNewAnimalHasDiseases() {
-        if(this.newAnimalHasDiseases.isEmpty()){
+        if(this.newAnimalHasDiseases.isEmpty() || this.newAnimalHasDiseases.size() < 1){
             addNewAnimalHasDiseases();
         }
         return newAnimalHasDiseases;

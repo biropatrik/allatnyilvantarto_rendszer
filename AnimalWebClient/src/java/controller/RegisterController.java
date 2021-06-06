@@ -255,6 +255,9 @@ public class RegisterController {
         }else if(!phoneNumber.matches("^[0-9]+$")){
             FacesContext.getCurrentInstance().addMessage("register:phonenumber", new FacesMessage("Csak számot tartalmazhat!"));
             setValidatePairs("phonenumber",false);
+        }else if(phoneNumber.length() < 10 || phoneNumber.length() > 11){
+            FacesContext.getCurrentInstance().addMessage("register:phonenumber", new FacesMessage("Nem megfelelő a telefonszám hossza!"));
+            setValidatePairs("phonenumber",false);
         }else{
             setValidatePairs("phonenumber",true);
             this.phoneNumber = phoneNumber;

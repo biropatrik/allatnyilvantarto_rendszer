@@ -40,7 +40,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Animal.findByCalvingId", query = "SELECT a FROM Animal a WHERE a.calvingId = :calvingId"),
     @NamedQuery(name = "Animal.findByCalvingWeight", query = "SELECT a FROM Animal a WHERE a.calvingWeight = :calvingWeight"),
     @NamedQuery(name = "Animal.findByIsAccepted", query = "SELECT a FROM Animal a WHERE a.isAccepted = :isAccepted"),
-    @NamedQuery(name = "Animal.findByIsNotActiveAndVetCountyId", query = "SELECT a FROM Animal a, BreedingHasAnimal bh, HoldingPlaceHasBreeding hb, HoldingPlace h, VetHasCounty v "
+    @NamedQuery(name = "Animal.findByIsNotActiveAndVetCountyId", query = "SELECT DISTINCT a FROM Animal a, BreedingHasAnimal bh, HoldingPlaceHasBreeding hb, HoldingPlace h, VetHasCounty v "
                                                                         +"WHERE a.isAccepted = FALSE "
                                                                         +"AND a.earTag = bh.animalEarTag "
                                                                         +"AND bh.breedingId = hb.breedingId "
@@ -48,7 +48,7 @@ import javax.xml.bind.annotation.XmlRootElement;
                                                                         +"AND h.countyId = v.countyId "
                                                                         +"AND v.userId = :userId"),
     
-    @NamedQuery(name = "Animal.findByVetCountyId", query = "SELECT a FROM Animal a, BreedingHasAnimal bh, HoldingPlaceHasBreeding hb, HoldingPlace h, VetHasCounty v "
+    @NamedQuery(name = "Animal.findByVetCountyId", query = "SELECT DISTINCT a FROM Animal a, BreedingHasAnimal bh, HoldingPlaceHasBreeding hb, HoldingPlace h, VetHasCounty v "
                                                                         +"WHERE a.earTag = bh.animalEarTag "
                                                                         +"AND bh.breedingId = hb.breedingId "
                                                                         +"AND hb.holdingPlaceId = h.id "

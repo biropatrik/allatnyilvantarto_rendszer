@@ -132,7 +132,6 @@
                             <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
                                 <th colspan="5" style="border: solid thin;">Az egyed betegségei</th>
                             </tr>
-                            <c:if test="#{animalController.getAllAnimalHasDiseasesByEarTags(animal.earTag).size() > 0}">
                                 <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
                                     <th>Betegség neve</th>
                                     <th>Betegség kezdete</th>
@@ -144,7 +143,7 @@
                             <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
                                 <td colspan="1">
                                     <h:selectOneMenu id="animalDiseasesName_#{loop.index}" styleClass="selectonemenu" value="#{animalHasDiseases.animalDiseasesId}">
-                                        
+                                        <f:selectItem itemLabel="Kérlek válassz!" itemValue="-1" />
                                         <f:selectItems value="#{animalController.allAnimalDiseases}" var="ad"
                                                        itemLabel="#{ad.name}" itemValue="#{ad.id}" />
                                         <f:ajax execute = "animalDiseasesName_#{loop.index}" render = "animalDiseasesName_#{loop.index}" />
@@ -163,7 +162,7 @@
                                 </td>
                                 
                                 <td>
-                                    <h:inputText id="comment_#{loop.index}" label="Komment" a:placeholder="Komment" required="false" value="#{animalHasDiseases.comment}">
+                                    <h:inputText id="comment_#{loop.index}" label="Megjegyzés" a:placeholder="Megjegyzés" required="false" value="#{animalHasDiseases.comment}">
                                         <f:ajax execute = "comment_#{loop.index}" render = "comment_#{loop.index}" />
                                     </h:inputText>
                                 </td>
@@ -185,7 +184,6 @@
                         </div>
                         </th>
                         </tr>
-                    </c:if>
                             <tr id="details_#{animal.earTag}" class="#{animal.earTag}" >
                                 <th colspan="5" style="border: solid thin;">Egyed módosítása</th>
                             </tr>

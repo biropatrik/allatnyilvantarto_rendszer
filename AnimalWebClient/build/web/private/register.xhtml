@@ -13,44 +13,55 @@
         <h:form id="register">
         <div class="logo"></div>
         <div class="login-block">
+            <h:outputText value="Vezetéknév: " style="font-weight: bold"/>
             <h:message for="last_name" style="color:red" />
             <h:inputText id="last_name" label="Vezetéknév" required="false" a:placeholder="Vezetéknév" value="#{registerController.last_name}"/>
            
+            <h:outputText value="Keresztnév: " style="font-weight: bold"/>
             <h:message for="first_name" style="color:red" />
             <h:inputText id="first_name" label="Keresztnév" requiredMessage="A mező kitöltése kötelező!" required="false" a:placeholder="Keresztnév" value="#{registerController.first_name}"/>
             
+            <h:outputText value="Telefonszám: " style="font-weight: bold"/>
             <h:message for="phonenumber" style="color:red" />
             <h:inputText id="phonenumber" label="Telefonszám" requiredMessage="A mező kitöltése kötelező!" required="false" a:placeholder="Telefonszám" value="#{registerController.phoneNumber}"/>
             
+            <h:outputText value="E-mail cím: " style="font-weight: bold"/>
             <h:message for="email" style="color:red" />
-            <h:inputText id="email" label="Email" requiredMessage="A mező kitöltése kötelező!" required="false" a:placeholder="Email" value="#{registerController.email}" styleClass="email"/>
+            <h:inputText id="email" label="E-mail cím" requiredMessage="A mező kitöltése kötelező!" required="false" a:placeholder="E-mail cím" value="#{registerController.email}" styleClass="email"/>
             
+            <h:outputText value="Jelszó: " style="font-weight: bold"/>
             <h:message for="password" style="color:red" />
             <h:inputText id="password" label="Jelszó" requiredMessage="A mező kitöltése kötelező!" required="false" a:type="password" a:placeholder="Jelszó" value="#{registerController.password}" styleClass="password"/>
             
+            <h:outputText value="Lakóhely:" style="font-weight: bold"/><br></br>
+            <h:outputText value="Ország: " style="font-weight: bold"/>
             <h:selectOneMenu styleClass="selectonemenu" value="#{registerController.countryIso2}">
                 <f:selectItems value="#{registerController.countries}" var="co"
                                itemLabel="#{co.name}" itemValue="#{co.iso2}" />
             </h:selectOneMenu>
             <br></br>
             
+            <h:outputText value="Megye: " style="font-weight: bold"/>
             <h:selectOneMenu styleClass="selectonemenu" value="#{registerController.countyId}">
                 <f:selectItems value="#{registerController.counties}" var="cn"
                                itemLabel="#{cn.name}" itemValue="#{cn.id}" />
             </h:selectOneMenu>
             <br></br>
             
+            <h:outputText value="Irányítószám: " style="font-weight: bold"/>
             <h:message for="postal_code" style="color:red" />
             <h:inputText id="postal_code" label="Irányítószám" a:placeholder="Irányítószám" required="false" value="#{registerController.postal_code}">
                 <f:ajax execute = "postal_code" render = "cities" />
             </h:inputText>
             
+            <h:outputText value="Település: " style="font-weight: bold"/>
             <h:selectOneMenu id="cities" styleClass="selectonemenu" value="#{registerController.cityId}">
                 <f:selectItems value="#{registerController.cities}" var="ci"
                                itemLabel="#{ci.name}" itemValue="#{ci.id}" />
             </h:selectOneMenu>
             <br></br>
             
+            <h:outputText value="Utca, házszám: " style="font-weight: bold"/>
             <h:message for="street" style="color:red" />
             <h:inputText id="street" label="Utca, házszám" requiredMessage="A mező kitöltése kötelező!" a:placeholder="Utca házszám" required="false" value="#{registerController.street}"/>
             
